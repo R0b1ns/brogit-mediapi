@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verfügbare WLAN-Netze</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <style>
+        .radio-label {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f7f7f7; /* Graue Hintergrundfarbe */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="radio"] {
+            display: none; /* Verstecke das Standard-Radio-Element */
+        }
+        input[type="radio"]:checked + .radio-label {
+            background-color: #cce5ff; /* Farbe für das ausgewählte Element */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Verfügbare WLAN-Netze</h2>
+        <form action="/connect" method="post">
+            <div class="form-group" id="network-list"></div>
+            <div class="form-group" id="password-input" style="display:none;">
+                <input type="password" name="password" class="form-control" placeholder="Passwort (falls erforderlich)">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Verbinden</button>
+        </form>
+    </div>
+    <script>
+        const socket = io();
+
+        socket.on('connect', () => {
+            // Anfrage zum Abrufen der Netzwerke senden
+            socket.emit('request_networks');
+        });
+
+        socket.on('update_networks', (data) => {
+            const networkList = document.getElementById('network-list');
+            networkList.innerHTML = ''; // Leere die Liste
+
+            data.ssids.forEach(ssid => {
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.id = ssid;
+                radio.name = 'ssid';
+                radio.value = ssid;
+                radio.required = true;
+
+                const label = document.createElement('label');
+                label.htmlFor = ssid;
+                label.className = 'radio-label';
+                label.textContent = ssid;
+
+                networkList.appendChild(radio);
+                networkList.appendChild(label);
+            });
+
+            // Füge "Anderes Netzwerk" am Ende hinzu
+            const otherRadio = document.createElement('input');
+            otherRadio.type = 'radio';
+            otherRadio.id = 'other';
+            otherRadio.name = 'ssid';
+            otherRadio.value = 'other';
+
+            const otherLabel = document.createElement('label');
+            otherLabel.htmlFor = 'other';
+            otherLabel.className = 'radio-label';
+            otherLabel.textContent = 'Anderes Netzwerk';
+
+            networkList.appendChild(otherRadio);
+            networkList.appendChild(otherLabel);
+        });
+
+        // Update der WLAN-Netze alle 5 Sekunden
+        setInterval(() => {
+            socket.emit('request_networks');
+        }, 5000);
+    </script>
+</body>
+</html>

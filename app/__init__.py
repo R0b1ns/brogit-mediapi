@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session
 from flask_socketio import SocketIO, emit
 
-from webapp.lib.wifi import scan_wifi
+from app.lib.wifi import scan_wifi
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
