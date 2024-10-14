@@ -21,11 +21,11 @@ def get_known_networks():
 # Scan for available WiFi networks
 def scan_wifi():
     networks = []
-    known_networks = get_known_networks()  # Get the list of known networks
+    known_networks = [] # Does not work get_known_networks()  # Get the list of known networks
 
     try:
         # Use nmcli to scan for WiFi networks with security info
-        result = subprocess.run(['nmcli', '-t', '-f', 'SSID,FREQ,SECURITY,IN-USE', 'dev', 'wifi'],
+        result = subprocess.run(['nmcli', '-t', '-f', 'SSID,BSSID,FREQ,SECURITY,IN-USE', 'dev', 'wifi'],
                                 stdout=subprocess.PIPE)
         output = result.stdout.decode('utf-8').strip().split('\n')
 
