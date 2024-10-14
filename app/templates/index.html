@@ -26,15 +26,17 @@
     <div class="container mt-5">
         <h1 class="mb-4">Available WiFi Networks</h1>
 
-        <!-- Refresh Icon above the WiFi list -->
-        <div class="d-flex justify-content-center mb-3">
-            <i id="refresh" class="bi bi-arrow-clockwise" style="font-size: 2rem; cursor: pointer;" title="Refresh"></i>
+        <!-- Refresh Button above the WiFi list -->
+        <div class="d-flex justify-content-start mb-3">
+            <button id="refresh" class="btn btn-light">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
         </div>
 
         <div id="wifi-list">
             <form id="wifi-form">
                 <div class="form-group">
-                    <div id="connected-network">
+                    <div id="connected-network" style="display: none;">
                         <p class="small text-muted">Verbunden</p>
                         <p id="current-network" class="connected-network"></p>
                     </div>
@@ -44,10 +46,12 @@
                 </div>
             </form>
         </div>
-        <button id="connect-button" class="btn btn-primary mt-3">Verbinden</button>
+        <button id="next-button" class="btn btn-primary mt-3">Weiter</button>
+
         <div id="network-input" style="display: none;">
             <label for="network-password" class="small text-muted">Netzwerkschlüssel für <span id="selected-network"></span></label>
             <input type="password" id="network-password" class="form-control">
+            <button id="connect-button" class="btn btn-success mt-2">Verbinden</button>
         </div>
     </div>
 
@@ -62,6 +66,7 @@
             const connectedNetworkElement = document.getElementById('current-network');
             const networksDiv = document.getElementById('networks');
             const selectedNetworkElement = document.getElementById('selected-network');
+            const connectedNetworkContainer = document.getElementById('connected-network');
 
             networksDiv.innerHTML = '';
             connectedNetworkElement.innerHTML = '';
@@ -79,12 +84,13 @@
                 }
             });
 
-            // Display the connected network first, if any
+            // Display the connected network if any
             if (connectedNetwork) {
                 const passwordIcon = connectedNetwork.protected ? '<i class="bi bi-lock-fill protected"></i>' : '<i class="bi bi-unlock"></i>';
                 connectedNetworkElement.innerHTML = `${passwordIcon} ${connectedNetwork.ssid} (${connectedNetwork.band})`;
+                connectedNetworkContainer.style.display = 'block'; // Show the connected network
             } else {
-                connectedNetworkElement.innerHTML = '<p class="small text-muted">Kein verbundenes Netzwerk</p>';
+                connectedNetworkContainer.style.display = 'none'; // Hide if no connected network
             }
 
             // Display the other networks
@@ -114,6 +120,12 @@
         }
 
         document.getElementById('refresh').addEventListener('click', fetchNetworks);
+        document.getElementById('next-button').addEventListener('click', function() {
+            $('#wifi-list').slideUp('slow', function() {
+                $('#network-input').fadeIn('slow');
+            });
+        });
+
         document.getElementById('connect-button').addEventListener('click', function() {
             const password = document.getElementById('network-password').value;
             const selectedNetwork = document.querySelector('input[name="network"]:checked');
