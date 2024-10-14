@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WiFi Networks</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <style>
         .connected-network {
@@ -28,7 +29,7 @@
 
         <!-- Refresh Button above the WiFi list -->
         <div class="d-flex justify-content-start mb-3">
-            <button id="refresh" class="btn btn-light">
+            <button id="refresh" class="btn btn-primary">
                 <i class="bi bi-arrow-clockwise"></i> Refresh
             </button>
         </div>
@@ -36,22 +37,18 @@
         <div id="wifi-list">
             <form id="wifi-form">
                 <div class="form-group">
-                    <div id="connected-network" style="display: none;">
-                        <p class="small text-muted">Verbunden</p>
-                        <p id="current-network" class="connected-network"></p>
-                    </div>
                     <div id="networks">
                         <p>Loading available networks...</p>
                     </div>
                 </div>
+                <button id="continue-button" class="btn btn-success" style="display: none;">Weiter</button>
             </form>
         </div>
-        <button id="next-button" class="btn btn-primary mt-3">Weiter</button>
 
         <div id="network-input" style="display: none;">
-            <label for="network-password" class="small text-muted">Netzwerkschlüssel für <span id="selected-network"></span></label>
-            <input type="password" id="network-password" class="form-control">
-            <button id="connect-button" class="btn btn-success mt-2">Verbinden</button>
+            <label for="network-password" class="small text-muted">Netzwerkschlüssel für <span id="selected-network"></span>:</label>
+            <input type="password" id="network-password" class="form-control mb-3">
+            <button id="connect-button" class="btn btn-primary">Verbinden</button>
         </div>
     </div>
 
@@ -63,16 +60,9 @@
         }
 
         socket.on('response_wifi', function(data) {
-            const connectedNetworkElement = document.getElementById('current-network');
             const networksDiv = document.getElementById('networks');
-            const selectedNetworkElement = document.getElementById('selected-network');
-            const connectedNetworkContainer = document.getElementById('connected-network');
-
             networksDiv.innerHTML = '';
-            connectedNetworkElement.innerHTML = '';
-            selectedNetworkElement.innerHTML = '';
 
-            // Separate the connected network from the others
             let connectedNetwork = null;
             let otherNetworks = [];
 
@@ -84,56 +74,50 @@
                 }
             });
 
-            // Display the connected network if any
             if (connectedNetwork) {
+                const connectedIcon = '<i class="bi bi-wifi"></i>';
                 const passwordIcon = connectedNetwork.protected ? '<i class="bi bi-lock-fill protected"></i>' : '<i class="bi bi-unlock"></i>';
-                connectedNetworkElement.innerHTML = `${passwordIcon} ${connectedNetwork.ssid} (${connectedNetwork.band})`;
-                connectedNetworkContainer.style.display = 'block'; // Show the connected network
-            } else {
-                connectedNetworkContainer.style.display = 'none'; // Hide if no connected network
+
+                const connectedOption = `
+                    <div class="form-check connected-network">
+                        ${connectedIcon} ${passwordIcon}
+                        <label class="form-check-label">
+                            ${connectedNetwork.ssid} (${connectedNetwork.band}) <span class="known">${connectedNetwork.known ? '✓' : ''}</span>
+                        </label>
+                    </div>`;
+                networksDiv.innerHTML += connectedOption;
             }
 
-            // Display the other networks
             otherNetworks.forEach(function(network) {
                 const icon = network.known
-                    ? '<i class="bi bi-star known"></i>'  // Star icon for known networks
-                    : '<i class="bi bi-wifi-off"></i>';  // WiFi off icon for unknown networks
+                    ? '<i class="bi bi-star known"></i>'
+                    : '<i class="bi bi-wifi-off"></i>';
 
                 const passwordIcon = network.protected ? '<i class="bi bi-lock-fill protected"></i>' : '<i class="bi bi-unlock"></i>';
 
                 const radioOption = `
                     <div class="form-check network">
                         ${icon} ${passwordIcon}
-                        <input class="form-check-input" type="radio" name="network" id="${network.ssid}-${network.band}" value="${network.ssid}-${network.band}" onclick="selectNetwork('${network.ssid}')">
+                        <input class="form-check-input" type="radio" name="network" id="${network.ssid}-${network.band}" value="${network.ssid}-${network.band}">
                         <label class="form-check-label" for="${network.ssid}-${network.band}">
                             ${network.ssid} (${network.band}) <span class="known">${network.known ? '✓' : ''}</span>
                         </label>
                     </div>`;
                 networksDiv.innerHTML += radioOption;
             });
-        });
 
-        function selectNetwork(ssid) {
-            const selectedNetworkElement = document.getElementById('selected-network');
-            selectedNetworkElement.innerHTML = ssid;
-            document.getElementById('network-input').style.display = 'block';
-        }
-
-        document.getElementById('refresh').addEventListener('click', fetchNetworks);
-        document.getElementById('next-button').addEventListener('click', function() {
-            $('#wifi-list').slideUp('slow', function() {
-                $('#network-input').fadeIn('slow');
+            // Activate the "Weiter" button only if a network is selected
+            $('input[type="radio"]').on('change', function() {
+                $('#continue-button').show(); // Show the "Weiter" button
+                $('#selected-network').text($(this).val().split('-')[0]); // Set the selected network
             });
         });
 
-        document.getElementById('connect-button').addEventListener('click', function() {
-            const password = document.getElementById('network-password').value;
-            const selectedNetwork = document.querySelector('input[name="network"]:checked');
-            if (selectedNetwork) {
-                const ssid = selectedNetwork.value.split('-')[0];
-                // Add your code to connect to the network using the selected SSID and password
-                console.log(`Connecting to ${ssid} with password ${password}`);
-            }
+        $('#refresh').click(fetchNetworks);
+
+        $('#continue-button').click(function() {
+            $('#wifi-list').slideUp(); // Slide up the WiFi list
+            $('#network-input').fadeIn(); // Fade in the network input
         });
 
         window.onload = fetchNetworks;
