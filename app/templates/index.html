@@ -31,27 +31,23 @@
             <i id="refresh" class="bi bi-arrow-clockwise" style="font-size: 2rem; cursor: pointer;" title="Refresh"></i>
         </div>
 
-        <div id="connected-wifi" class="mb-3">
-            <small class="text-muted">Verbunden</small>
-            <span id="current-ssid" class="font-weight-bold"></span>
-        </div>
-
         <div id="wifi-list">
             <form id="wifi-form">
                 <div class="form-group">
+                    <div id="connected-network">
+                        <p class="small text-muted">Verbunden</p>
+                        <p id="current-network" class="connected-network"></p>
+                    </div>
                     <div id="networks">
                         <p>Loading available networks...</p>
                     </div>
                 </div>
             </form>
         </div>
-
         <button id="connect-button" class="btn btn-primary mt-3">Verbinden</button>
-
-        <div id="password-input" class="mt-3" style="display:none;">
-            <small class="text-muted" id="selected-ssid-label"></small>
-            <input type="password" class="form-control mt-1" placeholder="Netzwerkschlüssel" id="network-password">
-            <button id="submit-password" class="btn btn-success mt-2">Einloggen</button>
+        <div id="network-input" style="display: none;">
+            <label for="network-password" class="small text-muted">Netzwerkschlüssel für <span id="selected-network"></span></label>
+            <input type="password" id="network-password" class="form-control">
         </div>
     </div>
 
@@ -63,8 +59,13 @@
         }
 
         socket.on('response_wifi', function(data) {
+            const connectedNetworkElement = document.getElementById('current-network');
             const networksDiv = document.getElementById('networks');
+            const selectedNetworkElement = document.getElementById('selected-network');
+
             networksDiv.innerHTML = '';
+            connectedNetworkElement.innerHTML = '';
+            selectedNetworkElement.innerHTML = '';
 
             // Separate the connected network from the others
             let connectedNetwork = null;
@@ -80,19 +81,10 @@
 
             // Display the connected network first, if any
             if (connectedNetwork) {
-                const connectedIcon = '<i class="bi bi-wifi"></i>';
                 const passwordIcon = connectedNetwork.protected ? '<i class="bi bi-lock-fill protected"></i>' : '<i class="bi bi-unlock"></i>';
-
-                const connectedOption = `
-                    <div class="form-check connected-network">
-                        ${connectedIcon} ${passwordIcon}
-                        <input class="form-check-input" type="radio" name="network" id="${connectedNetwork.ssid}-${connectedNetwork.band}" value="${connectedNetwork.ssid}-${connectedNetwork.band}" style="display: none;">
-                        <label class="form-check-label" for="${connectedNetwork.ssid}-${connectedNetwork.band}">
-                            ${connectedNetwork.ssid} (${connectedNetwork.band}) <span class="known">${connectedNetwork.known ? '✓' : ''}</span>
-                        </label>
-                    </div>`;
-                networksDiv.innerHTML += connectedOption;
-                document.getElementById('current-ssid').innerText = connectedNetwork.ssid; // Display connected SSID
+                connectedNetworkElement.innerHTML = `${passwordIcon} ${connectedNetwork.ssid} (${connectedNetwork.band})`;
+            } else {
+                connectedNetworkElement.innerHTML = '<p class="small text-muted">Kein verbundenes Netzwerk</p>';
             }
 
             // Display the other networks
@@ -106,7 +98,7 @@
                 const radioOption = `
                     <div class="form-check network">
                         ${icon} ${passwordIcon}
-                        <input class="form-check-input" type="radio" name="network" id="${network.ssid}-${network.band}" value="${network.ssid}-${network.band}">
+                        <input class="form-check-input" type="radio" name="network" id="${network.ssid}-${network.band}" value="${network.ssid}-${network.band}" onclick="selectNetwork('${network.ssid}')">
                         <label class="form-check-label" for="${network.ssid}-${network.band}">
                             ${network.ssid} (${network.band}) <span class="known">${network.known ? '✓' : ''}</span>
                         </label>
@@ -115,25 +107,21 @@
             });
         });
 
+        function selectNetwork(ssid) {
+            const selectedNetworkElement = document.getElementById('selected-network');
+            selectedNetworkElement.innerHTML = ssid;
+            document.getElementById('network-input').style.display = 'block';
+        }
+
         document.getElementById('refresh').addEventListener('click', fetchNetworks);
-
         document.getElementById('connect-button').addEventListener('click', function() {
-            const selectedSSID = document.querySelector('input[name="network"]:checked');
-            if (selectedSSID) {
-                const ssid = selectedSSID.value.split('-')[0];
-                document.getElementById('selected-ssid-label').innerText = ssid;
-                document.getElementById('password-input').style.display = 'block';
-                document.getElementById('wifi-list').style.display = 'none'; // Hide the WiFi list
-            } else {
-                alert('Bitte wählen Sie ein WLAN-Netzwerk aus.');
-            }
-        });
-
-        document.getElementById('submit-password').addEventListener('click', function() {
-            const ssid = document.getElementById('selected-ssid-label').innerText;
             const password = document.getElementById('network-password').value;
-            console.log('Verbinde mit SSID:', ssid, 'Passwort:', password);
-            // Hier kannst du die Logik zum Verbinden mit dem WLAN einfügen.
+            const selectedNetwork = document.querySelector('input[name="network"]:checked');
+            if (selectedNetwork) {
+                const ssid = selectedNetwork.value.split('-')[0];
+                // Add your code to connect to the network using the selected SSID and password
+                console.log(`Connecting to ${ssid} with password ${password}`);
+            }
         });
 
         window.onload = fetchNetworks;
