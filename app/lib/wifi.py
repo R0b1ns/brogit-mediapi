@@ -1,32 +1,55 @@
 import subprocess
 
 
-def scan_wifi():
-    """Scan for WiFi networks and return detailed information."""
-    networks = []
+def get_known_networks():
+    known_networks = set()
     try:
-        # Scan for available WiFi networks with their frequencies and active status
-        result = subprocess.run(['nmcli', '-t', '-f', 'ACTIVE,SSID,FREQ', 'dev', 'wifi'], stdout=subprocess.PIPE)
-        output = result.stdout.decode('utf-8')
+        # Use nmcli to list saved WiFi connections
+        result = subprocess.run(['nmcli', '-t', '-f', 'SSID', 'connection'], stdout=subprocess.PIPE)
+        output = result.stdout.decode('utf-8').strip().split('\n')
 
-        # Get known (saved) WiFi connections
-        known_connections_result = subprocess.run(['nmcli', '-t', '-f', 'NAME', 'connection', 'show'],
-                                                  stdout=subprocess.PIPE)
-        known_connections = known_connections_result.stdout.decode('utf-8').split('\n')
+        for line in output:
+            known_networks.add(line.strip())  # Add each known SSID to the set
 
-        for line in output.split('\n'):
-            if line.strip():
-                active, ssid, freq = line.split(':')
-                band = '2.4 GHz' if freq.startswith('2') else '5 GHz'
+    except subprocess.CalledProcessError as e:
+        print(f"Error retrieving known WiFi networks: {e}")
 
-                # Create a structured dictionary for each network
-                network_info = {
+    return known_networks
+
+
+# Scan for available WiFi networks
+def scan_wifi():
+    networks = []
+    known_networks = get_known_networks()  # Get the list of known networks
+
+    try:
+        # Use nmcli to scan for WiFi networks with security info
+        result = subprocess.run(['nmcli', '-t', '-f', 'SSID,BSSID,FREQ,SECURITY,IN-USE', 'dev', 'wifi'],
+                                stdout=subprocess.PIPE)
+        output = result.stdout.decode('utf-8').strip().split('\n')
+
+        for line in output:
+            fields = line.split(':')
+            if len(fields) >= 5:
+                ssid = fields[0]
+                band = "2.4 GHz" if int(fields[2]) < 2500 else "5 GHz"
+                security = fields[3]  # This field contains security info
+                connected = fields[4] == '*'  # '*' means connected
+
+                # Check if the network is protected (has security)
+                protected = False if security == "" else True
+                # Check if the network is known
+                known = ssid in known_networks
+
+                networks.append({
                     'ssid': ssid,
                     'band': band,
-                    'connected': active == 'yes',
-                    'known': ssid in known_connections
-                }
-                networks.append(network_info)
-    except Exception as e:
+                    'protected': protected,
+                    'connected': connected,
+                    'known': known
+                })
+
+    except subprocess.CalledProcessError as e:
         print(f"Error scanning WiFi networks: {e}")
+
     return networks
