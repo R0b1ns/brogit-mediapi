@@ -34,15 +34,17 @@ def scan_wifi():
             if len(fields) >= 4:
                 ssid = fields[0]
 
+                mac = fields[1]
+
                 # Extract the frequency and convert to integer
-                freq_str = fields[1].split()[0]  # Get the numeric part (e.g. '2437')
+                freq_str = fields[2].split()[0]  # Get the numeric part (e.g. '2437')
                 frequency = int(freq_str)
 
                 # Determine band based on frequency
                 band = "2.4 GHz" if frequency < 2500 else "5 GHz"
 
-                security = fields[2]  # This field contains security info
-                connected = fields[3] == '*'  # '*' means connected
+                security = fields[3]  # This field contains security info
+                connected = fields[4] == '*'  # '*' means connected
 
                 # Check if the network is protected (has security)
                 protected = False if security == "" else True
@@ -51,6 +53,7 @@ def scan_wifi():
 
                 networks.append({
                     'ssid': ssid,
+                    'mac': mac,
                     'band': band,
                     'protected': protected,
                     'connected': connected,
