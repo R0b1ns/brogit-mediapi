@@ -30,6 +30,8 @@ def scan_wifi():
         output = result.stdout.decode('utf-8').strip().split('\n')
 
         for line in output:
+            print(line)
+            line = line.replace('\\:', '-')
             fields = line.split(':')
             if len(fields) >= 4:
                 ssid = fields[0]
