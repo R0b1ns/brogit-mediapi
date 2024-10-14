@@ -30,7 +30,7 @@ def scan_wifi():
         output = result.stdout.decode('utf-8').strip().split('\n')
 
         for line in output:
-            print(line)
+            # Fix for macaddress
             line = line.replace('\\:', '-')
             fields = line.split(':')
             if len(fields) >= 4:
