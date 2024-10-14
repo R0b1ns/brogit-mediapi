@@ -44,7 +44,7 @@ def scan_wifi():
             line = line.replace('\\:', '-')
             fields = line.split(':')
 
-            network = zip(params, fields)
+            network = dict(zip(params, fields))
 
             print(network)
             networks.append({
