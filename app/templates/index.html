@@ -19,7 +19,10 @@
                 </div>
             </form>
         </div>
-        <button id="refresh" class="btn btn-primary mt-3">Refresh Networks</button>
+        <!-- Refresh Icon instead of text button -->
+        <div class="d-flex justify-content-center">
+            <i id="refresh" class="bi bi-arrow-clockwise" style="font-size: 2rem; cursor: pointer;" title="Refresh"></i>
+        </div>
     </div>
 
     <script>
@@ -33,15 +36,40 @@
             const networksDiv = document.getElementById('networks');
             networksDiv.innerHTML = '';
 
+            // Separate the connected network from the others
+            let connectedNetwork = null;
+            let otherNetworks = [];
+
             data.networks.forEach(function(network) {
-                const icon = network.connected
-                    ? '<i class="bi bi-wifi"></i>'  // Bootstrap WiFi icon for connected
-                    : network.known
-                        ? '<i class="bi bi-star"></i>'  // Star icon for known networks
-                        : '<i class="bi bi-wifi-off"></i>';  // WiFi off icon for unknown networks
+                if (network.connected) {
+                    connectedNetwork = network;
+                } else {
+                    otherNetworks.push(network);
+                }
+            });
+
+            // Display the connected network first, if any
+            if (connectedNetwork) {
+                const connectedIcon = '<i class="bi bi-wifi"></i>';
+                const connectedOption = `
+                    <div class="form-check bg-success text-white p-2 rounded mt-2">
+                        ${connectedIcon}
+                        <input class="form-check-input" type="radio" name="network" id="${connectedNetwork.ssid}" value="${connectedNetwork.ssid}">
+                        <label class="form-check-label" for="${connectedNetwork.ssid}">
+                            ${connectedNetwork.ssid} (${connectedNetwork.band})
+                        </label>
+                    </div>`;
+                networksDiv.innerHTML += connectedOption;
+            }
+
+            // Display the other networks
+            otherNetworks.forEach(function(network) {
+                const icon = network.known
+                    ? '<i class="bi bi-star"></i>'  // Star icon for known networks
+                    : '<i class="bi bi-wifi-off"></i>';  // WiFi off icon for unknown networks
 
                 const radioOption = `
-                    <div class="form-check">
+                    <div class="form-check mt-2">
                         ${icon}
                         <input class="form-check-input" type="radio" name="network" id="${network.ssid}" value="${network.ssid}">
                         <label class="form-check-label" for="${network.ssid}">
