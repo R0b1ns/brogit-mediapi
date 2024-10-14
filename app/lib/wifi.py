@@ -1,3 +1,4 @@
+import logging
 import subprocess
 
 
@@ -30,9 +31,18 @@ def scan_wifi():
 
         for line in output:
             fields = line.split(':')
+
+            logging.debug(fields)
+
             if len(fields) >= 5:
                 ssid = fields[0]
-                band = "2.4 GHz" if int(fields[2]) < 2500 else "5 GHz"
+                # Extract the frequency and convert to integer
+                freq_str = fields[2].split()[0]  # Get the numeric part (e.g. '2437')
+                frequency = int(freq_str)
+
+                # Determine band based on frequency
+                band = "2.4 GHz" if frequency < 2500 else "5 GHz"
+
                 security = fields[3]  # This field contains security info
                 connected = fields[4] == '*'  # '*' means connected
 
