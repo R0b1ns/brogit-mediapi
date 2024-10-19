@@ -32,8 +32,14 @@ $(document).ready(function() {
 
         // Display the connected network if any
         if (connectedNetwork) {
-            const passwordIcon = connectedNetwork.protected ? '<i class="bi bi-lock-fill protected"></i>' : '<i class="bi bi-unlock"></i>';
-            connectedNetworkElement.html(`${passwordIcon} ${connectedNetwork.ssid} (${connectedNetwork.band})`);
+            const signalIcon = connectedNetwork.signal > 66
+                ? '<i class="bi bi-wifi"></i>'
+                : connectedNetwork.signal > 33 ?
+                '<i class="bi bi-wifi-2"></i>'
+                : '<i class="bi bi-wifi-1"></i>';
+
+            const passwordIcon = connectedNetwork.protected ? '<i class="bi bi-lock-fill protected" title="Protected"></i>' : '<i class="bi bi-unlock" title="Unprotected"></i>';
+            connectedNetworkElement.html(`${signalIcon} ${passwordIcon} ${connectedNetwork.ssid} (${connectedNetwork.band})`);
             connectedNetworkContainer.show(); // Show the connected network
         } else {
             connectedNetworkContainer.hide(); // Hide if no connected network
@@ -41,11 +47,13 @@ $(document).ready(function() {
 
         // Display the other networks using the template
         otherNetworks.forEach(function(network) {
-            const icon = network.known
-                ? '<i class="bi bi-star known"></i>'  // Star icon for known networks
-                : '<i class="bi bi-wifi-off"></i>';  // WiFi off icon for unknown networks
+            const signalIcon = network.signal > 66
+                ? '<i class="bi bi-wifi"></i>'
+                : network.signal > 33 ?
+                '<i class="bi bi-wifi-2"></i>'
+                : '<i class="bi bi-wifi-1"></i>';
 
-            const passwordIcon = network.protected ? '<i class="bi bi-lock-fill protected"></i>' : '<i class="bi bi-unlock"></i>';
+            const passwordIcon = network.protected ? '<i class="bi bi-lock-fill protected" title="Protected"></i>' : '<i class="bi bi-unlock" title="Unprotected"></i>';
 
             // Clone the template and replace the placeholders
             const template = $('#network-template').html();
@@ -53,7 +61,7 @@ $(document).ready(function() {
                 .replace(/\[\[ssid\]\]/g, network.ssid)
                 .replace(/\[\[band\]\]/g, network.band)
                 .replace(/\[\[known\]\]/g, network.known ? '✓' : '')
-                .replace(/\[\[icon\]\]/g, icon)
+                .replace(/\[\[signal\]\]/g, signalIcon)
                 .replace(/\[\[passwordIcon\]\]/g, passwordIcon);
 
             networksDiv.append(radioOption);
@@ -112,16 +120,50 @@ $(document).ready(function() {
         nextPage();
     });
 
+    $('form#connect').on('submit', function(e) {
+        e.preventDefault();
 
-    $('#connect-button').click(function() {
+        const ssid = $('#network-ssid').val();
         const password = $('#network-password').val();
-        const selectedNetwork = $('input[name="network"]:checked');
-        if (selectedNetwork.length) {
-            const ssid = selectedNetwork.val();
-            // Add your code to connect to the network using the selected SSID and password
-            console.log(`Connecting to ${ssid} with password ${password}`);
+        const errorMessageContainer = $('#error-message');
+
+        if (ssid.length) {
+            let url = $(this).attr('action');
+            url += `?ssid=${encodeURIComponent(ssid)}`;
+
+            if (password) {
+                url += `&password=${encodeURIComponent(password)}`;
+            }
+
+            $.get(url, function(response) {
+                if (response.success) {
+                    errorMessageContainer.hide();
+
+                    console.log(`Waiting for device at hostname: ${deviceHostname}`);
+
+                    // Warte und überprüfe, ob das Gerät unter dem neuen Hostnamen erreichbar ist
+                    const checkInterval = setInterval(function() {
+                        $.get(`http://${deviceHostname}/api/status`, function(statusResponse) {
+                            if (statusResponse.success) {
+                                clearInterval(checkInterval);  // Stoppe die Abfrage
+                                window.location.href = `http://${deviceHostname}`;  // Redirect auf die neue IP
+                            }
+                        }).fail(function() {
+                            console.log('Gerät noch nicht erreichbar, warte weiter...');
+                        });
+                    }, 3000);  // Überprüfe alle 3 Sekunden
+
+                } else {
+                    errorMessageContainer.text(response.error + ': ' + response.details).show();
+                }
+            }).fail(function(error) {
+                errorMessageContainer.text(error.responseJSON.error + ': ' + error.responseJSON.details).show();
+            });
+        } else {
+            errorMessageContainer.text('No SSID is given.').show();
         }
     });
+
 
     // Initial fetch of networks on page load
     fetchNetworks();
