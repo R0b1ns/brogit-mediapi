@@ -29,8 +29,6 @@ def connect_to_network():
     ssid = request.args.get('ssid')
     password = request.args.get('password')
 
-    time.sleep(6)
-
     if not ssid:
         return jsonify({"error": "SSID is required"}), 400
 
