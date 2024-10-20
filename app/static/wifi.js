@@ -174,6 +174,31 @@ $(document).ready(function() {
                 }).fail(function() {
                     console.log('Gerät noch nicht erreichbar, warte weiter...');
                 });
+
+                $.ajax({
+                    url: `http://mediapi.local`,
+                    success: function(data){
+                        console.log("Success");
+                    },
+                    fail: function(data) {
+                        console.log("Faailled");
+                    },
+                    done: function(data) {
+                        console.log("dooone");
+                    },
+                    abort: function(data) {
+                        console.log("aboort");
+                    },
+                    then: function(data) {
+                        console.log("then");
+                    },
+                    always: function(data) {
+                        console.log("alway");
+                    },
+                    crossDomain:true,
+                    timeout: 1000 //in milliseconds
+                });
+
             }, 3000);  // Überprüfe alle 3 Sekunden
 
 
