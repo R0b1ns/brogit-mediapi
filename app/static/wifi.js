@@ -133,7 +133,6 @@ $(document).ready(function() {
                     $('a.device-url').attr('href', url).text(url);
                     $('#connect-step-wait-for-reconnect').find('section.wait').slideUp(400, function() {
                         $('#connect-step-wait-for-reconnect').find('section.success').fadeIn(400, function() {
-                            alert(url);
                             window.location.replace(url);
                         });
                     });
