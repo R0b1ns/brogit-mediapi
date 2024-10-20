@@ -36,6 +36,8 @@ def connect_to_network():
         connect_to_wifi(ssid, password)
         return jsonify({"message": f"Connected to {ssid}"}), 200
     except Exception as e:
+        print(e)
+
         return jsonify({"message": str(e)}), 500
 
 
