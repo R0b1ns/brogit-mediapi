@@ -188,7 +188,7 @@ $(document).ready(function() {
                                 clearInterval(checkInterval);
                             }
                         }
-                        else {
+                        else if(jqXHR==="error" && textStatus==="") {
                             // Hopefully CORS error is here. Lets try to redirect
                             console.log(textStatus);
 							console.log("Verbinden. nun!");
