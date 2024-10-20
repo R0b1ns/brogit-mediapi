@@ -86,6 +86,8 @@ def connect_to_wifi(ssid, password=None):
 
         print(f"Successfully connected to {ssid}")
     except subprocess.CalledProcessError as e:
+        print(e.returncode)
+
         if e.stderr:
             raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr.decode('utf-8')))
         raise Exception("nmcli error: {}".format(e))
