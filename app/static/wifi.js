@@ -122,6 +122,7 @@ $(document).ready(function() {
 
     $('form#connect').on('submit', function(e) {
         e.preventDefault();
+        $(this).find('input[type=submit]').prop('disabled', true);
 
         const ssid = $('#network-ssid').val();
         const password = $('#network-password').val();
@@ -136,6 +137,8 @@ $(document).ready(function() {
             }
 
             $.get(url, function(response) {
+                alert('Hier passiert was');
+                console.log(response);
                 if (response.success) {
                     errorMessageContainer.hide();
 
