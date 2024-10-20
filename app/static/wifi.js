@@ -123,8 +123,9 @@ $(document).ready(function() {
         const checkInterval = setInterval(function() {
             // Multicheck
             url = deviceHostname
-            if(connect_retry % 2):
+            if(connect_retry % 2) {
                 url = deviceHostname + ".local"
+            }
 
             $.ajax({
                 url: deviceHostname,
