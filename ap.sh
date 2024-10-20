@@ -1,7 +1,8 @@
-sudo apt-get install -y hostapd dnsmasq
+sudo apt-get install -y hostapd dnsmasq dhcpcd5
 
 sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
+sudo systemctl stop dhcpcd
 
 # Konfiguriere hostapd
 cat <<EOL | sudo tee /etc/hostapd/hostapd.conf > /dev/null
@@ -32,7 +33,7 @@ nohook wpa_supplicant
 EOL'
 fi
 
-apt install libmicrohttpd-dev iptables
+apt install libmicrohttpd-dev iptables git
 git clone https://github.com/NoDogSplash/NoDogSplash.git
 cd NoDogSplash
 sudo make
@@ -47,5 +48,10 @@ EOL
 # Unmask hostapd to enable the start
 sudo systemctl unmask hostapd
 
-sudo systemctl start dnsmasq
-sudo systemctl start hostapd
+# Starte die Dienste in der richtigen Reihenfolge
+sudo systemctl start dhcpcd   # Setzt die statische IP
+sudo systemctl start dnsmasq  # Startet den DHCP-Server
+sudo systemctl start hostapd  # Startet den Access Point
+
+# Starte NoDogSplash
+# sudo nodogsplash
