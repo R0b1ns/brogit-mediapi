@@ -1,4 +1,5 @@
 import socket
+import time
 
 from flask import Flask, render_template, session, request, jsonify
 from flask_cors import CORS
@@ -14,7 +15,7 @@ CORS(app, resources={r"/": {"origins": "*"}})
 
 @app.route('/')
 def index():
-    return render_template('index.html', hostname=socket.gethostname())
+    return render_template('index.html', hostname="http://{}".format(socket.gethostname()))
 
 
 @socketio.on('request_wifi')
@@ -28,18 +29,16 @@ def connect_to_network():
     ssid = request.args.get('ssid')
     password = request.args.get('password')
 
+    time.sleep(6)
+
     if not ssid:
         return jsonify({"error": "SSID is required"}), 400
 
     try:
-        # Versuche, eine Verbindung herzustellen
-        if password:
-            connect_to_wifi(ssid, password)
-        else:
-            connect_to_wifi(ssid)
-        return jsonify({"success": True, "message": f"Connected to {ssid}"}), 200
+        connect_to_wifi(ssid, password)
+        return jsonify({"message": f"Connected to {ssid}"}), 200
     except Exception as e:
-        return jsonify({"error": "Connection failed", "details": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
 
 if __name__ == '__main__':

@@ -72,19 +72,88 @@
                 </div>
             </div>
 
-            <div id="network-connect" class="col-md-4" style="display: none;">
+            <div id="network-define" class="col-md-4" style="display: none;">
                 <h1 class="text-center mb-4">Connect Network</h1>
-
-                <div class="alert alert-danger" role="alert" id="error-message" style="display: none;">
-                </div>
 
                 <form id="connect" method="GET" action="{{ url_for('connect_to_network') }}">
                     <label for="network-ssid" class="small text-muted">SSID</label>
-                    <input type="text" id="network-ssid" class="form-control" required>
+                    <input type="text" id="network-ssid" class="form-control" value="test" required>
                     <label for="network-password" class="small text-muted">Password <span id="selected-network"></span></label>
                     <input type="password" id="network-password" class="form-control">
                     <input type="submit" class="btn btn-success mt-2" value="Connect">
                 </form>
+            </div>
+
+            <div id="network-connect" class="col-md-4 mt-5">
+                <div id="connect-step-disconnect">
+                    <section class="wait" style="display:none;">
+                        <div class="d-flex align-items-center">
+                            <div style="width:20px;" class="text-center">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <span class="ms-2 lead">Wait for disconnect ...</span>
+                        </div>
+                    </section>
+
+                    <section class="success" style="display:none;">
+                        <span class="text-success lead">
+                            <span class="pe-2"><i class="bi bi-check-circle-fill"></i></span>Disconnected
+                        </span>
+                    </section>
+                    <section class="failed" style="display:none;">
+                        <div class="text-danger d-flex">
+                            <div class="pe-2 lead"><i class="bi bi-x-circle-fill"></i></div>
+                            <div>
+                                <div class="lead">Failed to disconnect</div>
+                                <small class="error-area text-danger" style="--bs-text-opacity: .5;">[ERRMSG]</small>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="connect-step-wait-for-reconnect">
+                    <section class="wait" style="display:none;">
+                        <div class="d-flex align-items-start">
+                            <div style="width:20px;" class="text-center me-2 pt-1">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="lead">Wait for redirect ...</div>
+                                <small class="text-muted" style="--bs-text-opacity: .5;">
+                                    <span data-name="redirect-info"></span>
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="success" style="display:none;">
+                        <div class="text-success d-flex">
+                            <div class="pe-2 lead"><i class="bi bi-check-circle-fill"></i></div>
+                            <div>
+                                <div class="lead">Online</div>
+                                <small class="text-success" style="--bs-text-opacity: .5;">
+                                    Redirect to <a class="device-url text-success alert-link" href="#">http://dev-123.local</a>
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="failed" style="display:none;">
+                        <div class="text-danger d-flex">
+                            <div class="pe-2 lead"><i class="bi bi-x-circle-fill"></i></div>
+                            <div>
+                                <div class="lead">Failed to reconnect</div>
+                                <small class="text-danger" style="--bs-text-opacity: .5;">
+                                    The device has been unavailable for some time.<br>
+                                    Please try manually connecting to <a class="device-url text-danger alert-link" href="#">http://dev-123.local</a>.<br>
+                                    Note that the FQDN may vary depending on your network. Alternatively, you can find the device's IP address and connect directly.<br>
+                                    If the connection is unsuccessful, the device's access point (AP) will reappear after 10 minutes, or you can restart the device to reset it.
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     </div>

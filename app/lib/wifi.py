@@ -67,7 +67,6 @@ def scan_wifi():
 
 
 def connect_to_wifi(ssid, password=None):
-    return False
     try:
         # Trennen Sie alle bestehenden Verbindungen
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True)
@@ -88,5 +87,7 @@ def connect_to_wifi(ssid, password=None):
         print(f"Successfully connected to {ssid}")
     except subprocess.CalledProcessError as e:
         raise Exception(f"nmcli error: {e.stderr.decode('utf-8')}")
+    except FileNotFoundError as e:
+        raise FileNotFoundError(e)
     except Exception as e:
         raise Exception(f"Failed to connect: {str(e)}")

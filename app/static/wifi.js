@@ -1,6 +1,8 @@
 $(document).ready(function() {
     var socket = io();
 
+    $('a.device-url').attr('href', deviceHostname).text(deviceHostname);
+
     function fetchNetworks() {
         $('#networks').html($('template.network-list-loading').html());
         $('#connected-network').hide();
@@ -100,17 +102,57 @@ $(document).ready(function() {
     }
 
     function previousPage() {
-        $('#network-connect').fadeOut(null, function() {
+        $('#network-define').fadeOut(null, function() {
             $('#network-select').fadeIn();
         });
     }
 
     function nextPage() {
         $('#network-select').fadeOut(null, function() {
-            $('#network-connect').fadeIn();
+            $('#network-define').fadeIn();
             // Push a new state to the history
-            window.history.pushState({ page: 'network-connect' }, '', '#network-connect');
+            window.history.pushState({ page: 'network-define' }, '', '#network-define');
         });
+    }
+
+    function deviceRedirect() {
+        $('#connect-step-wait-for-reconnect').find('section.wait').fadeIn();
+
+        let connect_retry = 0;
+        let max_retry = 15;
+        const checkInterval = setInterval(function() {
+            $.ajax({
+                url: deviceHostname,
+                success: function(data){
+                    $('#connect-step-wait-for-reconnect').find('section.wait').slideUp(400, function() {
+                        $('#connect-step-wait-for-reconnect').find('section.success').fadeIn(400, function() {
+                            window.location.href = deviceHostname;
+                        });
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // device not ready
+                    // textStatus==="timeout"
+
+                    // Hopefully CORS error is here.
+                    // textStatus==="error" && errorThrown===""
+
+                    $('#connect-step-wait-for-reconnect').find('section.wait [data-name="redirect-info"]').text("Retry " + connect_retry + " / " + max_retry);
+                    connect_retry++;
+
+                    // only try 10 times stop interval
+                    if(connect_retry > max_retry) {
+                        clearInterval(checkInterval);
+                        $('#connect-step-wait-for-reconnect').find('section.wait').slideUp(400, function() {
+                            $('#connect-step-wait-for-reconnect').find('section.failed').fadeIn();
+                        });
+                    }
+                },
+                crossDomain:true,
+                timeout: 2000 //in milliseconds
+            });
+
+        }, 3000);
     }
 
     $('#network-list-refresh').click(fetchNetworks);
@@ -136,11 +178,54 @@ $(document).ready(function() {
                 url += `&password=${encodeURIComponent(password)}`;
             }
 
-            $.get(url, function(response) {
-                alert('Hier passiert was');
+            // status: Wait for disconnect
+            $('#connect-step-disconnect').find('section.wait').fadeIn();
+
+            // `http://mediapi2.local/api/connect`
+            $.ajax({
+                url: url,
+                success: function(response){
+                    alert("Success");
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+
+                    if(textStatus == "timeout" && errorThrown == "timeout" && !jqXHR.responseText) {
+                        // Successful disconnect
+                        $('#connect-step-disconnect').find('section.wait').slideUp(400, function() {
+                            $('#connect-step-disconnect').find('section.success').fadeIn(400, function() {
+                                // Check redirect
+                                deviceRedirect();
+                            });
+                        });
+                    }
+                    else if(jqXHR.responseText) {
+                        // Response with error
+                        $('#connect-step-disconnect').find('section.failed .error-area').text(jqXHR.responseJSON.message);
+
+                        $('#connect-step-disconnect').find('section.wait').slideUp(400, function() {
+                            $('#connect-step-disconnect').find('section.failed').fadeIn();
+                        });
+                    }
+                    else {
+                        // Unknown error
+                        $('#connect-step-disconnect').find('section.failed .error-area').text("Unknown error. The server most likely closed the connection.");
+
+                        $('#connect-step-disconnect').find('section.wait').slideUp(400, function() {
+                            $('#connect-step-disconnect').find('section.failed').fadeIn();
+                        });
+                    }
+                },
+                timeout: 5000 //in milliseconds
+            });
+
+            /*$.get(url, function(response) {
                 console.log(response);
+                // Wir sind noch immer mit dem selben netzwerk verbunden.
+
                 if (response.success) {
-                    errorMessageContainer.hide();
 
                     console.log(`Waiting for device at hostname: ${deviceHostname}`);
 
@@ -157,13 +242,17 @@ $(document).ready(function() {
                     }, 3000);  // Überprüfe alle 3 Sekunden
 
                 } else {
+                    alert("No success");
                     errorMessageContainer.text(response.error + ': ' + response.details).show();
                 }
             }).fail(function(error) {
-                errorMessageContainer.text(error.responseJSON.error + ': ' + error.responseJSON.details).show();
-            });
+                console.log("A");
+                console.log(error);
+                alert(error.statusText);
+                errorMessageContainer.text('Error: ' + error.responseJSON.message).show();
+            });*/
 
-            // Do perform check
+            /*// Do perform check
             // Warte und überprüfe, ob das Gerät unter dem neuen Hostnamen erreichbar ist
             let connect_retry = 0;
             const checkInterval = setInterval(function() {
@@ -196,7 +285,7 @@ $(document).ready(function() {
                     timeout: 2000 //in milliseconds
                 });
 
-            }, 3000);
+            }, 3000);*/
 
 
         } else {
@@ -209,8 +298,13 @@ $(document).ready(function() {
     fetchNetworks();
 
     window.onpopstate = function(event) {
-        if (event.state && event.state.page === 'network-connect') {
+        if (event.state && event.state.page === 'network-define') {
             previousPage();
         }
     };
+
+    /*$('#connect-step-disconnect').find('section.wait').fadeIn();
+    $('#connect-step-disconnect').find('section.wait').slideUp(400, function() {
+        $('#connect-step-disconnect').find('section.success').fadeIn();
+    });*/
 });
