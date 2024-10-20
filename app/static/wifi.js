@@ -128,7 +128,7 @@ $(document).ready(function() {
             }
 
             $.ajax({
-                url: deviceHostname,
+                url: url,
                 success: function(data){
                     $('#connect-step-wait-for-reconnect').find('section.wait').slideUp(400, function() {
                         $('#connect-step-wait-for-reconnect').find('section.success').fadeIn(400, function() {
@@ -194,10 +194,6 @@ $(document).ready(function() {
                     alert("Success");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
-
                     if(textStatus == "timeout" && errorThrown == "timeout" && !jqXHR.responseText) {
                         // Successful disconnect
                         $('#connect-step-disconnect').find('section.wait').slideUp(400, function() {
