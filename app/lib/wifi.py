@@ -71,6 +71,8 @@ def connect_to_wifi(ssid, password=None):
         # Trennen Sie alle bestehenden Verbindungen
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True)
 
+        print("a")
+
         # Verbindung ohne Passwort (für offene Netzwerke)
         if password is None or password == "":
             result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid],
@@ -82,12 +84,16 @@ def connect_to_wifi(ssid, password=None):
 
         # Überprüfen Sie das Ergebnis und verarbeiten Sie Fehler
         if result.returncode != 0:
+            print("Ende 1")
             raise Exception(result.stderr.decode('utf-8'))
 
         print(f"Successfully connected to {ssid}")
     except subprocess.CalledProcessError as e:
+        print("Ende 2")
         raise Exception(f"nmcli error: {e.stderr.decode('utf-8')}")
     except FileNotFoundError as e:
+        print("Ende 3")
         raise FileNotFoundError(e)
     except Exception as e:
+        print("Ende 4")
         raise Exception(f"Failed to connect: {str(e)}")
