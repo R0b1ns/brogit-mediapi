@@ -1,8 +1,7 @@
-sudo apt-get install -y hostapd dnsmasq nodogsplash
+sudo apt-get install -y hostapd dnsmasq
 
 sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
-sudo systemctl stop nodogsplash
 
 # Konfiguriere hostapd
 cat <<EOL | sudo tee /etc/hostapd/hostapd.conf > /dev/null
@@ -33,16 +32,20 @@ nohook wpa_supplicant
 EOL'
 fi
 
+apt install libmicrohttpd-dev iptables
+git clone https://github.com/NoDogSplash/NoDogSplash.git
+cd NoDogSplash
+sudo make
+sudo make install
+
 cat <<EOL | sudo tee /etc/nodogsplash/nodogsplash.conf > /dev/null
 GatewayInterface wlan0
 GatewayPort 80
 MaxClients 50
-SplashURL http://localhost
 EOL
 
 # Unmask hostapd to enable the start
 sudo systemctl unmask hostapd
 
-sudo systemctl start hostapd
 sudo systemctl start dnsmasq
-sudo systemctl start nodogsplash
+sudo systemctl start hostapd
