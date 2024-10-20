@@ -1,7 +1,7 @@
 import socket
 
-import CORS
 from flask import Flask, render_template, session, request, jsonify
+from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 
 from app.lib.wifi import scan_wifi, connect_to_wifi
