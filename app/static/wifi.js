@@ -165,41 +165,41 @@ $(document).ready(function() {
 
             // Do perform check
             // Warte und überprüfe, ob das Gerät unter dem neuen Hostnamen erreichbar ist
+            let connect_retry = 0;
             const checkInterval = setInterval(function() {
-                $.get(`http://${deviceHostname}.local`, function(statusResponse) {
-                    if (statusResponse.success) {
-                        clearInterval(checkInterval);  // Stoppe die Abfrage
-                        window.location.href = `http://${deviceHostname}.local`;  // Redirect auf die neue IP
-                    }
-                }).fail(function() {
-                    console.log('Gerät noch nicht erreichbar, warte weiter...');
-                });
-
+                console.log("REQ");
                 $.ajax({
-                    url: `http://mediapi.local`,
+                    url: `http://mediapi2.local/api/connect`,
                     success: function(data){
-                        console.log("Success");
+                        console.log("CORS is not enabled in server. So this should never be reached");
                     },
-                    fail: function(data) {
-                        console.log("Faailled");
-                    },
-                    done: function(data) {
-                        console.log("dooone");
-                    },
-                    abort: function(data) {
-                        console.log("aboort");
-                    },
-                    then: function(data) {
-                        console.log("then");
-                    },
-                    always: function(data) {
-                        console.log("alway");
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        if(textStatus==="timeout") {
+                            // device not ready
+                            connect_retry++;
+
+                            console.log("Connect retry..." + connect_retry);
+
+                            // only try 10 times stop interval
+                            if(connect_retry > 9) {
+                                clearInterval(checkInterval);
+                            }
+                        }
+                        else {
+                            // Hopefully CORS error is here. Lets try to redirect
+                            console.log(textStatus);
+							console.log("Verbinden. nun!");
+                            //window.location.href = `http://${deviceHostname}.local`;
+                        }
                     },
                     crossDomain:true,
-                    timeout: 1000 //in milliseconds
+                    timeout: 2000 //in milliseconds
                 });
 
-            }, 3000);  // Überprüfe alle 3 Sekunden
+            }, 3000);
 
 
         } else {

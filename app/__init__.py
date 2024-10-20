@@ -1,7 +1,7 @@
 import socket
 
 from flask import Flask, render_template, session, request, jsonify
-from flask_cors import CORS
+# from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 
 from app.lib.wifi import scan_wifi, connect_to_wifi
@@ -9,8 +9,7 @@ from app.lib.wifi import scan_wifi, connect_to_wifi
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 socketio = SocketIO(app)
-CORS(app, resources={r"/": {"origins": "*"}})
-
+# CORS(app, resources={r"/": {"origins": "*"}})
 
 
 @app.route('/')
