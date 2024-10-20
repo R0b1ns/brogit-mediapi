@@ -12,6 +12,8 @@ socketio = SocketIO(app)
 
 @app.route('/')
 def index():
+    print(socket.getfqdn())
+    print(socket.gethostname())
     return render_template('index.html', hostname=socket.gethostname())
 
 

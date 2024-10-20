@@ -162,6 +162,21 @@ $(document).ready(function() {
             }).fail(function(error) {
                 errorMessageContainer.text(error.responseJSON.error + ': ' + error.responseJSON.details).show();
             });
+
+            // Do perform check
+            // Warte und überprüfe, ob das Gerät unter dem neuen Hostnamen erreichbar ist
+            const checkInterval = setInterval(function() {
+                $.get(`http://${deviceHostname}/api/status`, function(statusResponse) {
+                    if (statusResponse.success) {
+                        clearInterval(checkInterval);  // Stoppe die Abfrage
+                        window.location.href = `http://${deviceHostname}`;  // Redirect auf die neue IP
+                    }
+                }).fail(function() {
+                    console.log('Gerät noch nicht erreichbar, warte weiter...');
+                });
+            }, 3000);  // Überprüfe alle 3 Sekunden
+
+
         } else {
             errorMessageContainer.text('No SSID is given.').show();
         }
