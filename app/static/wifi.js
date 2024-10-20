@@ -121,6 +121,11 @@ $(document).ready(function() {
         let connect_retry = 0;
         let max_retry = 15;
         const checkInterval = setInterval(function() {
+            // Multicheck
+            url = deviceHostname
+            if connect_retry % 2:
+                url = deviceHostname + ".local"
+
             $.ajax({
                 url: deviceHostname,
                 success: function(data){

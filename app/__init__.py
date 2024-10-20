@@ -15,12 +15,7 @@ CORS(app, resources={r"/": {"origins": "*"}})
 
 @app.route('/')
 def index():
-    hostname = socket.gethostname()
-    print(f"Hostname: {hostname}")
-
-    # Für den vollständigen lokalen DNS-Namen (z.B. dev-123.local)
-    fqdn = socket.getfqdn()
-    print(f"Fully qualified domain name (FQDN): {fqdn}")
+    hostname = socket.getfqdn()
     return render_template('index.html', hostname="http://{}".format(socket.gethostname()))
 
 
