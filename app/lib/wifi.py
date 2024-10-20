@@ -67,10 +67,11 @@ def scan_wifi():
 
 
 def connect_to_wifi(ssid, password=None):
-    try:
-        # Disconnect existing connection
-        subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # Disconnect existing connection
+    subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, stdout=subprocess.PIPE,
+                   stderr=subprocess.PIPE)
 
+    try:
         # Verbindung ohne Passwort (für offene Netzwerke)
         if password is None or password == "":
             result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid],
