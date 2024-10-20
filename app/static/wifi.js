@@ -171,28 +171,25 @@ $(document).ready(function() {
                 $.ajax({
                     url: `http://mediapi2.local/api/connect`,
                     success: function(data){
-                        console.log("CORS is not enabled in server. So this should never be reached");
+                        console.log("Is available");
+                        window.location.href = `http://${deviceHostname}.local`;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);
                         console.log(textStatus);
                         console.log(errorThrown);
-                        if(textStatus==="timeout") {
-                            // device not ready
-                            connect_retry++;
+                        // device not ready
+                        // textStatus==="timeout"
 
-                            console.log("Connect retry..." + connect_retry);
+                        // Hopefully CORS error is here.
+                        // textStatus==="error" && errorThrown===""
 
-                            // only try 10 times stop interval
-                            if(connect_retry > 9) {
-                                clearInterval(checkInterval);
-                            }
-                        }
-                        else if(jqXHR==="error" && textStatus==="") {
-                            // Hopefully CORS error is here. Lets try to redirect
-                            console.log(textStatus);
-							console.log("Verbinden. nun!");
-                            //window.location.href = `http://${deviceHostname}.local`;
+                        connect_retry++;
+                        console.log("Connect retry..." + connect_retry);
+
+                        // only try 10 times stop interval
+                        if(connect_retry > 9) {
+                            clearInterval(checkInterval);
                         }
                     },
                     crossDomain:true,

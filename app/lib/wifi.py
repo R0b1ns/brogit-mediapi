@@ -67,6 +67,7 @@ def scan_wifi():
 
 
 def connect_to_wifi(ssid, password=None):
+    return False
     try:
         # Trennen Sie alle bestehenden Verbindungen
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True)
