@@ -7,7 +7,7 @@ def get_known_networks():
     known_networks = set()
     try:
         # Use nmcli to list saved WiFi connections
-        result = subprocess.run(['nmcli', '-t', '-f', 'SSID', 'connection'], stdout=subprocess.PIPE)
+        result = subprocess.run(['nmcli', '-t', '-f', 'NAME', 'connection'], stdout=subprocess.PIPE)
         output = result.stdout.decode('utf-8').strip().split('\n')
 
         for line in output:
@@ -22,7 +22,8 @@ def get_known_networks():
 # Scan for available WiFi networks
 def scan_wifi():
     networks = []
-    known_networks = []  # Does not work get_known_networks()  # Get the list of known networks
+    # Get the list of known networks
+    known_networks = get_known_networks()
 
     # TODO: Remove dev
     # time.sleep(1)
@@ -92,6 +93,9 @@ def connect_to_wifi(ssid, password=None):
                 text=True,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
+
+        # TODO: Connect to known Network
+        # nmcli connection up <SSID>
 
         # Überprüfen Sie das Ergebnis und verarbeiten Sie Fehler
         if result.returncode != 0 and result.stderr:
