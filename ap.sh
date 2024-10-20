@@ -16,3 +16,16 @@ auth_algs=1
 ignore_broadcast_ssid=0
 wpa=0
 EOL
+
+# Konfiguriere dnsmasq
+cat <<EOL | sudo tee /etc/dnsmasq.conf
+interface=wlan0      # Use the required interface
+dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+EOL
+
+# Setze die Schnittstelle wlan0 auf statische IP
+sudo bash -c 'cat <<EOL >> /etc/dhcpcd.conf
+interface wlan0
+static ip_address=192.168.4.1/24
+nohook wpa_supplicant
+EOL'
