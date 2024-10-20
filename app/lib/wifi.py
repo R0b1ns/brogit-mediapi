@@ -69,33 +69,38 @@ def scan_wifi():
 def connect_to_wifi(ssid, password=None):
     # Disconnect existing connection
     try:
-        subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, stdout=subprocess.PIPE,
+        subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, text=True, stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
         # If return code is 6. Then there is no connection.
         # That is okay. Not in other cases
 
         if e.returncode != 6:
-            raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr.decode('utf-8')))
+            raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
 
     try:
         # Verbindung ohne Passwort (für offene Netzwerke)
         if password is None or password == "":
             result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid],
-                                    check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                    check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
             # Verbindung mit Passwort (für geschützte Netzwerke)
-            result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', password],
-                                    check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result = subprocess.run(
+                ['nmcli', 'device', 'wifi', 'connect', ssid, '--ask'],
+                input=f"{password}\n",
+                check=True,
+                text=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
 
         # Überprüfen Sie das Ergebnis und verarbeiten Sie Fehler
         if result.returncode != 0 and result.stderr:
-            raise Exception(result.stderr.decode('utf-8'))
+            raise Exception(result.stderr)
 
         print(f"Successfully connected to {ssid}")
     except subprocess.CalledProcessError as e:
         if e.stderr:
-            raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr.decode('utf-8')))
+            raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
         raise Exception("nmcli error: {}".format(e))
     except FileNotFoundError as e:
         raise FileNotFoundError(e)
