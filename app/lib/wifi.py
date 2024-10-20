@@ -68,8 +68,15 @@ def scan_wifi():
 
 def connect_to_wifi(ssid, password=None):
     # Disconnect existing connection
-    subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, stdout=subprocess.PIPE,
-                   stderr=subprocess.PIPE)
+    try:
+        subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        # If return code is 6. Then there is no connection.
+        # That is okay. Not in other cases
+
+        if e.returncode != 6:
+            raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr.decode('utf-8')))
 
     try:
         # Verbindung ohne Passwort (für offene Netzwerke)
@@ -87,8 +94,6 @@ def connect_to_wifi(ssid, password=None):
 
         print(f"Successfully connected to {ssid}")
     except subprocess.CalledProcessError as e:
-        print(e.returncode)
-
         if e.stderr:
             raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr.decode('utf-8')))
         raise Exception("nmcli error: {}".format(e))
