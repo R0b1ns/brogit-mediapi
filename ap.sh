@@ -4,7 +4,7 @@ sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
 
 # Konfiguriere hostapd
-cat <<EOL | sudo tee /etc/hostapd/hostapd.conf
+cat <<EOL | sudo tee /etc/hostapd/hostapd.conf > /dev/null
 interface=wlan0
 driver=nl80211
 ssid=$(hostname)-AP
@@ -18,7 +18,7 @@ wpa=0
 EOL
 
 # Konfiguriere dnsmasq
-cat <<EOL | sudo tee /etc/dnsmasq.conf
+cat <<EOL | sudo tee /etc/dnsmasq.conf > /dev/null
 interface=wlan0      # Use the required interface
 dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
 EOL
