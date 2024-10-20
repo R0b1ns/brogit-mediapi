@@ -9,7 +9,7 @@ from app.lib.wifi import scan_wifi, connect_to_wifi
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 socketio = SocketIO(app)
-CORS(app, resources={r"/": {"origins": "http://{}.local".format(socket.gethostname())}})
+CORS(app, resources={r"/": {"origins": "*"}})
 
 
 
