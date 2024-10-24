@@ -30,3 +30,8 @@ git clone https://github.com/arkq/bluez-alsa.git
 cd bluez-alsa
 autoreconf --install
 ./configure --enable-systemd
+
+# Device classes
+0x200414 - Loudspeaker
+0x200418 - Headphones
+0x20041C - Portable Audio
