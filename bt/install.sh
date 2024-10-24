@@ -50,14 +50,14 @@ cat << EOF | sudo tee $BT_SOUND_FILE_PATH > /dev/null
 #!/bin/bash
 
 if [[ "\$1" == "add" ]]; then
-    aplay ./connect.wav
+    aplay $PROJECT_ROOT_PATH/bt/connect.wav
     DEVICES=\$(bluetoothctl devices Connected | grep "Device" | awk '{print \$3, \$4}' | paste -sd ',' - | sed 's/,/, /g')
     TEMP_FILE_NAME="temp_output_\$(date +%s).wav"
     pico2wave -w \$TEMP_FILE_NAME -l "$LOCALE" "$CONNECT_TEXT"
     aplay \$TEMP_FILE_NAME
     rm \$TEMP_FILE_NAME
 elif [[ "\$1" == "remove" ]]; then
-    aplay ./disconnect.wav
+    aplay $PROJECT_ROOT_PATH/bt/disconnect.wav
 fi
 EOF
 
