@@ -54,8 +54,8 @@ if [[ "\$1" == "add" ]]; then
     DEVICES=\$(bluetoothctl devices Connected | grep "Device" | awk '{print \$3, \$4}' | paste -sd ',' - | sed 's/,/, /g')
     TEMP_FILE_NAME="temp_output_\$(date +%s).wav"
     pico2wave -w \$TEMP_FILE_NAME -l "$LOCALE" "$CONNECT_TEXT"
-    aplay $TEMP_FILE_NAME
-    rm $TEMP_FILE_NAME
+    aplay \$TEMP_FILE_NAME
+    rm \$TEMP_FILE_NAME
 elif [[ "\$1" == "remove" ]]; then
     aplay ./disconnect.wav
 fi
