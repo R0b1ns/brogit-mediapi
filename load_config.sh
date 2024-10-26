@@ -18,3 +18,15 @@ else
     echo "Config file $CONFIG_FILE does not exist."
     exit 1
 fi
+
+load_translations() {
+    local lang_file="$1"
+    declare -gA translations
+
+    while IFS='=' read -r key value; do
+        translations["$key"]="$value"
+    done < "$lang_file"
+}
+
+# TODO: Dynamic load by locale
+load_translations "locale/strings_de.conf"
