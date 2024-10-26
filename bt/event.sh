@@ -8,6 +8,9 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOCALE="${LOCALE:-en-US}"
 CONNECT_TEXT="${CONNECT_TEXT:-Connected with: %s}"
 
+echo $LOCALE
+echo $CONNECT_TEXT
+
 if [[ "$1" == "add" ]]; then
     aplay $DIR/connect.wav
     DEVICES=$(bluetoothctl devices Connected | grep "Device" | awk '{print $3, $4}' | paste -sd ',' - | sed 's/,/, /g')
