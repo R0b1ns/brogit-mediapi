@@ -18,20 +18,23 @@ ignore_broadcast_ssid=0
 wpa=0
 EOL
 
-# Konfiguriere dnsmasq
-cat <<EOL | sudo tee /etc/dnsmasq.conf > /dev/null
-interface=wlan0      # Use the required interface
-dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+# Setze die Schnittstelle wlan0 auf statische IP
+cat <<EOL | sudo tee /etc/dhcpcd.conf > /dev/null
+interface wlan0
+    static ip_address=192.168.4.1/24
+    nohook wpa_supplicant
 EOL
 
-# Setze die Schnittstelle wlan0 auf statische IP
-if ! grep -q "interface wlan0" /etc/dhcpcd.conf; then
-    sudo bash -c 'cat <<EOL >> /etc/dhcpcd.conf
-interface wlan0
-static ip_address=192.168.4.1/24
-nohook wpa_supplicant
-EOL'
-fi
+# Konfiguriere dnsmasq
+cat <<EOL | sudo tee /etc/dnsmasq.conf > /dev/null
+interface=wlan0
+dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+address=/#/192.168.4.1
+EOL
+
+# Don't let dnsmasq alter your /etc/resolv.conf file
+# https://raspberrypi.stackexchange.com/questions/37439/proper-way-to-prevent-dnsmasq-from-overwriting-dns-server-list-supplied-by-dhcp
+echo "DNSMASQ_EXCEPT=lo" | sudo tee -a /etc/default/dnsmasq > /dev/null
 
 apt install libmicrohttpd-dev iptables git
 git clone https://github.com/NoDogSplash/NoDogSplash.git
