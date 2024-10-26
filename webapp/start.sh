@@ -7,7 +7,7 @@ if [ ! -d ".venv" ]; then
     python3 -m venv "$SCRIPT_DIR/.venv"
 fi
 
-source ./.venv/bin/activate
+source "$SCRIPT_DIR/.venv/bin/activate"
 
 echo "Install dependencies ..."
 pip3 install -r "$SCRIPT_DIR/requirements.txt"
