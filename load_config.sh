@@ -19,7 +19,7 @@ load_config() {
             fi
         done < "$CONFIG_FILE"
     else
-        echo "Config file $CONFIG_FILE does not exist."
+        echo "Error: Config file $CONFIG_FILE does not exist."
         exit 1
     fi
 }
@@ -28,12 +28,15 @@ load_translations() {
     local lang_file="$1"
     declare -gA translations
 
-    while IFS='=' read -r key value; do
-        if [[ -n "$key" && -n "$value" ]]; then
-          echo "$key"
-          translations["$key"]="$value"
-        fi
-    done < "$lang_file"
+    if [[ -f "$lang_file" ]]; then
+        while IFS='=' read -r key value; do
+            if [[ -n "$key" && -n "$value" ]]; then
+              translations["$key"]="$value"
+            fi
+        done < "$lang_file"
+    else
+        echo "Warning: Locale not found"
+    fi
 }
 
 load_config
