@@ -5,7 +5,10 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/load_config.sh"
+PROJECT_RELATIVE_ROOT="../"
+PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
+
+source "$PROJECT_ROOT_PATH/load_config.sh"
 
 WIFI_INTERFACE="${config[wifi_interface]}"
 AP_CON_NAME="${config[ap_con_name]}"
