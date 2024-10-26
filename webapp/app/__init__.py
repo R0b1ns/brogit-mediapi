@@ -72,6 +72,11 @@ def load_user(user_id):
     return None
 
 
+@app.route('/hotspot-detect.html')
+def hotspot_detect():
+    return index()
+
+
 @app.route('/')
 def index():
     if not current_user.is_authenticated:
