@@ -13,8 +13,7 @@ if [[ "$1" == "add" ]]; then
     aplay $DIR/connect.wav
     DEVICES=$(bluetoothctl devices Connected | grep "Device" | awk '{print $3, $4}' | paste -sd ',' - | sed 's/,/, /g')
     TEMP_FILE_NAME="temp$(date +%s).wav"
-    DEV_CHECK=$(echo "$DEVICES" | xargs)
-    if [[ -z "$DEV_CHECK" ]]; then
+    if [[ -z "$DEVICES" ]]; then
         echo "Warning: No devices"
         OUTPUT_TEXT="$ERROR_DEVICES_EMPTY"
     else
