@@ -30,7 +30,6 @@ load_translations() {
 
     if [[ -f "$lang_file" ]]; then
         while IFS='=' read -r key value; do
-            echo "$key"
             if [[ -n "$key" && -n "$value" ]]; then
               translations["$key"]="$value"
             fi
