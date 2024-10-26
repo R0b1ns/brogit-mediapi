@@ -9,17 +9,13 @@ LOCALE="${LOCALE:-en-US}"
 CONNECT_TEXT="${CONNECT_TEXT:-Connected with: %s}"
 ERROR_DEVICES_EMPTY="${ERROR_DEVICES_EMPTY:-Error: No devices connected}"
 
-echo $LOCALE
-echo $CONNECT_TEXT
-echo $ERROR_DEVICES_EMPTY
-
-echo $CONFIG[host]
-
 if [[ "$1" == "add" ]]; then
     aplay $DIR/connect.wav
     DEVICES=$(bluetoothctl devices Connected | grep "Device" | awk '{print $3, $4}' | paste -sd ',' - | sed 's/,/, /g')
     TEMP_FILE_NAME="temp$(date +%s).wav"
-    if [[ -z "$DEVICES" ]]; then
+    DEV_CHECK=$(echo "$DEVICES" | xargs)
+    if [[ -z "$DEV_CHECK" ]]; then
+        echo "Warning: No devices"
         OUTPUT_TEXT="$ERROR_DEVICES_EMPTY"
     else
         OUTPUT_TEXT=$(printf "$CONNECT_TEXT" "$DEVICES")
