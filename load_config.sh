@@ -42,9 +42,13 @@ load_translations() {
 
 load_config
 
-# TODO: Dynamic load by locale
-load_translations "locale/strings_de.conf"
 
-echo "Host: ${config[host]}"
-echo "Port: ${config[port]}"
-echo "Willkommen: ${translations[bt_connect_text]}"
+if [[ -n "${config[locale]}" ]]; then
+    LOCALE="${config[locale]}"
+    LANGUAGE="${LOCALE%%-*}"
+
+    load_translations "locale/strings_${LANGUAGE}.conf"
+else
+    echo "Error: Locale not set. Unable to load locale file."
+    exit 2
+fi
