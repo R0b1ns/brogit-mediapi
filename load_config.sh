@@ -41,6 +41,20 @@ load_translations() {
     fi
 }
 
+# Funktion universal_true
+universal_true() {
+    local val_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')  # Convert $1 to lower
+
+    case "$val_lower" in
+        1|true)
+            echo "true"
+            ;;
+        *)
+            echo "false"
+            ;;
+    esac
+}
+
 load_config
 
 
