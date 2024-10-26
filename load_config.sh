@@ -5,8 +5,8 @@ CONFIG_FILE="mediapi.conf"
 
 # Read config
 load_config() {
-    # Declare associative Array
-    declare -A config
+    # Declare global associative Array
+    declare -gA config
     if [[ -f "$CONFIG_FILE" ]]; then
         while IFS='=' read -r key value; do
             # Remove whitespace
