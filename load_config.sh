@@ -28,8 +28,6 @@ load_translations() {
     local lang_file="$1"
     declare -gA translations
 
-    echo "$lang_file"
-
     if [[ -f "$lang_file" ]]; then
         while IFS='=' read -r key value; do
             echo "$key"
