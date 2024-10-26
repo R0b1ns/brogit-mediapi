@@ -5,7 +5,7 @@ source "load_config.sh"
 mkdir -p "${config[log_dir]}"
 LOG_FILE="${config[log_dir]}/event.log"
 
-echo "$@" >> LOG_FILE
+echo "$@" >> $LOG_FILE
 
 if [[ "$1" == "bt" ]]; then
   echo "Bluetooth Event"
