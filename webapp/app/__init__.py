@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 
 from flask import Flask, render_template, session, request, jsonify, redirect, flash, url_for, abort
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_socketio import SocketIO, emit
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
@@ -13,13 +15,23 @@ from app.lib.wifi import scan_wifi, connect_to_wifi
 from wtforms.fields.simple import PasswordField, BooleanField, SubmitField, EmailField
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Length, Email
+from flask_wtf.csrf import CSRFProtect
 
 from app.lib.django_utils_http_partly import url_has_allowed_host_and_scheme
+
+from app.extensions import csrf
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 socketio = SocketIO(app)
 CORS(app, resources={r"/": {"origins": "*"}})
+
+csrf.init_app(app)
+
+limiter = Limiter(
+    get_remote_address,
+    app=app
+)
 
 app.secret_key = 'your_secret_key'  # Ersetze 'your_secret_key' durch einen sicheren Wert
 
@@ -35,10 +47,7 @@ class User(UserMixin):
 
 
 class LoginForm(FlaskForm):
-    email = EmailField('Email',
-                       validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
 
     def __init__(self, *args, **kwargs):
@@ -47,6 +56,9 @@ class LoginForm(FlaskForm):
     def validate(self, extra_validators=None):
         initial_validation = super(LoginForm, self).validate()
         if not initial_validation:
+            return False
+
+        if self.password.data != "112358":
             return False
         # user = User.query.filter_by(email=self.email.data).first()
         # if not user:
@@ -87,6 +99,7 @@ def index():
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("10 per hour")
 def login():
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
@@ -100,14 +113,14 @@ def login():
 
         flash('Logged in successfully.')
 
-        next = request.args.get('next')
+        next_url = request.args.get('next')
         # url_has_allowed_host_and_scheme should check if the url is safe
         # for redirects, meaning it matches the request host.
         # See Django's url_has_allowed_host_and_scheme for an example.
-        if not url_has_allowed_host_and_scheme(next, request.host):
+        if next_url and not url_has_allowed_host_and_scheme(next_url, request.host):
             return abort(400)
 
-        return redirect(next or url_for('index'))
+        return redirect(next_url or url_for('index'))
     return render_template('login.html', form=form)
 
 

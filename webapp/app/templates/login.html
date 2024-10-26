@@ -3,21 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Anmeldung</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login</title>
+    <link href="{{ url_for('static', filename='common/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='common/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}">
+    <script src="{{ url_for('static', filename='common/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='common/socket.io.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='common/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+          $('#login-modal').modal('show');
+        });
+    </script>
+    <style>
+        body {
+          background-image: url('{{ url_for('static', filename='background_example.png') }}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          height: 100vh;
+          margin: 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>System Anmeldung</h2>
-        <form action="/login" method="post">
-            <div class="form-group">
-                <input type="text" name="username" class="form-control" placeholder="Benutzername" required>
+    <div class="modal fade show" style="display: block;" id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('login') }}">
+                        {{ form.csrf_token }}
+                        <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
+
+                        {{ form.password.label(class="form-label") }}
+                        <div class="input-group mb-3">
+                            {{ form.password(class="form-control") }}
+                            {{ form.submit(class="btn btn-outline-primary") }}
+                        </div>
+
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            <ul class=flashes>
+                                {% for message in messages %}
+                                <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        {% endwith %}
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="password" name="password" class="form-control" placeholder="Passwort" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Anmelden</button>
-        </form>
+        </div>
     </div>
 </body>
 </html>

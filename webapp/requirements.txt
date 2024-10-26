@@ -3,3 +3,4 @@ flask-socketio
 Flask-Cors
 flask-login
 flask-WTF
+Flask-Limiter
