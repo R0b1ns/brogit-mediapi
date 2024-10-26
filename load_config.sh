@@ -1,7 +1,9 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Path to config file
-CONFIG_FILE="mediapi.conf"
+CONFIG_FILE="$SCRIPT_DIR/mediapi.conf"
 
 # Read config
 load_config() {
@@ -46,7 +48,7 @@ if [[ -n "${config[locale]}" ]]; then
     LOCALE="${config[locale]}"
     LANGUAGE="${LOCALE%%-*}"
 
-    load_translations "locale/strings_${LANGUAGE}.conf"
+    load_translations "$SCRIPT_DIR/locale/strings_${LANGUAGE}.conf"
 else
     echo "Error: Locale not set. Unable to load locale file."
     exit 2

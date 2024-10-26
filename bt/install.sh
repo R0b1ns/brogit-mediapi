@@ -1,7 +1,10 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 PROJECT_RELATIVE_ROOT="../"
-PROJECT_ROOT_PATH="$(realpath "$(dirname "${BASH_SOURCE[0]}")/$PROJECT_RELATIVE_ROOT")"
+PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
+
 LOCALE="de-DE"
 CONNECT_TEXT="Verbunden mit: \$DEVICES"
 AUDIO_DEVICE="hci0"
