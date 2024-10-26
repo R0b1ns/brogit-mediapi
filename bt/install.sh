@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_RELATIVE_ROOT="../"
-PROJECT_ROOT_PATH=$(realpath "$PROJECT_RELATIVE_ROOT")
+PROJECT_ROOT_PATH="$(realpath "$(dirname "${BASH_SOURCE[0]}")/$PROJECT_RELATIVE_ROOT")"
 LOCALE="de-DE"
 CONNECT_TEXT="Verbunden mit: \$DEVICES"
 AUDIO_DEVICE="hci0"
