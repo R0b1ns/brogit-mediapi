@@ -7,15 +7,24 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 LOCALE="${LOCALE:-en-US}"
 CONNECT_TEXT="${CONNECT_TEXT:-Connected with: %s}"
+ERROR_DEVICES_EMPTY="${ERROR_DEVICES_EMPTY:-Error: No devices connected}"
 
 echo $LOCALE
 echo $CONNECT_TEXT
+echo $ERROR_DEVICES_EMPTY
+
+echo $CONFIG[host]
 
 if [[ "$1" == "add" ]]; then
     aplay $DIR/connect.wav
     DEVICES=$(bluetoothctl devices Connected | grep "Device" | awk '{print $3, $4}' | paste -sd ',' - | sed 's/,/, /g')
     TEMP_FILE_NAME="temp$(date +%s).wav"
-    OUTPUT_TEXT=$(printf "$CONNECT_TEXT" "$DEVICES")
+    if [[ -z "$DEVICES" ]]; then
+        OUTPUT_TEXT="$ERROR_DEVICES_EMPTY"
+    else
+        OUTPUT_TEXT=$(printf "$CONNECT_TEXT" "$DEVICES")
+    fi
+
     pico2wave -w $TEMP_FILE_NAME -l "$LOCALE" "$OUTPUT_TEXT"
     aplay $TEMP_FILE_NAME
     rm $TEMP_FILE_NAME
