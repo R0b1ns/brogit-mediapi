@@ -80,12 +80,12 @@ def connect_to_wifi(ssid, password=None):
             raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
 
     try:
-        # Verbindung ohne Passwort (für offene Netzwerke)
+        # Connect without password. For open or known passwords
         if password is None or password == "":
             result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid],
                                     check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
-            # Verbindung mit Passwort (für geschützte Netzwerke)
+            # Connect with Passwort (for secured networks)
             result = subprocess.run(
                 ['nmcli', 'device', 'wifi', 'connect', ssid, '--ask'],
                 input=f"{password}\n",
@@ -93,9 +93,6 @@ def connect_to_wifi(ssid, password=None):
                 text=True,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
-
-        # TODO: Connect to known Network
-        # nmcli connection up <SSID>
 
         # Überprüfen Sie das Ergebnis und verarbeiten Sie Fehler
         if result.returncode != 0 and result.stderr:
