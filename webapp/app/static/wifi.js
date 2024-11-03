@@ -122,7 +122,7 @@ $(document).ready(function() {
         let max_retry = 15;
         const checkInterval = setInterval(function() {
             // Multicheck
-            url = deviceHostname
+            url = 'http://' + deviceHostname
             if(connect_retry % 2) {
                 url = deviceHostname + ".local"
             }

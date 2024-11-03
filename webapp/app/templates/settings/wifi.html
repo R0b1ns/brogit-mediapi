@@ -1,0 +1,21 @@
+<template id="network-template">
+    <div class="form-check network">
+        <span class="network-icon" title="Signal">[[signal]]</span>
+        <span class="password-icon">[[passwordIcon]]</span>
+        <input class="form-check-input" type="radio" name="network" id="[[ssid]]-[[band]]" value="[[ssid]]">
+        <label class="form-check-label" for="[[ssid]]-[[band]]">
+            [[ssid]] ([[band]]) <span class="known">[[known]]</span>
+        </label>
+    </div>
+</template>
+<template class="network-list-loading">
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="ms-2">Loading...</span>
+    </div>
+</template>
+
+- Select wifi device
+- Show dB of connected wifi

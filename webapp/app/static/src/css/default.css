@@ -1,0 +1,78 @@
+.icon-s {
+    width: 16px;
+    height: 16px;
+}
+
+#nav-tabContent, #nav-tabContent > div {
+    height: inherit;
+}
+
+.terminal {
+    background-color: rgba(0, 0, 0, 0.5); /* Half transparent black background */
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: monospace; /* Set monospace font for terminal */
+    overflow: auto; /* Enable scrolling after resizing */
+}
+
+.terminal-float {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40vw; /* 50% width of viewport */
+    height: 30vh; /* 50% height of viewport */
+    resize: vertical; /* Allow vertical resizing */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.btn.settings-fit {
+    float: right;
+    padding-top: .15rem;
+    padding-bottom: .15rem;
+}
+
+.form-select.form-select-listmod {
+    width: initial;
+    float: right;
+    padding-top: .15rem;
+    padding-bottom: .15rem;
+}
+
+.list-group-item .list-group-item-mod {
+    line-height: 2.3;
+    width: 100%;
+}
+
+.btn-control.btn-transparent {
+    background-color: rgba(255, 255, 255, 0.5); /* Halbtransparenter Hintergrund */
+    border-color: rgba(255, 255, 255, 0.5); /* Halbtransparenter Rand */
+    color: rgba(0, 0, 0, 0.8); /* Leicht transparenter Text */
+}
+
+.btn-control.btn-transparent:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Leicht transparenter Hintergrund beim Hovern */
+    border-color: rgba(255, 255, 255, 0.8); /* Leicht transparenter Rand beim Hovern */
+    color: rgba(0, 0, 0, 0.8); /* Leicht transparenter Text beim Hovern */
+}
+
+.rotate-left--90 {
+    transform: rotate(-90deg);
+}
+
+.input-line {
+    display: flex;
+}
+.input-line input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-family: monospace;
+    outline: none;
+}
+.logs span {
+    display: block;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2; /* Adjust line height */
+}

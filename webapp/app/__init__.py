@@ -1,10 +1,12 @@
+import os
 import socket
 import time
 import unicodedata
 from http import HTTPStatus
 from urllib.parse import urlparse
 
-from flask import Flask, render_template, session, request, jsonify, redirect, flash, url_for, abort
+from flask import Flask, render_template, session, request, jsonify, redirect, flash, url_for, abort, \
+    send_from_directory
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -84,6 +86,12 @@ def load_user(user_id):
     return None
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
 @app.route('/hotspot-detect.html')
 def hotspot_detect():
     return index()
@@ -94,8 +102,8 @@ def index():
     if not current_user.is_authenticated:
         return login()
 
-    hostname = socket.getfqdn()
-    return render_template('index.html', hostname="http://{}".format(socket.gethostname()))
+    # hostname = socket.getfqdn()
+    return render_template('index.html', hostname=socket.gethostname())
 
 
 @app.route('/login', methods=['GET', 'POST'])

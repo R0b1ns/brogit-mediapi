@@ -4,160 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WiFi Networks</title>
-    <link href="{{ url_for('static', filename='common/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='common/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') }}">
-    <script src="{{ url_for('static', filename='common/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='common/socket.io.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='common/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js') }}"></script>
     <script>
         var deviceHostname = "{{ hostname }}";
     </script>
+
+    {% include '_imports.html' %}
     <script src="{{ url_for('static', filename='wifi.js') }}"></script>
-    <style>
-        .connected-network {
-            font-weight: bold;
-            margin-bottom: 20px; /* Larger spacing to the next network */
-        }
-        .network {
-            margin-bottom: 10px;
-        }
-        .protected {
-            color: red; /* Show password-protected networks in red */
-        }
-        .known {
-            color: blue; /* Display known networks in blue */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='src/wifi.css') }}">
 </head>
-<template id="network-template">
-    <div class="form-check network">
-        <span class="network-icon" title="Signal">[[signal]]</span>
-        <span class="password-icon">[[passwordIcon]]</span>
-        <input class="form-check-input" type="radio" name="network" id="[[ssid]]-[[band]]" value="[[ssid]]">
-        <label class="form-check-label" for="[[ssid]]-[[band]]">
-            [[ssid]] ([[band]]) <span class="known">[[known]]</span>
-        </label>
-    </div>
-</template>
-<template class="network-list-loading">
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <span class="ms-2">Loading...</span>
-    </div>
-</template>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div id="network-select" class="col-md-6">
-                <h1 class="text-center mb-4">Available WiFi Networks</h1>
+    {% include 'nested_settings_modal.html' %}
 
-                <div class="d-flex justify-content-center">
-                    <form id="wifi-form">
-                        <div class="form-group">
-                            <div id="connected-network" class="mb-4" style="display: none;">
-                                <p class="small text-muted mb-0">Connected</p>
-                                <p id="current-network" class="connected-network"></p>
-                            </div>
-                            <div id="networks">
-                            </div>
-                        </div>
-                        <small><button id="other-network" type="button" class="btn btn-link">Other network</button></small>
-                    </form>
-                </div>
-
-                <div class="text-center mt-3">
-                    <button id="network-list-refresh" class="btn btn-light">
-                        <i class="bi bi-arrow-clockwise"></i> Refresh
-                    </button>
-                </div>
+    <main class="d-flex flex-nowrap">
+      <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary border-end" style="width: 4.5rem;">
+        <a href="/" class="d-block p-3 link-body-emphasis text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="brogit-logo" style="--b-logo-scale: .05px;--b-logo-name-show: 0;"><div></div><div></div></div>
             </div>
+            <span class="visually-hidden">Icon-only</span>
+        </a>
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+          <li class="nav-item">
+            <a id="home-list" data-bs-toggle="list" href="#home" role="tab" aria-controls="home" class="nav-link active py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle2="tooltip" data-bs-placement="right" aria-label="Run" data-bs-original-title="Run">
+              <i class="bi bi-house-door-fill"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="dashboard-list" data-bs-toggle="list" href="#dashboard" role="tab" aria-controls="dashboard" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle2="tooltip" data-bs-placement="right" aria-label="Dashboard" data-bs-original-title="Dashboard">
+              <i class="bi bi-2-circle-fill"></i>
+            </a>
+          </li>
+        </ul>
+        <div class="dropdown border-top">
+          <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-gear-wide-connected"></i>
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-tools"></i> Settings</a></li>
+            <li><a class="dropdown-item" href="#info"><i class="bi bi-info-circle"></i> Info</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Sign out</a></li>
+          </ul>
+        </div>
+      </div>
 
-            <div id="network-define" class="col-md-4" style="display: none;">
-                <h1 class="text-center mb-4">Connect Network</h1>
-
-                <form id="connect" method="GET" action="{{ url_for('connect_to_network') }}">
-                    <label for="network-ssid" class="small text-muted">SSID</label>
-                    <input type="text" id="network-ssid" class="form-control" value="test" required>
-                    <label for="network-password" class="small text-muted">Password <span id="selected-network"></span></label>
-                    <input type="password" id="network-password" class="form-control">
-                    <input type="submit" class="btn btn-success mt-2" value="Connect">
-                </form>
-            </div>
-
-            <div id="network-connect" class="col-md-4 mt-5">
-                <div id="connect-step-disconnect">
-                    <section class="wait" style="display:none;">
-                        <div class="d-flex align-items-center">
-                            <div style="width:20px;" class="text-center">
-                                <div class="spinner-border spinner-border-sm" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                            <span class="ms-2 lead">Wait for disconnect ...</span>
-                        </div>
-                    </section>
-
-                    <section class="success" style="display:none;">
-                        <span class="text-success lead">
-                            <span class="pe-2"><i class="bi bi-check-circle-fill"></i></span>Disconnected
-                        </span>
-                    </section>
-                    <section class="failed" style="display:none;">
-                        <div class="text-danger d-flex">
-                            <div class="pe-2 lead"><i class="bi bi-x-circle-fill"></i></div>
-                            <div>
-                                <div class="lead">Failed to disconnect</div>
-                                <small class="error-area text-danger" style="--bs-text-opacity: .5;">[ERRMSG]</small>
-                            </div>
-                        </div>
-                    </section>
+        <div class="b-example-divider position-relative h-100">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-list">
+                    {% include 'pages/home.html' %}
                 </div>
-                <div id="connect-step-wait-for-reconnect">
-                    <section class="wait" style="display:none;">
-                        <div class="d-flex align-items-start">
-                            <div style="width:20px;" class="text-center me-2 pt-1">
-                                <div class="spinner-border spinner-border-sm" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="lead">Wait for redirect ...</div>
-                                <small class="text-muted" style="--bs-text-opacity: .5;">
-                                    <span data-name="redirect-info"></span>
-                                </small>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="success" style="display:none;">
-                        <div class="text-success d-flex">
-                            <div class="pe-2 lead"><i class="bi bi-check-circle-fill"></i></div>
-                            <div>
-                                <div class="lead">Online</div>
-                                <small class="text-success" style="--bs-text-opacity: .5;">
-                                    Redirect to <a class="device-url text-success alert-link" href="#">http://dev-123.local</a>
-                                </small>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="failed" style="display:none;">
-                        <div class="text-danger d-flex">
-                            <div class="pe-2 lead"><i class="bi bi-x-circle-fill"></i></div>
-                            <div>
-                                <div class="lead">Failed to reconnect</div>
-                                <small class="text-danger" style="--bs-text-opacity: .5;">
-                                    The device has been unavailable for some time.<br>
-                                    Please try manually connecting to <a class="device-url text-danger alert-link" href="#">http://dev-123.local</a>.<br>
-                                    Note that the FQDN may vary depending on your network. Alternatively, you can find the device's IP address and connect directly.<br>
-                                    If the connection is unsuccessful, the device's access point (AP) will reappear after 10 minutes, or you can restart the device to reset it.
-                                </small>
-                            </div>
-                        </div>
-                    </section>
+                <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-list">
+                    {% include 'pages/network.html' %}
+                </div>
+                <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-label">
+                    {% include 'pages/info.html' %}
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </body>
 </html>
