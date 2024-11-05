@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<h5>USB</h5>
 
-</body>
-</html>
+<ul class="list-group mb-2">
+    <li class="list-group-item">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-ip-dhcp" autocomplete="off" checked>
+            <label class="form-check-label w-100 text-start" for="settings-ethernet-ip-dhcp">Create Network Share for USB Drives</label>
+        </div>
+    </li>
+</ul>
+
+<ul class="list-group mb-2">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-6 col-md-9">
+                <label for="settings-network-netmask" class="list-group-item-mod">Username</label>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <input class="form-control form-control-sm" type="text" id="settings-network-netmask" autocomplete="off" placeholder="usb" disabled>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-6 col-md-9">
+                <label for="settings-network-gateway" class="list-group-item-mod">Password</label>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <input class="form-control form-control-sm" type="text" id="settings-network-gateway" autocomplete="off" placeholder="share-password" disabled>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<h6>Active Network Shares</h6>
+List USB Ports and configure them.
+- Collapse
+    - Play audio when connected on/off
+    - Protected share?

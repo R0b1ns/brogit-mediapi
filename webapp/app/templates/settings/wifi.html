@@ -1,21 +1,159 @@
-<template id="network-template">
-    <div class="form-check network">
+<!-- Templates -->
+
+<template id="settings-wifi-network-template">
+    <button class="list-group-item list-group-item-action" id="[[ssid]]-[[band]]" value="[[ssid]]">
+        <span class="known" title="Known">[[known]]</span>
         <span class="network-icon" title="Signal">[[signal]]</span>
         <span class="password-icon">[[passwordIcon]]</span>
-        <input class="form-check-input" type="radio" name="network" id="[[ssid]]-[[band]]" value="[[ssid]]">
-        <label class="form-check-label" for="[[ssid]]-[[band]]">
-            [[ssid]] ([[band]]) <span class="known">[[known]]</span>
-        </label>
-    </div>
+        [[ssid]] ([[band]])
+    </button>
 </template>
 <template class="network-list-loading">
     <div class="d-flex justify-content-center align-items-center">
-        <div class="spinner-border" role="status">
+        <div class="spinner-border spinner-border-sm" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
         <span class="ms-2">Loading...</span>
     </div>
 </template>
 
+<!-- Modals -->
+
+<div class="modal fade" id="settings-wifi-define" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="connect" method="GET" action="{{ url_for('connect_to_network') }}">
+                    <label for="network-ssid" class="small text-muted">SSID</label>
+                    <input type="text" id="network-ssid" class="form-control" value="test" required>
+                    <label for="network-password" class="small text-muted">Password <span id="selected-network"></span></label>
+                    <input type="password" id="network-password" class="form-control">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" form="connect" class="btn btn-primary">Connect</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="settings-wifi-connect" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div id="connect-step-disconnect">
+                    <section class="wait" style="display:none;">
+                        <div class="d-flex align-items-center">
+                            <div style="width:20px;" class="text-center">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <span class="ms-2 lead">Wait for disconnect ...</span>
+                        </div>
+                    </section>
+
+                    <section class="success" style="display:none;">
+                        <span class="text-success lead">
+                            <span class="pe-2"><i class="bi bi-check-circle-fill"></i></span>Disconnected
+                        </span>
+                    </section>
+                    <section class="failed" style="display:none;">
+                        <div class="text-danger d-flex">
+                            <div class="pe-2 lead"><i class="bi bi-x-circle-fill"></i></div>
+                            <div>
+                                <div class="lead">Failed to disconnect</div>
+                                <small class="error-area text-danger" style="--bs-text-opacity: .5;">[ERRMSG]</small>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="connect-step-wait-for-reconnect">
+                    <section class="wait" style="display:none;">
+                        <div class="d-flex align-items-start">
+                            <div style="width:20px;" class="text-center me-2 pt-1">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="lead">Wait for redirect ...</div>
+                                <small class="text-muted" style="--bs-text-opacity: .5;">
+                                    <span data-name="redirect-info"></span>
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="success" style="display:none;">
+                        <div class="text-success d-flex">
+                            <div class="pe-2 lead"><i class="bi bi-check-circle-fill"></i></div>
+                            <div>
+                                <div class="lead">Online</div>
+                                <small class="text-success" style="--bs-text-opacity: .5;">
+                                    Redirect to <a class="device-url text-success alert-link" href="#">http://dev-123.local</a>
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="failed" style="display:none;">
+                        <div class="text-danger d-flex">
+                            <div class="pe-2 lead"><i class="bi bi-x-circle-fill"></i></div>
+                            <div>
+                                <div class="lead">Failed to reconnect</div>
+                                <small class="text-danger" style="--bs-text-opacity: .5;">
+                                    The device has been unavailable for some time.<br>
+                                    Please try manually connecting to <a class="device-url text-danger alert-link" href="#">http://dev-123.local</a>.<br>
+                                    Note that the FQDN may vary depending on your network. Alternatively, you can find the device's IP address and connect directly.<br>
+                                    If the connection is unsuccessful, the device's access point (AP) will reappear after 10 minutes, or you can restart the device to reset it.
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+
+<h5>Wifi</h5>
+<!--
 - Select wifi device
 - Show dB of connected wifi
+-->
+<ul class="list-group mb-2">
+    <li id="connected-network" class="list-group-item" style="display: none;">
+        <div class="row">
+            <div class="col-sm-6 col-md-7">
+                <label for="current-network">Connected</label>
+            </div>
+            <div class="col-sm-6 col-md-5 text-end">
+                <span id="current-network"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<!--<h6>Access Point</h6>-->
+
+<h6 class="mt-3">Available Networks</h6>
+
+<div id="network-select">
+    <div id="networks" class="list-group mb-2"></div>
+
+    <button id="network-list-refresh" class="btn btn-light">
+        <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+
+    <div class="float-end">
+        <small><button id="other-network" type="button" class="btn btn-link">Other network</button></small>
+    </div>
+</div>

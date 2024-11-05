@@ -107,6 +107,7 @@ def index():
 
 
 @app.route('/login', methods=['GET', 'POST'])
+# TODO: Bug here. We do not want to prevent to open up login page 10 per hour, but we want to prevent 10 logins
 @limiter.limit("10 per hour")
 def login():
     # Here we use a class of some kind to represent and validate our

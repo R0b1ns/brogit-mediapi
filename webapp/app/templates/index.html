@@ -6,11 +6,12 @@
     <title>WiFi Networks</title>
     <script>
         var deviceHostname = "{{ hostname }}";
+        var wifi_connect_endpoint = "{{ url_for('connect_to_network') }}";
     </script>
 
     {% include '_imports.html' %}
     <script src="{{ url_for('static', filename='wifi.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='src/wifi.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='src/css/wifi.css') }}">
 </head>
 <body>
     {% include 'nested_settings_modal.html' %}

@@ -1,13 +1,8 @@
-.connected-network {
-    font-weight: bold;
-    margin-bottom: 20px; /* Larger spacing to the next network */
-}
-.network {
-    margin-bottom: 10px;
-}
 .protected {
     color: red; /* Show password-protected networks in red */
 }
 .known {
     color: blue; /* Display known networks in blue */
+    width: 20px;
+    display: inline-block;
 }
