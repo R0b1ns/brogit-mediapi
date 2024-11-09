@@ -50,6 +50,11 @@ class WifiHelper:
         known_networks = set()
         try:
             # Use nmcli to list saved WiFi connections
+            # TODO: uuid is missing
+            # nmcli -t -f NAME,UUID connection
+            # it could be that a connection is saved under manual defined name like
+            # preconfigured:UUID
+            # In this case the Known Wifi tracker could be wrong, cause we look with NAME (SSID).
             result = subprocess.run(['nmcli', '-t', '-f', 'NAME', 'connection'], stdout=subprocess.PIPE)
             output = result.stdout.decode('utf-8').strip().split('\n')
 
