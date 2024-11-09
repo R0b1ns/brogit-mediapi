@@ -3,6 +3,36 @@ import subprocess
 import time
 
 
+class WifiHelper:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def is_connected() -> bool:
+        return True
+
+    @staticmethod
+    def get_known_networks():
+        known_networks = set()
+        try:
+            # Use nmcli to list saved WiFi connections
+            result = subprocess.run(['nmcli', '-t', '-f', 'NAME', 'connection'], stdout=subprocess.PIPE)
+            output = result.stdout.decode('utf-8').strip().split('\n')
+
+            for line in output:
+                known_networks.add(line.strip())  # Add each known SSID to the set
+
+        except subprocess.CalledProcessError as e:
+            print(f"Error retrieving known WiFi networks: {e}")
+
+        return known_networks
+
+    def scan(self):
+        pass
+
+    def connect(self):
+        pass
+
 def get_known_networks():
     known_networks = set()
     try:
@@ -21,6 +51,7 @@ def get_known_networks():
 
 # Scan for available WiFi networks
 def scan_wifi():
+    print("Scan wifi")
     # TODO: Remove dev
     # time.sleep(1)
     # return [{'ssid': 'WLAN-12358', 'mac': '3C-37-12-08-8F-D7', 'signal': '99', 'band': '2.4 GHz', 'protected': True, 'connected': False, 'known': False}, {'ssid': 'WLAN-85321', 'mac': '3E-37-12-08-8F-D7', 'signal': '99', 'band': '2.4 GHz', 'protected': True, 'connected': False, 'known': False}, {'ssid': 'WLAN-85321', 'mac': '3E-37-12-08-8F-D8', 'signal': '57', 'band': '5 GHz', 'protected': True, 'connected': False, 'known': False}, {'ssid': 'WLAN-12358', 'mac': '3C-37-12-08-8F-D8', 'signal': '57', 'band': '5 GHz', 'protected': True, 'connected': True, 'known': False}, {'ssid': 'DIRECT-9x-EPSON-ET-2870 Series', 'mac': '66-C6-D2-22-72-B9', 'signal': '50', 'band': '2.4 GHz', 'protected': False, 'connected': False, 'known': True}, {'ssid': 'Home S.A 2,4G', 'mac': '98-9B-CB-08-4D-50', 'signal': '35', 'band': '2.4 GHz', 'protected': True, 'connected': False, 'known': False}, {'ssid': 'FRITZ!Box 7530 VI', 'mac': '0C-72-74-0E-29-42', 'signal': '40', 'band': '2.4 GHz', 'protected': True, 'connected': False, 'known': False}, {'ssid': 'MagentaWLAN-WYMW', 'mac': '4C-22-F3-3D-08-0E', 'signal': '32', 'band': '2.4 GHz', 'protected': True, 'connected': False, 'known': True}, {'ssid': 'Eischbi Gast', 'mac': 'E2-28-6D-26-FF-62', 'signal': '20', 'band': '2.4 GHz', 'protected': False, 'connected': False, 'known': False}]
@@ -71,6 +102,7 @@ def connect_to_wifi(ssid, password=None):
     logging.info(f"Connect to SSID: {ssid}")
 
     # TODO: Find out where were connected to
+    wifi_info = scan_wifi()
 
     # Disconnect existing connection
     try:
