@@ -28,9 +28,18 @@ CANCEL_FLAG_FILE="$MODULE_DIR/ap_cancel_start.flag"
 AP_START_DELAY_AFTER_DISCONNECT="${AP_START_DELAY_AFTER_DISCONNECT:-10}"
 DELAY_SECONDS=$((AP_START_DELAY_AFTER_DISCONNECT * 60))
 
-if iwgetid -r "$WIFI_INTERFACE" > /dev/null 2>&1; then
-    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE already connected. Exit"
+#!/bin/bash
+
+# Speichert das Ergebnis von iwgetid in einer Variablen
+SSID=$(iwgetid -r "$WIFI_INTERFACE")
+
+# Prüft, ob SSID nicht leer ist
+if [[ -n "$SSID" ]]; then
+    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE already connected with '$SSID'. Exit"
     exit 0
+else
+    echo "Nicht mit WLAN verbunden."
+    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE Not connected"
 fi
 
 if [[ "$1" == "cancel" ]]; then
