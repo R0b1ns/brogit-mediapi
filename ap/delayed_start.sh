@@ -5,6 +5,8 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+echo "Delayed start AP"
+
 PID_FILE="$SCRIPT_DIR/ap_delayed_start.pid"
 CANCEL_FLAG_FILE="$SCRIPT_DIR/ap_cancel_start.flag"
 
