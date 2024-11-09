@@ -8,6 +8,10 @@ sudo apt install -y supervisor
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+echo "$SCRIPT_DIR"
+
+exit 0
+
 PROJECT_RELATIVE_ROOT="../"
 PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
 
