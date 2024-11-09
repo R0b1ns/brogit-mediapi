@@ -21,17 +21,17 @@ source "$WEBAPP_ROOT_PATH/deploy.sh"
 
 source "$PROJECT_ROOT_PATH/load_config.sh"
 
-PROJECT_NAME="${config[project_name]}_webapp"
+WEBAPP_NAME="${config[project_name]}_webapp"
 PROJECT_USER="${config[project_user]}"
 APP_NAME="app"
 PROJECT_DIR="$WEBAPP_ROOT_PATH/$APP_NAME"
 HOST="${config[host]}"
 PORT="${config[port]}"
-LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}/${config[project_name]}.log"
-LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}/${config[project_name]}.err.log"
+LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}/$WEBAPP_NAME.log"
+LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}/$WEBAPP_NAME.err.log"
 
-cat << EOF | sudo tee /etc/supervisor/conf.d/$PROJECT_NAME.conf > /dev/null
-[program:$PROJECT_NAME]
+cat << EOF | sudo tee /etc/supervisor/conf.d/$WEBAPP_NAME.conf > /dev/null
+[program:$WEBAPP_NAME]
 ; directory to cwd to before exec (def no cwd)
 directory=$PROJECT_DIR
 
