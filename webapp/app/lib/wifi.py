@@ -130,9 +130,6 @@ class WifiHelper:
             # That is okay. Not in other cases
 
             if e.returncode != 6:
-                logging.error(e)
-                logging.error(e.returncode)
-                logging.error(e.stderr)
                 raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
 
         try:
@@ -159,6 +156,9 @@ class WifiHelper:
             print(f"Successfully connected to {ssid}")
         except subprocess.CalledProcessError as e:
             if e.stderr:
+                logging.error(e)
+                logging.error(e.returncode)
+                logging.error(e.stderr)
                 raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
             raise Exception("nmcli error: {}".format(e))
         except FileNotFoundError as e:
