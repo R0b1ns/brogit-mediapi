@@ -95,7 +95,7 @@ fi
 log_message "$LOG_FILE" "Delayed start :: Start delayed in $DELAY_SECONDS seconds..."
 
 # Delayed start. If stop file appears, we exit
-for ((i=0; i<600; i++)); do
+for ((i=0; i<$DELAY_SECONDS; i++)); do
   if [ -f "$CANCEL_FLAG_FILE" ]; then
     log_message "$LOG_FILE" "Delayed start :: Info: Delayed start is stopped!"
     log_message "$LOG_FILE" "Delayed start :: Warning: Remove stop flag and pid file"
