@@ -8,9 +8,8 @@ sudo apt install -y supervisor
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+echo "####"
 echo "$SCRIPT_DIR"
-
-exit 0
 
 PROJECT_RELATIVE_ROOT="../"
 PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
@@ -31,6 +30,10 @@ HOST="${config[wifi_interface]}"
 PORT="${config[wifi_interface]}"
 LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}.log"
 LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}.err.log"
+
+echo "####"
+echo "$SCRIPT_DIR"
+echo "$PROJECT_DIR"
 
 cat << EOF | sudo tee /etc/supervisor/conf.d/$PROJECT_NAME.conf > /dev/null
 [program:$PROJECT_NAME]
