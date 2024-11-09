@@ -77,7 +77,7 @@ fi
 
 # Save PID to File
 echo $$ > "$PID_FILE"
-log_message "$LOG_FILE" "Delayed start :: Skript is already running PID=$PID. Exit"
+log_message "$LOG_FILE" "Delayed start :: Save PID to File"
 
 # Remove PID File when skript is canceled
 trap ctrl_c INT
@@ -103,6 +103,7 @@ for ((i=0; i<600; i++)); do
     rm "$PID_FILE"
     exit 0
   fi
+  log_message "$LOG_FILE" "Delayed start :: Sleep ..."
   sleep 1
 done
 
