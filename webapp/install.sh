@@ -8,14 +8,13 @@ sudo apt install -y supervisor
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "####"
-echo "$SCRIPT_DIR"
-
 PROJECT_RELATIVE_ROOT="../"
 PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
 
+WEBAPP_ROOT_PATH="$SCRIPT_DIR"
+
 # Install and deploy app
-source "$SCRIPT_DIR/deploy.sh"
+source "$WEBAPP_ROOT_PATH/deploy.sh"
 
 # TODO: Ensure right user is configured
 # source "$PROJECT_ROOT_PATH/change_user.sh"
@@ -25,15 +24,11 @@ source "$PROJECT_ROOT_PATH/load_config.sh"
 PROJECT_NAME="${config[project_name]}_webapp"
 PROJECT_USER="${config[project_user]}"
 APP_NAME="app"
-PROJECT_DIR="$SCRIPT_DIR/$APP_NAME"
+PROJECT_DIR="$WEBAPP_ROOT_PATH/$APP_NAME"
 HOST="${config[wifi_interface]}"
 PORT="${config[wifi_interface]}"
 LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}.log"
 LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}.err.log"
-
-echo "####"
-echo "$SCRIPT_DIR"
-echo "$PROJECT_DIR"
 
 cat << EOF | sudo tee /etc/supervisor/conf.d/$PROJECT_NAME.conf > /dev/null
 [program:$PROJECT_NAME]
@@ -41,7 +36,7 @@ cat << EOF | sudo tee /etc/supervisor/conf.d/$PROJECT_NAME.conf > /dev/null
 directory=$PROJECT_DIR
 
 ; the program (relative uses PATH, can take args)
-command=$SCRIPT_DIR/.venv/bin/gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
+command=$WEBAPP_ROOT_PATH/.venv/bin/gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
 
 ; Execute with defined user
 user=$PROJECT_USER
