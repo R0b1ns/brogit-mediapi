@@ -35,7 +35,7 @@ cat << EOF | sudo tee /etc/supervisor/conf.d/$WEBAPP_NAME.conf > /dev/null
 directory=$WEBAPP_ROOT_PATH
 
 ; the program (relative uses PATH, can take args)
-command=$WEBAPP_ROOT_PATH/.venv/bin/gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
+command=$WEBAPP_ROOT_PATH/.venv/bin/gunicorn --worker-class eventlet -w 1 $APP_NAME:$APP_NAME -b $HOST:$PORT
 
 ; Execute with defined user
 user=$PROJECT_USER

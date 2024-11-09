@@ -20,6 +20,6 @@ PORT="${config[port]}"
 
 echo "Run ..."
 source "$WEBAPP_ROOT_PATH/.venv/bin/activate"
-# python3 "$SCRIPT_DIR/app.py"
-# Instead of direct execution we use gunicorn
-gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
+python3 "$SCRIPT_DIR/app.py"
+# Instead of direct execution we can use gunicorn
+# gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
