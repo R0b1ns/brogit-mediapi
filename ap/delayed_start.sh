@@ -41,21 +41,22 @@ fi
 
 if [[ "$1" == "cancel" ]]; then
   log_message "$LOG_FILE" "Delayed start :: Cancel"
+  log_message "$LOG_FILE" "Delayed start :: Cancel - Check if PID_FILE=$PID_FILE exists"
   if [ -f "$PID_FILE" ]; then
     PID=$(cat "$PID_FILE")
+    log_message "$LOG_FILE" "Delayed start :: Cancel - PID=$PID"
     if ps -p "$PID" > /dev/null; then
-      echo "Delayed start runs"
-      log_message "$LOG_FILE" "Delayed start :: Active process exists"
+      log_message "$LOG_FILE" "Delayed start :: Cancel - Active process exists"
       touch "$CANCEL_FLAG_FILE"
-      log_message "$LOG_FILE" "Delayed start :: Created Cancel flag"
+      log_message "$LOG_FILE" "Delayed start :: Cancel - Created Cancel flag"
       exit 0
     else
-      log_message "$LOG_FILE" "Delayed start :: Warning: PID File exists but no process running. PID file will be removed. Exit"
+      log_message "$LOG_FILE" "Delayed start :: Cancel - Warning: PID File exists but no process running. PID file will be removed. Exit"
       rm "$PID_FILE"
       exit 1
     fi
   else
-    log_message "$LOG_FILE" "Delayed start :: Warning: No delayed start running. Exit"
+    log_message "$LOG_FILE" "Delayed start :: Cancel - Warning: No delayed start running (PID_FILE does not exist). Exit"
     exit 0
   fi
 fi
