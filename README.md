@@ -17,3 +17,8 @@ Wireless Audio Receiver (DLNA, Airplay, Bluetooth), SteamPlay, Auto USB-Networks
 # Webapp
 
 Default password is: 112358
+
+
+# Service Info
+Add Service info on webapp
+sudo service --status-all
