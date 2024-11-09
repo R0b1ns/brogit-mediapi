@@ -28,21 +28,6 @@ CANCEL_FLAG_FILE="$MODULE_DIR/ap_cancel_start.flag"
 AP_START_DELAY_AFTER_DISCONNECT="${AP_START_DELAY_AFTER_DISCONNECT:-10}"
 DELAY_SECONDS=$((AP_START_DELAY_AFTER_DISCONNECT * 60))
 
-# Speichert das Ergebnis von iwgetid in einer Variablen
-# Get connected WIFI (but not AP)
-# SSID=$(iwgetid -r "$WIFI_INTERFACE")
-SSID=$(nmcli -t -f GENERAL.CONNECTION dev show "$WIFI_INTERFACE" | cut -d: -f2)
-# nmcli -t -f GENERAL.CONNECTION dev show wlan0 | cut -d: -f2
-
-
-# Prüft, ob SSID nicht leer ist
-if [[ -n "$SSID" ]]; then
-    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE already connected with '$SSID'. Exit"
-    exit 0
-else
-    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE Not connected"
-fi
-
 if [[ "$1" == "cancel" ]]; then
   log_message "$LOG_FILE" "Delayed start :: Cancel"
   log_message "$LOG_FILE" "Delayed start :: Cancel - Check if PID_FILE=$PID_FILE exists"
@@ -63,6 +48,20 @@ if [[ "$1" == "cancel" ]]; then
     log_message "$LOG_FILE" "Delayed start :: Cancel - Warning: No delayed start running (PID_FILE does not exist). Exit"
     exit 0
   fi
+fi
+
+# Speichert das Ergebnis von iwgetid in einer Variablen
+# Get connected WIFI (but not AP)
+# SSID=$(iwgetid -r "$WIFI_INTERFACE")
+SSID=$(nmcli -t -f GENERAL.CONNECTION dev show "$WIFI_INTERFACE" | cut -d: -f2)
+# nmcli -t -f GENERAL.CONNECTION dev show wlan0 | cut -d: -f2
+
+# Check if connected to SSID
+if [[ -n "$SSID" ]]; then
+    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE already connected with '$SSID'. Exit"
+    exit 0
+else
+    log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE Not connected"
 fi
 
 if [ -f "$PID_FILE" ]; then
