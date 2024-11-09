@@ -21,7 +21,7 @@ LOG_DIR="${config[log_dir]}/${config[project_name]}"
 LOG_FILE=$(create_log_with_rotation "$LOG_DIR" "$MODULE_NAME")
 
 # Log-Nachricht hinzufügen
-log_message "$LOG_FILE" "Wifi dispatcher event"
+log_message "$LOG_FILE" "Wifi dispatcher event: $1, $2"
 
 if [[ "$1" == "$WIFI_INTERFACE" && "$2" == "up" ]]; then
   echo "Up"
