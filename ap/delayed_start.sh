@@ -20,7 +20,7 @@ WIFI_INTERFACE="${config[wifi_interface]}"
 LOG_DIR="${config[log_dir]}/${config[project_name]}"
 LOG_FILE=$(create_log_with_rotation "$LOG_DIR" "$MODULE_NAME")
 
-log_message "$LOG_FILE" "Delayed start :: Welcome"
+log_message "$LOG_FILE" "Delayed start :: Params: $1"
 
 PID_FILE="$MODULE_DIR/ap_delayed_start.pid"
 CANCEL_FLAG_FILE="$MODULE_DIR/ap_cancel_start.flag"
