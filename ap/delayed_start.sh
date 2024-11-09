@@ -103,7 +103,7 @@ for ((i=0; i<600; i++)); do
     rm "$PID_FILE"
     exit 0
   fi
-  log_message "$LOG_FILE" "Delayed start :: Sleep ..."
+  log_message "$LOG_FILE" "Delayed start :: Sleep ...$i"
   sleep 1
 done
 
