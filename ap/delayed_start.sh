@@ -52,7 +52,7 @@ if [[ "$1" == "cancel" ]]; then
     if ps -p "$PID" > /dev/null; then
       log_message "$LOG_FILE" "Delayed start :: Cancel - Active process exists"
       touch "$CANCEL_FLAG_FILE"
-      log_message "$LOG_FILE" "Delayed start :: Cancel - Created Cancel flag"
+      log_message "$LOG_FILE" "Delayed start :: Cancel - Created Cancel flag CANCEL_FLAG_FILE=$CANCEL_FLAG_FILE"
       exit 0
     else
       log_message "$LOG_FILE" "Delayed start :: Cancel - Warning: PID File exists but no process running. PID file will be removed. Exit"
