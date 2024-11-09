@@ -36,7 +36,6 @@ if [[ -n "$SSID" ]]; then
     log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE already connected with '$SSID'. Exit"
     exit 0
 else
-    echo "Nicht mit WLAN verbunden."
     log_message "$LOG_FILE" "Delayed start :: Info: $WIFI_INTERFACE Not connected"
 fi
 
