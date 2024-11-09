@@ -167,8 +167,7 @@ def connect_to_network():
         WifiHelper.get_instance().connect(ssid, password)
         return jsonify({"message": f"Connected to {ssid}"}), 200
     except Exception as e:
-        print(e)
-
+        flash("It was unable to connect to the new network. Please check your credentials")
         return jsonify({"message": str(e)}), 500
 
 
