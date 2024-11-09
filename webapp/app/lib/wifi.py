@@ -103,7 +103,7 @@ class WifiHelper:
         return networks
 
     @staticmethod
-    def connect(self, ssid: str, password: str):
+    def connect(self, ssid: str, password: str = None):
         logging.info(f"Connect to SSID: {ssid}")
 
         # Find out where were connected to
