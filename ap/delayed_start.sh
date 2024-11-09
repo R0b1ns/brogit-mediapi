@@ -28,8 +28,6 @@ CANCEL_FLAG_FILE="$MODULE_DIR/ap_cancel_start.flag"
 AP_START_DELAY_AFTER_DISCONNECT="${AP_START_DELAY_AFTER_DISCONNECT:-10}"
 DELAY_SECONDS=$((AP_START_DELAY_AFTER_DISCONNECT * 60))
 
-#!/bin/bash
-
 # Speichert das Ergebnis von iwgetid in einer Variablen
 SSID=$(iwgetid -r "$WIFI_INTERFACE")
 
