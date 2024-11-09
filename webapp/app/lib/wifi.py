@@ -153,7 +153,7 @@ class WifiHelper:
             if result.returncode != 0 and result.stderr:
                 raise Exception(result.stderr)
 
-            print(f"Successfully connected to {ssid}")
+            logging.info(f"Successfully connected to {ssid}")
         except subprocess.CalledProcessError as e:
             if e.stderr:
                 logging.error(e.returncode)
@@ -162,7 +162,7 @@ class WifiHelper:
                 # Reconnect to old connection if it was connected. If now AP will start in configured minutes
                 if connection_info:
                     result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', connection_info.get('ssid')],
-                                            check=True, text=True, stdout=sys.stdout, stderr=subprocess.PIPE)
+                                            check=True, text=True, stdout=sys.stdout, stderr=sys.stdout)
 
             raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
         except FileNotFoundError as e:
