@@ -2,18 +2,24 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [ ! -d ".venv" ]; then
-    echo "Create virtual environment..."
-    python3 -m venv "$SCRIPT_DIR/.venv"
-fi
+PROJECT_RELATIVE_ROOT="../"
+PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
 
-source "$SCRIPT_DIR/.venv/bin/activate"
+WEBAPP_ROOT_PATH="$SCRIPT_DIR"
 
-echo "Install dependencies ..."
-pip3 install -r "$SCRIPT_DIR/requirements.txt"
+# Install and deploy app
+source "$WEBAPP_ROOT_PATH/deploy.sh"
+
+source "$PROJECT_ROOT_PATH/load_config.sh"
+
+WEBAPP_NAME="${config[project_name]}_webapp"
+PROJECT_USER="${config[project_user]}"
+APP_NAME="app"
+HOST="${config[host]}"
+PORT="${config[port]}"
 
 echo "Run ..."
-source "$SCRIPT_DIR/.venv/bin/activate"
+source "$WEBAPP_ROOT_PATH/.venv/bin/activate"
 # python3 "$SCRIPT_DIR/app.py"
 # Instead of direct execution we use gunicorn
-gunicorn app:app -b localhost:80 #& use for daemon run
+gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
