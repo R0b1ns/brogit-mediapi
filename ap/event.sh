@@ -8,6 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_RELATIVE_ROOT="../"
 PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
 
+MODULE_DIR="$SCRIPT_DIR"
+
 AP_START_DELAY_AFTER_DISCONNECT="${AP_START_DELAY_AFTER_DISCONNECT:-10}"
 
 source "$PROJECT_ROOT_PATH/helper.sh"
@@ -28,8 +30,8 @@ log_message "$LOG_FILE" "Event :: Controls: '$WIFI_INTERFACE'"
 
 if [[ "$1" == "$WIFI_INTERFACE" && "$2" == "up" ]]; then
   log_message "$LOG_FILE" "Event :: Wifi Up Cancel AP Delayed start"
-  AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$SCRIPT_DIR/delayed_start.sh cancel"
+  AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$MODULE_DIR/delayed_start.sh cancel"
 elif [[ "$1" == "$WIFI_INTERFACE" && "$2" == "down" ]]; then
   log_message "$LOG_FILE" "Event :: Wifi Down - Start AP delayed in $AP_START_DELAY_AFTER_DISCONNECT minutes"
-  AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$SCRIPT_DIR/delayed_start.sh"
+  AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$MODULE_DIR/delayed_start.sh"
 fi
