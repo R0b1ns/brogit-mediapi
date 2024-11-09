@@ -14,4 +14,6 @@ pip3 install -r "$SCRIPT_DIR/requirements.txt"
 
 echo "Run ..."
 source "$SCRIPT_DIR/.venv/bin/activate"
-python3 "$SCRIPT_DIR/app.py"
+# python3 "$SCRIPT_DIR/app.py"
+# Instead of direct execution we use gunicorn
+gunicorn app:app -b localhost:80 #& use for daemon run

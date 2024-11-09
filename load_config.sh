@@ -41,7 +41,7 @@ load_translations() {
     fi
 }
 
-# Funktion universal_true
+# Function universal_true
 universal_true() {
     local val_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')  # Convert $1 to lower
 
