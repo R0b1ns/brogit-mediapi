@@ -159,6 +159,6 @@ class WifiHelper:
             raise Exception(f"Failed to connect: {str(e)}")
 
         # TODO: Only insert into right exception
-        if connection_info:
-            result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', connection_info.get('ssid')],
-                                    check=True, text=True, stdout=sys.stdout, stderr=subprocess.PIPE)
+        # if connection_info:
+        #     result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', connection_info.get('ssid')],
+        #                             check=True, text=True, stdout=sys.stdout, stderr=subprocess.PIPE)
