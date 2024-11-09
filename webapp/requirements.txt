@@ -5,3 +5,4 @@ flask-login
 flask-WTF
 Flask-Limiter
 gunicorn
+eventlet
