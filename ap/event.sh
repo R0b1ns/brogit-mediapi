@@ -22,8 +22,10 @@ LOG_FILE=$(create_log_with_rotation "$LOG_DIR" "$MODULE_NAME")
 
 # Log-Nachricht hinzufügen
 log_message "$LOG_FILE" "Wifi dispatcher event: $1, $2"
+log_message "$LOG_FILE" "Was los"
 
 if [[ "$1" == "$WIFI_INTERFACE" && "$2" == "up" ]]; then
+  log_message "$LOG_FILE" "Macht echo probleme"
   echo "Up"
   log_message "$LOG_FILE" "Wifi Up -> Cancel AP Delayed start"
   AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$SCRIPT_DIR/delayed_start.sh cancel"
