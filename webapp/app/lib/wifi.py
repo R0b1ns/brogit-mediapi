@@ -72,6 +72,8 @@ def connect_to_wifi(ssid, password=None):
 
     # TODO: Find out where were connected to
 
+    return False
+
     # Disconnect existing connection
     try:
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, text=True, stdout=subprocess.PIPE,
