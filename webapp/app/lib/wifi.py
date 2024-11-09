@@ -160,6 +160,7 @@ class WifiHelper:
                 logging.error("nmcli error: {} \n=> {}".format(e, e.stderr))
 
                 # Reconnect to old connection if it was connected. If now AP will start in configured minutes
+                # TODO: Check if connection_info contains AP. In this case this command will not work
                 if connection_info:
                     result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', connection_info.get('ssid')],
                                             check=True, text=True, stdout=sys.stdout, stderr=sys.stdout)
