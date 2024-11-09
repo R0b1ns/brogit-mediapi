@@ -24,7 +24,6 @@ source "$PROJECT_ROOT_PATH/load_config.sh"
 WEBAPP_NAME="${config[project_name]}_webapp"
 PROJECT_USER="${config[project_user]}"
 APP_NAME="app"
-PROJECT_DIR="$WEBAPP_ROOT_PATH/$APP_NAME"
 HOST="${config[host]}"
 PORT="${config[port]}"
 LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}/$WEBAPP_NAME.log"
@@ -33,7 +32,7 @@ LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}/$WEBAPP_NAME.err.lo
 cat << EOF | sudo tee /etc/supervisor/conf.d/$WEBAPP_NAME.conf > /dev/null
 [program:$WEBAPP_NAME]
 ; directory to cwd to before exec (def no cwd)
-directory=$PROJECT_DIR
+directory=$WEBAPP_ROOT_PATH
 
 ; the program (relative uses PATH, can take args)
 command=$WEBAPP_ROOT_PATH/.venv/bin/gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
