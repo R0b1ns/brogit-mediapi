@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import sys
 import time
 from datetime import datetime, timedelta
 
@@ -109,9 +110,15 @@ class WifiHelper:
         connection_info = self.get_connection_info()
         # TODO: Connect to this network when reconnect fails
 
-        # Disconnect existing connection
+        if connection_info:
+            logging.info(f'Status: Connected to {connection_info.get("ssid")}')
+        else:
+            logging.info(f'Status: Disconnected')
+
+        logging.info('Disconnect existing connection')
         try:
-            subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, text=True, stdout=subprocess.PIPE,
+            # Hint, changes: stdout=subprocess.PIPE
+            subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'], check=True, text=True, stdout=sys.stdout,
                            stderr=subprocess.PIPE)
         except subprocess.CalledProcessError as e:
             # If return code is 6. Then there is no connection.
@@ -123,16 +130,18 @@ class WifiHelper:
         try:
             # Connect without password. For open or known passwords
             if password is None or password == "":
+                # Hint, changes: stdout=subprocess.PIPE
                 result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid],
-                                        check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                        check=True, text=True, stdout=sys.stdout, stderr=subprocess.PIPE)
             else:
                 # Connect with Passwort (for secured networks)
+                # Hint, changes: stdout=subprocess.PIPE
                 result = subprocess.run(
                     ['nmcli', 'device', 'wifi', 'connect', ssid, '--ask'],
                     input=f"{password}\n",
                     check=True,
                     text=True,
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                    stdout=sys.stdout, stderr=subprocess.PIPE
                 )
 
             # Überprüfen Sie das Ergebnis und verarbeiten Sie Fehler
@@ -152,4 +161,4 @@ class WifiHelper:
         # TODO: Only insert into right exception
         if connection_info:
             result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', connection_info.get('ssid')],
-                                    check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                    check=True, text=True, stdout=sys.stdout, stderr=subprocess.PIPE)
