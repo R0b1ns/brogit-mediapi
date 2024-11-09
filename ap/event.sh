@@ -23,15 +23,13 @@ LOG_DIR="${config[log_dir]}/${config[project_name]}"
 LOG_FILE=$(create_log_with_rotation "$LOG_DIR" "$MODULE_NAME")
 
 # Log-Nachricht hinzufügen
-log_message "$LOG_FILE" "Event :: Wifi dispatcher event: $1, $2"
-log_message "$LOG_FILE" "Event :: Controls: '$WIFI_INTERFACE'"
-
+log_message "$LOG_FILE" "Event :: Wifi dispatcher event (Controls '$WIFI_INTERFACE'): $1, $2"
 
 
 if [[ "$1" == "$WIFI_INTERFACE" && "$2" == "up" ]]; then
-  log_message "$LOG_FILE" "Event :: Wifi Up Cancel AP Delayed start"
+  log_message "$LOG_FILE" "Event :: Cancel Delayed start (Wifi Up)"
   AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$MODULE_DIR/delayed_start.sh cancel"
 elif [[ "$1" == "$WIFI_INTERFACE" && "$2" == "down" ]]; then
-  log_message "$LOG_FILE" "Event :: Wifi Down - Start AP delayed in $AP_START_DELAY_AFTER_DISCONNECT minutes"
+  log_message "$LOG_FILE" "Event :: Start AP delayed in $AP_START_DELAY_AFTER_DISCONNECT minutes (Wifi Down)"
   AP_START_DELAY_AFTER_DISCONNECT="$AP_START_DELAY_AFTER_DISCONNECT" bash "$MODULE_DIR/delayed_start.sh"
 fi
