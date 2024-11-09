@@ -149,3 +149,7 @@ class WifiHelper:
             raise FileNotFoundError(e)
         except Exception as e:
             raise Exception(f"Failed to connect: {str(e)}")
+
+        # TODO: Only insert into right exception
+        result = subprocess.run(['nmcli', 'device', 'wifi', 'connect', connection_info.get('ssid')],
+                                check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
