@@ -130,6 +130,8 @@ class WifiHelper:
             # That is okay. Not in other cases
 
             if e.returncode != 6:
+                logging.error(e)
+                logging.error(e.stderr)
                 raise Exception("nmcli error: {} \n=> {}".format(e, e.stderr))
 
         try:
