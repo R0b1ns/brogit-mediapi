@@ -8,7 +8,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_RELATIVE_ROOT="../"
 PROJECT_ROOT_PATH="$(cd "$SCRIPT_DIR/$PROJECT_RELATIVE_ROOT" && pwd)"
 
+source "$PROJECT_ROOT_PATH/helper.sh"
 source "$PROJECT_ROOT_PATH/load_config.sh"
+
+MODULE_NAME="${config[project_name]}_ap"
+PROJECT_USER="${config[project_user]}"
+WIFI_INTERFACE="${config[wifi_interface]}"
+
+LOG_DIR="${config[log_dir]}/${config[project_name]}"
+LOG_FILE=$(create_log_with_rotation "$LOG_DIR" "$MODULE_NAME")
 
 WIFI_INTERFACE="${config[wifi_interface]}"
 AP_CON_NAME="${config[ap_con_name]}"
@@ -20,6 +28,7 @@ AP_SSID_USE_HOSTNAME="${config[ap_ssid_use_hostname]}"
 if [ "$(universal_true "$AP_SSID_USE_HOSTNAME")" == "true" ]; then
   # Overwrite SSID
   AP_SSID="$(hostname)"
+  log_message "$LOG_FILE" "Start :: Overwrite SSID to hostname - AP_SSID=$AP_SSID"
 fi
 
 # Prevent cancel skript to not end up in a non working state
@@ -28,13 +37,13 @@ ctrl_c () {
   echo -n;
 }
 
-echo "Info: Enable captive portal. Redirect all traffic to: $AP_Host"
+log_message "$LOG_FILE" "Start :: Info: Enable captive portal. Redirect all traffic to: $AP_Host"
 sudo bash -c 'echo "address=/#/'$AP_HOST'" > /etc/NetworkManager/dnsmasq-shared.d/redirect.conf'
 
 # We want to start cleaned, so we remove leftovers if they exist
 nmcli con delete "AccessPoint" > /dev/null 2>&1
 
-echo "Info: Create Access Point=$AP_CON_NAME with SSID=$AP_SSID"
+log_message "$LOG_FILE" "Start :: Info: Create Access Point=$AP_CON_NAME with SSID=$AP_SSID"
 nmcli con add type wifi mode ap con-name "$AP_CON_NAME" ssid "$AP_SSID" ipv4.method shared ipv4.address $AP_HOST/24 autoconnect no
 
 # Clear firewall
@@ -44,9 +53,9 @@ sudo iptables -t nat -F
 # If WEBAPP_PORT is not running on port 80, redirect the traffic
 if [ $WEBAPP_PORT -ne 80 ]
 then
-	echo "Info: Redirect all inbound traffic on port 80 to webapp $AP_HOST:$WEBAPP_PORT"
+	log_message "$LOG_FILE" "Start :: Info: Redirect all inbound traffic on port 80 to webapp $AP_HOST:$WEBAPP_PORT"
 	sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j DNAT --to-destination $AP_HOST:$WEBAPP_PORT
 fi
 
-echo "Info: Enable AccessPoint"
+log_message "$LOG_FILE" "Start :: Info: Enable AccessPoint"
 nmcli con up "AccessPoint"
