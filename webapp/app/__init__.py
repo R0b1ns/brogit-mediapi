@@ -13,6 +13,7 @@ from flask_limiter.util import get_remote_address
 from flask_socketio import SocketIO, emit
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
+from app.lib.common import setup_logging
 from app.lib.wifi import scan_wifi, connect_to_wifi
 from wtforms.fields.simple import PasswordField, BooleanField, SubmitField, EmailField
 from flask_wtf import FlaskForm
@@ -42,6 +43,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# Basic Logging configuration
+setup_logging()
 
 # Benutzerklasse für einen einzelnen Benutzer
 class User(UserMixin):
