@@ -29,7 +29,11 @@ AP_START_DELAY_AFTER_DISCONNECT="${AP_START_DELAY_AFTER_DISCONNECT:-10}"
 DELAY_SECONDS=$((AP_START_DELAY_AFTER_DISCONNECT * 60))
 
 # Speichert das Ergebnis von iwgetid in einer Variablen
-SSID=$(iwgetid -r "$WIFI_INTERFACE")
+# Get connected WIFI (but not AP)
+# SSID=$(iwgetid -r "$WIFI_INTERFACE")
+SSID=$(nmcli -t -f GENERAL.CONNECTION dev show "$WIFI_INTERFACE" | cut -d: -f2)
+# nmcli -t -f GENERAL.CONNECTION dev show wlan0 | cut -d: -f2
+
 
 # Prüft, ob SSID nicht leer ist
 if [[ -n "$SSID" ]]; then
