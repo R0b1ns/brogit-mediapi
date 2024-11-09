@@ -27,8 +27,8 @@ APP_NAME="app"
 PROJECT_DIR="$WEBAPP_ROOT_PATH/$APP_NAME"
 HOST="${config[host]}"
 PORT="${config[port]}"
-LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}.log"
-LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}.err.log"
+LOG_OUT_FILEPATH="${config[log_dir]}/${config[project_name]}/${config[project_name]}.log"
+LOG_ERR_FILEPATH="${config[log_dir]}/${config[project_name]}/${config[project_name]}.err.log"
 
 cat << EOF | sudo tee /etc/supervisor/conf.d/$PROJECT_NAME.conf > /dev/null
 [program:$PROJECT_NAME]
