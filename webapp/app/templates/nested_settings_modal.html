@@ -8,20 +8,24 @@
                 </div>
                 <div class="modal-body p-0">
                     <div class="d-flex align-items-stretch">
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <div class="m-3">
-                                <button class="nav-link active text-start w-100" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">General</button>
-                                <button class="nav-link text-start w-100" id="v-pills-wifi-tab" data-bs-toggle="pill" data-bs-target="#v-pills-wifi" type="button" role="tab" aria-controls="v-pills-wifi" aria-selected="false">Wifi</button>
-                                <button class="nav-link text-start w-100" id="v-pills-ethernet-tab" data-bs-toggle="pill" data-bs-target="#v-pills-ethernet" type="button" role="tab" aria-controls="v-pills-ethernet" aria-selected="false">Ethernet</button>
-                                <button class="nav-link text-start w-100" id="v-pills-bluetooth-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bluetooth" type="button" role="tab" aria-controls="v-pills-bluetooth" aria-selected="false">Bluetooth</button>
-                                <button class="nav-link text-start w-100" id="v-pills-network-tab" data-bs-toggle="pill" data-bs-target="#v-pills-network" type="button" role="tab" aria-controls="v-pills-network" aria-selected="false">Network</button>
-                                <button class="nav-link text-start w-100" id="v-pills-usb-tab" data-bs-toggle="pill" data-bs-target="#v-pills-usb" type="button" role="tab" aria-controls="v-pills-usb" aria-selected="false">USB</button>
-                                <button class="nav-link text-start w-100" id="v-pills-system-tab" data-bs-toggle="pill" data-bs-target="#v-pills-system" type="button" role="tab" aria-controls="v-pills-system" aria-selected="false">System</button>
+                        <div class="nav flex-column nav-pills text-nowrap" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <div class="mx-2 my-3">
+                                <button class="nav-link active text-start w-100" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" title="General"><i class="bi bi-gear"></i><span class="d-none d-md-inline"> General</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-modules-tab" data-bs-toggle="pill" data-bs-target="#v-pills-modules" type="button" role="tab" aria-controls="v-pills-modules" aria-selected="false" title="Modules"><i class="bi bi-window-stack"></i><span class="d-none d-md-inline"> Modules</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-wifi-tab" data-bs-toggle="pill" data-bs-target="#v-pills-wifi" type="button" role="tab" aria-controls="v-pills-wifi" aria-selected="false" title="Wifi"><i class="bi bi-wifi"></i><span class="d-none d-md-inline"> Wifi</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-ethernet-tab" data-bs-toggle="pill" data-bs-target="#v-pills-ethernet" type="button" role="tab" aria-controls="v-pills-ethernet" aria-selected="false" title="Ethernet"><i class="bi bi-ethernet"></i><span class="d-none d-md-inline"> Ethernet</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-bluetooth-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bluetooth" type="button" role="tab" aria-controls="v-pills-bluetooth" aria-selected="false" title="Bluetooth"><i class="bi bi-bluetooth"></i><span class="d-none d-md-inline"> Bluetooth</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-network-tab" data-bs-toggle="pill" data-bs-target="#v-pills-network" type="button" role="tab" aria-controls="v-pills-network" aria-selected="false" title="Network"><i class="bi bi-hdd-network"></i><span class="d-none d-md-inline"> Network</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-usb-tab" data-bs-toggle="pill" data-bs-target="#v-pills-usb" type="button" role="tab" aria-controls="v-pills-usb" aria-selected="false" title="USB"><i class="bi bi-usb-symbol"></i><span class="d-none d-md-inline"> USB</span></button>
+                                <button class="nav-link text-start w-100" id="v-pills-system-tab" data-bs-toggle="pill" data-bs-target="#v-pills-system" type="button" role="tab" aria-controls="v-pills-system" aria-selected="false" title="System"><i class="bi bi-motherboard"></i><span class="d-none d-md-inline"> System</span></button>
                             </div>
                         </div>
                         <div class="tab-content bg-body-tertiary w-100 border-start p-2 rounded-bottom-1" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
                                 {% include 'settings/general.html' %}
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-modules" role="tabpanel" aria-labelledby="v-pills-modules-tab" tabindex="0">
+                                {% include 'settings/modules.html' %}
                             </div>
                             <div class="tab-pane fade" id="v-pills-wifi" role="tabpanel" aria-labelledby="v-pills-wifi-tab" tabindex="0">
                                 {% include 'settings/wifi.html' %}
