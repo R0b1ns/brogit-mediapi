@@ -1,5 +1,4 @@
 import os
-import socket
 import time
 import unicodedata
 from http import HTTPStatus
@@ -13,8 +12,10 @@ from flask_limiter.util import get_remote_address
 from flask_socketio import SocketIO, emit
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
+from app.config import register_modules
+from app.lib.Backend import Backend
 from app.lib.common import setup_logging
-from wtforms.fields.simple import PasswordField, BooleanField, SubmitField, EmailField
+from wtforms.fields.simple import PasswordField, SubmitField, StringField
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Length, Email
 from flask_wtf.csrf import CSRFProtect
@@ -22,6 +23,7 @@ from flask_wtf.csrf import CSRFProtect
 from app.lib.django_utils_http_partly import url_has_allowed_host_and_scheme
 
 from app.extensions import csrf
+from app.lib.pam import verify_user
 from app.lib.wifi import WifiHelper
 
 app = Flask(__name__)
@@ -46,12 +48,17 @@ login_manager.login_view = 'login'
 # Basic Logging configuration
 setup_logging()
 
+# Load backend
+register_modules()
+
+
 # Benutzerklasse für einen einzelnen Benutzer
 class User(UserMixin):
     id = "1"  # Feste Benutzer-ID
 
 
 class LoginForm(FlaskForm):
+    username = StringField('Username')
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
@@ -63,8 +70,9 @@ class LoginForm(FlaskForm):
         if not initial_validation:
             return False
 
-        if self.password.data != "112358":
-            return False
+        if verify_user(self.username.data, self.password.data):
+            return True
+
         # user = User.query.filter_by(email=self.email.data).first()
         # if not user:
         #     self.email.errors.append('Unknown email')
@@ -72,7 +80,7 @@ class LoginForm(FlaskForm):
         # if not user.verify_password(self.password.data):
         #     self.password.errors.append('Invalid password')
         #     return False
-        return True
+        return False
 
 
 @login_manager.unauthorized_handler
@@ -106,7 +114,7 @@ def index():
         return login()
 
     # hostname = socket.getfqdn()
-    return render_template('index.html', hostname=socket.gethostname())
+    return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend())
 
 
 @app.route('/login', methods=['GET', 'POST'])

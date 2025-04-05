@@ -6,3 +6,5 @@ flask-WTF
 Flask-Limiter
 gunicorn
 eventlet
+pam
+six
