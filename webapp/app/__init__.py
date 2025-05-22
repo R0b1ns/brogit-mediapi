@@ -74,6 +74,8 @@ class LoginForm(FlaskForm):
 
         if verify_user(self.username.data, self.password.data):
             return True
+        else:
+            flash('Invalid credentials')
 
         # user = User.query.filter_by(email=self.email.data).first()
         # if not user:
@@ -133,7 +135,8 @@ def login():
         # user should be an instance of your `User` class
         login_user(user)
 
-        flash('Logged in successfully.')
+        # TODO: Do not flash. Log the login to logfile
+        # flash('Logged in successfully.')
 
         next_url = request.args.get('next')
         # url_has_allowed_host_and_scheme should check if the url is safe
