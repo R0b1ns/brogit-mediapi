@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ g.get('lang', 'en') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WiFi Networks</title>
     <script>
         var deviceHostname = "{{ hostname }}";
-        var wifi_connect_endpoint = "{{ url_for('connect_to_network') }}";
+        var wifi_connect_endpoint = "{{ url_for('main.connect_to_network') }}";
     </script>
 
     {% include '_imports.html' %}

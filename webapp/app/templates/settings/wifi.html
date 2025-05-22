@@ -23,7 +23,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <form id="connect" method="GET" action="{{ url_for('connect_to_network') }}">
+                <form id="connect" method="GET" action="{{ url_for('main.connect_to_network') }}">
                     <label for="network-ssid" class="small text-muted">SSID</label>
                     <input type="text" id="network-ssid" class="form-control" value="test" required>
                     <label for="network-password" class="small text-muted">Password <span id="selected-network"></span></label>

@@ -4,6 +4,7 @@ Flask-Cors
 flask-login
 flask-WTF
 Flask-Limiter
+Flask-Babel
 gunicorn
 eventlet
 pam
