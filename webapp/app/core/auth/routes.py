@@ -3,13 +3,14 @@ from flask_login import login_required, logout_user, login_user
 
 from app.core.auth import auth_bp
 from app.core.auth.models import User, LoginForm
+from app.extensions import limiter
 from app.lib.django_utils_http_partly import url_has_allowed_host_and_scheme
 from app.lib.pam import verify_user
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 # TODO: Bug here. We do not want to prevent to open up login page 10 per hour, but we want to prevent 10 logins
-# @limiter.limit("10 per hour")
+@limiter.limit("10 per hour")
 def login():
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
