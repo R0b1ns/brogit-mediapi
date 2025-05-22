@@ -38,9 +38,10 @@ limiter = Limiter(
     app=app
 )
 
-app.secret_key = 'your_secret_key'  # Ersetze 'your_secret_key' durch einen sicheren Wert
+# TODO: Replace key with something from config
+app.secret_key = 'your_secret_key'
 
-# Flask-Login einrichten
+# Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -54,6 +55,7 @@ register_modules()
 
 # Benutzerklasse für einen einzelnen Benutzer
 class User(UserMixin):
+    # TODO: Take real username, nothing hardcoded
     id = "1"  # Feste Benutzer-ID
 
 

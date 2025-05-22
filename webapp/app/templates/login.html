@@ -37,6 +37,9 @@
                         {{ form.csrf_token }}
                         <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
 
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control") }}
+
                         {{ form.password.label(class="form-label") }}
                         <div class="input-group mb-3">
                             {{ form.password(class="form-control") }}
