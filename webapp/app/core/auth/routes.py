@@ -23,7 +23,7 @@ def login():
         if verify_user(username, password):
             user = User(username)
             login_user(user)
-            g.username = username
+            g.user = user
             # TODO: Log the login to logfile
         else:
             flash('Invalid credentials, please try again.')

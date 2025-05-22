@@ -13,6 +13,9 @@ from app.lib.pam import verify_user
 class User(UserMixin):
     def __init__(self, username: str):
         self.username = username
+        # TODO: Implement this on a better way
+        self.locale = 'en'
+        self.timezone = 'UTC+2'
 
     def get_id(self):
         return self.username
