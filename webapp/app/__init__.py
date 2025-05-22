@@ -64,25 +64,15 @@ def create_app():
     # Load backend
     register_modules()
 
-    # from app.core.auth import auth_bp
+    from app.core.auth import auth_bp
     from app.core.main import main_bp
 
-    # app.register_blueprint(auth_bp)
+    app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
 
     return app, socketio
 
-# @login_manager.unauthorized_handler
-# def unauthorized():
-#     if request.blueprint == 'api':
-#         abort(HTTPStatus.UNAUTHORIZED)
-#     return redirect(url_for('site.login'))
-#
-# @login_manager.user_loader
-# def load_user(user_id):
-#     if user_id == User.id:
-#         return User()
-#     return None
+
 
 
 
