@@ -2,7 +2,7 @@ import re
 import subprocess
 
 
-class USB_SMB:
+class USBModule:
     @staticmethod
     def is_available():
         return True

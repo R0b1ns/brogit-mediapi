@@ -1,9 +1,12 @@
-import sounddevice
 
 
-class AudioModule:
+class WifiModule:
 
-    @staticmethod
-    def get_audio_devices():
-        return sounddevice.query_devices()
+    def is_connected(self) -> bool:
+        if self.get_connection_info():
+            return True
+        else:
+            return False
 
+    def get_connection_info(self):
+        pass

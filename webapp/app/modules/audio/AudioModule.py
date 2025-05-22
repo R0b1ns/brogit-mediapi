@@ -1,30 +1,22 @@
-import locale
-import os
-import socket
 import subprocess
 
+import sounddevice
 
-class SystemModule:
 
-    @staticmethod
-    def get_hostname():
-        return socket.gethostname()
+class AudioModule:
 
     @staticmethod
-    def list_installed_languages():
-        b = locale.getlocale()
-        a = locale.getdefaultlocale()
+    def get_audio_device1():
+        return sounddevice.query_devices()
 
-        print(a)
-
-        print(b)
-
-
-if __name__ == '__main__':
-    SystemModule().list_installed_languages()
-
-    import sounddevice as sd
-
-    # Liste aller verfügbaren Audiogeräte
-    devices = sd.query_devices()
-    print(devices)
+    @staticmethod
+    def get_audio_devices():
+        # Use 'arecord' or 'aplay' to list audio devices on Linux
+        try:
+            result = subprocess.run(["aplay", "-l"], capture_output=True, text=True)
+            if result.returncode == 0:
+                print(result.stdout)
+            else:
+                print("Error retrieving audio devices:", result.stderr)
+        except FileNotFoundError:
+            print("'arecord' tool is not installed. Please install 'alsa-utils'.")
