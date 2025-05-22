@@ -33,7 +33,7 @@
                     <h5 class="modal-title">Login</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ url_for('login') }}">
+                    <form method="POST" action="{{ url_for('auth.login') }}">
                         {{ form.csrf_token }}
                         <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
 

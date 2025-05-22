@@ -1,9 +1,10 @@
-from flask import redirect, url_for, request, abort, render_template
+from flask import redirect, url_for, request, abort, render_template, flash, g
 from flask_login import login_required, logout_user, login_user
 
 from app.core.auth import auth_bp
 from app.core.auth.models import User, LoginForm
 from app.lib.django_utils_http_partly import url_has_allowed_host_and_scheme
+from app.lib.pam import verify_user
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -15,13 +16,16 @@ def login():
     # handle this for us, and we use a custom LoginForm to validate.
     form = LoginForm()
     if form.validate_on_submit():
-        # Login and validate the user.
-        user = User()
-        # user should be an instance of your `User` class
-        login_user(user)
+        username = form.username.data
+        password = form.password.data
 
-        # TODO: Do not flash. Log the login to logfile
-        # flash('Logged in successfully.')
+        if verify_user(username, password):
+            user = User(username)
+            login_user(user)
+            g.username = username
+            # TODO: Log the login to logfile
+        else:
+            flash('Invalid credentials, please try again.')
 
         next_url = request.args.get('next')
         # url_has_allowed_host_and_scheme should check if the url is safe
@@ -30,11 +34,12 @@ def login():
         if next_url and not url_has_allowed_host_and_scheme(next_url, request.host):
             return abort(400)
 
-        return redirect(next_url or url_for('index'))
+        return redirect(next_url or url_for('main.index'))
+
     return render_template('login.html', form=form)
 
 @auth_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('core.auth.login'))
+    return redirect(url_for('auth.login'))

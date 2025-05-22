@@ -1,9 +1,10 @@
 import os
 
 from flask import send_from_directory, current_app, render_template, request, jsonify, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_socketio import emit
 
+from app.core.auth.routes import login
 from app.core.main import main_bp
 from app.extensions import socketio
 from app.lib.Backend import Backend
@@ -12,8 +13,9 @@ from app.lib.wifi import WifiHelper
 
 @main_bp.route('/')
 def index():
-    # if not current_user.is_authenticated:
-    #     return login()
+    print(current_user.is_authenticated)
+    if not current_user.is_authenticated:
+        return login()
 
     # hostname = socket.getfqdn()
     return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend())

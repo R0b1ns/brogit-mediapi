@@ -10,10 +10,12 @@ from app.extensions import login_manager
 from app.lib.pam import verify_user
 
 
-# Benutzerklasse für einen einzelnen Benutzer
 class User(UserMixin):
-    # TODO: Take real username, nothing hardcoded
-    id = "1"  # Feste Benutzer-ID
+    def __init__(self, username: str):
+        self.username = username
+
+    def get_id(self):
+        return self.username
 
 class LoginForm(FlaskForm):
     username = StringField('Username')
@@ -25,14 +27,19 @@ class LoginForm(FlaskForm):
 
     def validate(self, extra_validators=None):
         initial_validation = super(LoginForm, self).validate()
-        if not initial_validation:
-            return False
+        # if not initial_validation:
+        #     return False
 
-        if verify_user(self.username.data, self.password.data):
-            return True
-        else:
-            flash('Invalid credentials')
+        return initial_validation
 
+        # TODO: No credential check here. Here just validate. Maybe if policy is archived etc.
+        # if verify_user(self.username.data, self.password.data):
+        #     return True
+        # else:
+        #     flash('Invalid credentials')
+
+        # TODO: Find out how we can append an error to an field
+        # -> make it to self   => username.append('Test')
         # user = User.query.filter_by(email=self.email.data).first()
         # if not user:
         #     self.email.errors.append('Unknown email')
@@ -40,13 +47,11 @@ class LoginForm(FlaskForm):
         # if not user.verify_password(self.password.data):
         #     self.password.errors.append('Invalid password')
         #     return False
-        return False
+        # return False
 
 @login_manager.user_loader
 def load_user(user_id):
-    if user_id == User.id:
-        return User()
-    return None
+    return User(user_id)
 
 @login_manager.unauthorized_handler
 def unauthorized():
