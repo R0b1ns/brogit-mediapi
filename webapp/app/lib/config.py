@@ -1,5 +1,46 @@
 import configparser
+import os
 from typing import Optional
+
+import yaml
+from dotenv import dotenv_values
+
+# TODO: THis is a whole draft.
+
+def load_config(env_path: str, config_path: str) -> dict:
+    config = {}
+
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    print(BASE_DIR)
+
+    BASE_DIR = os.getcwd()
+    print(BASE_DIR)
+
+    from pathlib import Path
+
+    BASE_DIR = Path(__file__).resolve().parent
+    print(BASE_DIR)
+
+    env = dotenv_values('app/.env')
+    # config.update(env)
+
+    print(env)
+
+    print(env.get('CONFIG_FILE'))
+
+    exit()
+
+    with open("config.yaml", "r") as f:
+        config = yaml.safe_load(f)
+
+    # # .ini laden
+    # parser = configparser.ConfigParser()
+    # parser.read(ini_path)
+    # for section in parser.sections():
+    #     for key, val in parser.items(section):
+    #         config[f"{section.upper()}_{key.upper()}"] = val
+
+    return config
 
 class ConfigHandler:
     """
