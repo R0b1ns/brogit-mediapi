@@ -3,6 +3,7 @@ import os
 from flask import send_from_directory, current_app, render_template, request, jsonify, flash
 from flask_login import login_required, current_user
 from flask_socketio import emit
+from flask_babel import _
 
 from app.core.auth.routes import login
 from app.core.main import main_bp
@@ -35,13 +36,13 @@ def connect_to_network():
     password = request.args.get('password')
 
     if not ssid:
-        return jsonify({"error": "SSID is required"}), 400
+        return jsonify({"error": _("SSID is required")}), 400
 
     try:
         WifiHelper.get_instance().connect(ssid, password)
-        return jsonify({"message": f"Connected to {ssid}"}), 200
+        return jsonify({"message": _(f"Connected to %(value)", ssid)}), 200
     except Exception as e:
-        flash("It was unable to connect to the new network. Please check your credentials")
+        flash(_("It was unable to connect to the new network. Please check your credentials"))
         return jsonify({"message": str(e)}), 500
 
 # TODO: Move that route

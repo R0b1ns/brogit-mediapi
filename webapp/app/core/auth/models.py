@@ -1,29 +1,29 @@
 from http import HTTPStatus
 
-from flask import flash, request, abort, redirect, url_for
+from flask import request, abort, redirect, url_for
+from flask_babel import _
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
 from wtforms.fields.simple import PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 
 from app.extensions import login_manager
-from app.lib.pam import verify_user
 
 
 class User(UserMixin):
     def __init__(self, username: str):
         self.username = username
         # TODO: Implement this on a better way
-        self.locale = 'en'
+        self.locale = 'de'
         self.timezone = 'UTC+2'
 
     def get_id(self):
         return self.username
 
 class LoginForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log In')
+    username = StringField(_('Username'))
+    password = PasswordField(_('Password'), validators=[DataRequired()])
+    submit = SubmitField(_('Log In'))
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)

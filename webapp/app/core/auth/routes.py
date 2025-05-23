@@ -1,5 +1,6 @@
 from flask import redirect, url_for, request, abort, render_template, flash, g
 from flask_login import login_required, logout_user, login_user
+from flask_babel import _
 
 from app.core.auth import auth_bp
 from app.core.auth.models import User, LoginForm
@@ -26,7 +27,7 @@ def login():
             g.user = user
             # TODO: Log the login to logfile
         else:
-            flash('Invalid credentials, please try again.')
+            flash(_('Invalid credentials.'))
 
         next_url = request.args.get('next')
         # url_has_allowed_host_and_scheme should check if the url is safe
