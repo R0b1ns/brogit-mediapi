@@ -63,6 +63,8 @@ class WifiHelper:
 
         except subprocess.CalledProcessError as e:
             print(f"Error retrieving known WiFi networks: {e}")
+        except FileNotFoundError as e:
+            print("NMCli does not exist")
 
         return known_networks
 
@@ -105,6 +107,9 @@ class WifiHelper:
 
         except subprocess.CalledProcessError as e:
             print(f"Error scanning WiFi networks: {e}")
+
+        except FileNotFoundError as e:
+            print("NMCli does not exist")
 
         return networks
 
