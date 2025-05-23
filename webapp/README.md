@@ -6,23 +6,13 @@ gunicorn app:app -b localhost:80 &
 
 ## Password
 
-# Multi-Language
+# Multi-Language (babel)
 
-translations/de/LC_MESSAGES/messages.po
-
-    # Erstellen einer PO-Datei (Beispiel)
-    pybabel init -i messages.pot -d translations -l de
-
-
-~~msgid "Welcome"
-msgstr "Willkommen"
-
-msgid "This is a multilingual Flask web application."
-msgstr "Dies ist eine mehrsprachige Flask-Webanwendung."~~
-
-
+pybabel extract -F babel.cfg -k lazy_gettext -o messages.pot .
+pybabel init -i messages.pot -d translations -l de
 pybabel compile -d translations
+pybabel update -i messages.pot -d translations
 
 
-# Benutze eine benutzerdefinierte Domain
+## Benutze eine benutzerdefinierte Domain
     greeting = _('Hello', domain='custom_translations')
