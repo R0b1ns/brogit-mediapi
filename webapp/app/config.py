@@ -1,4 +1,5 @@
 from app.lib.Backend import Backend
+from app.modules.ethernet.EthernetModule import EthernetModule
 from app.modules.gmrender_resurrect.GmrenderResurrectModule import GmrenderResurrectModule
 from app.modules.shairport_sync.ShairportSyncModule import ShairportSyncModule
 from app.modules.system.SystemModule import SystemModule
@@ -13,3 +14,4 @@ def register_modules():
     b.add_module('system', SystemModule)
     b.add_module('shairport_sync', ShairportSyncModule)
     b.add_module('gmrender_resurrect', GmrenderResurrectModule)
+    b.add_module('ethernet', EthernetModule)
