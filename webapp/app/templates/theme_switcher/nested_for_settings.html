@@ -1,28 +1,28 @@
-<label for="bd-theme" class="align-middle">Appearance <small class="text-muted" title="This setting is only stored in your browser">(Local Storage)</small></label>
-<button class="btn btn-bd-primary dropdown-toggle d-flex align-items-center settings-fit" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+<label for="bd-theme" class="align-middle">{{ _('Appearance') }} <small class="text-muted" title="This setting is only stored in your browser">({{ _('Local Storage') }})</small></label>
+<button class="btn btn-bd-primary dropdown-toggle d-flex align-items-center settings-fit" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="{{ _('Toggle theme (auto)') }}">
   <i class="bi bi-circle-half bi theme-icon-active"></i>
-  <span data-name="text-name" class="fw-normal ms-1">Auto</span>
-  <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+  <span data-name="text-name" class="fw-normal ms-1">{{ _('Auto') }}</span>
+  <span class="visually-hidden" id="bd-theme-text">{{ _('Toggle theme') }}</span>
 </button>
 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
   <li>
     <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
       <i class="bi bi-sun-fill me-2 opacity-50" data-text-name="Light" data-icon-name="bi bi-sun-fill"></i>
-      Light
+      {{ _('Light') }}
       <i class="bi bi-check ms-auto d-none"></i>
     </button>
   </li>
   <li>
     <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
       <i class="bi bi-moon-fill me-2 opacity-50" data-text-name="Dark" data-icon-name="bi bi-moon-fill"></i>
-      Dark
+      {{ _('Dark') }}
       <i class="bi bi-check ms-auto d-none"></i>
     </button>
   </li>
   <li>
     <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
       <i class="bi bi-circle-half me-2 opacity-50" data-text-name="Auto" data-icon-name="bi bi-circle-half"></i>
-      Auto
+      {{ _('Auto') }}
       <i class="bi bi-check ms-auto d-none"></i>
     </button>
   </li>

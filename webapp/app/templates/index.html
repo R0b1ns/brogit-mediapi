@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WiFi Networks</title>
+    <title>mediaPi</title>
     <script>
         var deviceHostname = "{{ hostname }}";
         var wifi_connect_endpoint = "{{ url_for('main.connect_to_network') }}";
@@ -41,10 +41,10 @@
               <i class="bi bi-gear-wide-connected"></i>
           </a>
           <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-tools"></i> Settings</a></li>
-            <li><a class="dropdown-item" href="#info"><i class="bi bi-info-circle"></i> Info</a></li>
+            <li><a class="dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-tools"></i> {{ _('Settings') }}</a></li>
+            <li><a class="dropdown-item" href="#info"><i class="bi bi-info-circle"></i> {{ _('Info') }}</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right"></i> Sign out</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right"></i> {{ _('Sign out') }}</a></li>
           </ul>
         </div>
       </div>

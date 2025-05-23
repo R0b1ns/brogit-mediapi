@@ -17,8 +17,6 @@ def index():
     if not current_user.is_authenticated:
         return login()
 
-    print(_('Username'))
-
     # hostname = socket.getfqdn()
     return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend())
 

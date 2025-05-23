@@ -4,11 +4,11 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-5 col-md-6">
-                <label for="settings-hostname" class="align-middle">Device Name</label>
+                <label for="settings-hostname" class="align-middle">{{ _('Device Name') }}</label>
             </div>
             <div class="col-sm-7 col-md-6">
                 <div class="input-group input-group-sm">
-                    <input id="settings-hostname" type="text" class="form-control" placeholder="{{ hostname }}" title="{{ hostname }}" value="{{ hostname }}" aria-label="Device Name" aria-describedby="button-addon-save-hostname">
+                    <input id="settings-hostname" type="text" class="form-control" placeholder="{{ hostname }}" title="{{ hostname }}" value="{{ hostname }}" aria-label="{{ _('Device Name') }}" aria-describedby="button-addon-save-hostname">
                     <button class="btn btn-outline-success" type="button" id="button-addon-save-hostname" title="Save"><i class="bi bi-check"></i></button>
                 </div>
             </div>
@@ -17,10 +17,10 @@
 </ul>
 <ul class="list-group mb-2">
     <li class="list-group-item">
-        <label for="settings-general-language" class="align-middle">Language</label>
+        <label for="settings-general-language" class="align-middle">{{ _('Language') }}</label>
         <select class="form-select form-select-listmod" id="settings-general-language">
-            <option value="english">English</option>
-            <option value="deutsch">Deutsch</option>
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
         </select>
     </li>
 </ul>

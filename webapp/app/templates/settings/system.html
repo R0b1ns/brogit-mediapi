@@ -1,10 +1,10 @@
-<h5>System</h5>
+<h5>{{ _('System') }}</h5>
 
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-usb-device-1" autocomplete="off" checked>
-            <label class="form-check-label w-100 text-start" for="settings-usb-device-1">Keep system up to date</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-system-update" autocomplete="off" checked>
+            <label class="form-check-label w-100 text-start" for="settings-system-update">{{ _('Keep system up to date') }} (i-Icon: Perform APT System Updates.)</label>
         </div>
     </li>
 </ul>
@@ -14,14 +14,14 @@
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-usb-device-1" autocomplete="off" checked>
-            <label class="form-check-label w-100 text-start" for="settings-usb-device-1">Enable automatic updates</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-system-app-update" autocomplete="off" checked>
+            <label class="form-check-label w-100 text-start" for="settings-system-app-update">{{ _('Enable automatic updates') }}</label>
         </div>
     </li>
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-3">
-                <label for="settings-system-version">Version</label>
+                <label for="settings-system-version">{{ _('Version') }}</label>
             </div>
             <div class="col-sm-9 text-end">
                 <span id="settings-system-version">Webapp connect <i class="bi bi-check-circle align-top text-success"></i><!-- TODO: Nur wenn current --><br><small class="text-muted"><i>ee1c099</i> committed on 2024-12-11</small></span>
@@ -31,30 +31,30 @@
         <div class="row mt-2">
             <div class="col-lg-10 offset-lg-2">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-text">Branch</span>
-                    <select class="form-select" id="settings-general-language">
+                    <span class="input-group-text">{{ _('Branch') }}</span>
+                    <select class="form-select" id="settings-system-app-branch">
                         <option value="english">Main</option>
                         <option value="deutsch">Dev</option>
                     </select>
-                    <span class="input-group-text">Commit</span>
-                    <select class="form-select" id="settings-general-language">
+                    <span class="input-group-text">{{ _('Commit') }}</span>
+                    <select class="form-select" id="settings-system-app-commit">
                         <option value="english">ee1c099a7fe30 (Latest)</option>
                         <option value="deutsch">hci0</option>
                     </select>
-                    <button class="btn btn-outline-primary" type="button" id="button-addon-save-hostname" title="Save">Update</button>
+                    <button class="btn btn-outline-primary" type="button" id="button-addon-save-hostname" title="Save">{{ _('Update') }}</button>
                 </div>
             </div>
         </div>
     </li>
 </ul>
 
-<h6>User</h6>
+<h6>{{ _('User') }}</h6>
 
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-6 col-md-9">
-                <label for="settings-network-netmask" class="list-group-item-mod">Username</label>
+                <label for="settings-network-netmask" class="list-group-item-mod">{{ _('Username') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
                 <input class="form-control form-control-sm" type="text" id="settings-network-netmask" autocomplete="off" placeholder="mediapi" disabled>
@@ -64,7 +64,7 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-6 col-md-9">
-                <label for="settings-network-gateway" class="list-group-item-mod">Password</label>
+                <label for="settings-network-gateway" class="list-group-item-mod">{{ _('Password') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
                 <input class="form-control form-control-sm" type="text" id="settings-network-gateway" autocomplete="off" placeholder="share-password" disabled>
@@ -73,7 +73,7 @@
     </li>
 </ul>
 
-<h6>Reset</h6>
+<h6>{{ _('Reset') }}</h6>
 
-<button type="button" class="btn btn-outline-warning">Reboot</button>
-<button type="button" class="btn btn-outline-danger">Restore factory defaults</button>
+<button type="button" class="btn btn-outline-warning">{{ _('Reboot') }}</button>
+<button type="button" class="btn btn-outline-danger">{{ _('Restore factory defaults') }}</button>

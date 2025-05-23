@@ -1,13 +1,13 @@
-<h5>Ethernet</h5>
+<h5>{{ _('Ethernet') }}</h5>
 
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-6 col-md-7">
-                <label for="settings-ethernet-connected">Status</label>
+                <label for="settings-ethernet-connected">{{ _('Status') }}</label>
             </div>
             <div class="col-sm-6 col-md-5 text-end">
-                <span id="settings-ethernet-connected" class="text-success">Connected <i class="bi bi-check-circle align-top"></i></span>
+                <span id="settings-ethernet-connected" class="text-success">{{ _('Connected') }} <i class="bi bi-check-circle align-top"></i></span>
             </div>
         </div>
     </li>
@@ -16,13 +16,13 @@
     <li class="list-group-item">
         <div class="form-check-reverse form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-ip-dhcp" autocomplete="off" checked>
-            <label class="form-check-label w-100 text-start" for="settings-ethernet-ip-dhcp">Obtain IP address automatically</label>
+            <label class="form-check-label w-100 text-start" for="settings-ethernet-ip-dhcp">{{ _('Obtain IP address automatically') }}</label>
         </div>
     </li>
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-6 col-md-9">
-                <label for="settings-network-ip" class="list-group-item-mod ps-3">IP Address</label>
+                <label for="settings-network-ip" class="list-group-item-mod ps-3">{{ _('IP Address') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
                 <input class="form-control form-control-sm" type="text" id="settings-network-ip" autocomplete="off" placeholder="192.168.0.32" disabled>
@@ -32,7 +32,7 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-6 col-md-9">
-                <label for="settings-network-netmask" class="list-group-item-mod ps-3">Netmask</label>
+                <label for="settings-network-netmask" class="list-group-item-mod ps-3">{{ _('Netmask') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
                 <input class="form-control form-control-sm" type="text" id="settings-network-netmask" autocomplete="off" placeholder="255.255.255.0" disabled>
@@ -42,7 +42,7 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm-6 col-md-9">
-                <label for="settings-network-gateway" class="list-group-item-mod ps-3">Gateway</label>
+                <label for="settings-network-gateway" class="list-group-item-mod ps-3">{{ _('Gateway') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
                 <input class="form-control form-control-sm" type="text" id="settings-network-gateway" autocomplete="off" placeholder="192.168.0.1" disabled>
