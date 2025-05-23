@@ -1,8 +1,9 @@
 $(document).ready(function() {
   // Wenn ein Tab gezeigt wird, lade die aktuellen Settings
-  $('#settings-container > div.tab-pane').on('shown.bs.tab shown.bs.collapse', function () {
-    const section = $(this).data('section');
-    loadSettings(section, $(this));
+  $('#v-pills-tab button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+    const targetSelector = $(e.target).data('bsTarget');
+    const section = $(targetSelector).data('section');
+    loadSettings(section, $(targetSelector));
   });
 
   // Initiales Laden für aktiven Tab

@@ -1,53 +1,48 @@
-    <!-- Object Position Modal -->
-    <div class="modal modal-lg fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="settingsModalLabel">{{ _('Settings') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-0">
-                    <div class="d-flex align-items-stretch">
-                        <div class="nav flex-column nav-pills text-nowrap" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <div class="mx-2 my-3">
-                                <button class="nav-link active text-start w-100" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" title="General"><i class="bi bi-gear"></i><span class="d-none d-md-inline"> {{ _('General') }}</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-modules-tab" data-bs-toggle="pill" data-bs-target="#v-pills-modules" type="button" role="tab" aria-controls="v-pills-modules" aria-selected="false" title="Modules"><i class="bi bi-window-stack"></i><span class="d-none d-md-inline"> {{ _('Modules') }}</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-wifi-tab" data-bs-toggle="pill" data-bs-target="#v-pills-wifi" type="button" role="tab" aria-controls="v-pills-wifi" aria-selected="false" title="Wifi"><i class="bi bi-wifi"></i><span class="d-none d-md-inline"> Wifi</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-ethernet-tab" data-bs-toggle="pill" data-bs-target="#v-pills-ethernet" type="button" role="tab" aria-controls="v-pills-ethernet" aria-selected="false" title="Ethernet"><i class="bi bi-ethernet"></i><span class="d-none d-md-inline"> {{ _('Ethernet') }}</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-bluetooth-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bluetooth" type="button" role="tab" aria-controls="v-pills-bluetooth" aria-selected="false" title="Bluetooth"><i class="bi bi-bluetooth"></i><span class="d-none d-md-inline"> {{ _('Bluetooth') }}</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-network-tab" data-bs-toggle="pill" data-bs-target="#v-pills-network" type="button" role="tab" aria-controls="v-pills-network" aria-selected="false" title="Network"><i class="bi bi-hdd-network"></i><span class="d-none d-md-inline"> {{ _('Network') }}</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-usb-tab" data-bs-toggle="pill" data-bs-target="#v-pills-usb" type="button" role="tab" aria-controls="v-pills-usb" aria-selected="false" title="USB"><i class="bi bi-usb-symbol"></i><span class="d-none d-md-inline"> {{ _('USB') }}</span></button>
-                                <button class="nav-link text-start w-100" id="v-pills-system-tab" data-bs-toggle="pill" data-bs-target="#v-pills-system" type="button" role="tab" aria-controls="v-pills-system" aria-selected="false" title="System"><i class="bi bi-motherboard"></i><span class="d-none d-md-inline"> {{ _('System') }}</span></button>
-                            </div>
+<!-- Object Position Modal -->
+<div class="modal modal-lg fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingsModalLabel">{{ _('Settings') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="d-flex align-items-stretch">
+                    <div class="nav flex-column nav-pills text-nowrap" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class="mx-2 my-3">
+                            <button class="nav-link active text-start w-100" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" title="General">
+                                <i class="bi bi-gear"></i><span class="d-none d-md-inline"> {{ _('General') }}</span>
+                            </button>
+                            <button class="nav-link text-start w-100" id="v-pills-modules-tab" data-bs-toggle="pill" data-bs-target="#v-pills-modules" type="button" role="tab" aria-controls="v-pills-modules" aria-selected="false" title="Modules">
+                                <i class="bi bi-window-stack"></i><span class="d-none d-md-inline"> {{ _('Modules') }}</span>
+                            </button>
+
+                            {# Dynamische Tabs für Module mit type == "module" #}
+                            {% for mod in modules if mod.type == 'module' %}
+                            <button class="nav-link text-start w-100" id="v-pills-{{ mod.name }}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{ mod.name }}" type="button" role="tab" aria-controls="v-pills-{{ mod.name }}" aria-selected="false" title="{{ mod.display_name }}">
+                                <i class="{{ mod.icon }}"></i><span class="d-none d-md-inline"> {{ _(mod.display_name) }}</span>
+                            </button>
+                            {% endfor %}
                         </div>
-                        <div class="tab-content bg-body-tertiary w-100 border-start p-2 rounded-bottom-1" id="settings-container">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0" data-section="general">
-                                {% include 'settings/general.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-modules" role="tabpanel" aria-labelledby="v-pills-modules-tab" tabindex="0" data-section="modules">
-                                {% include 'settings/modules.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-wifi" role="tabpanel" aria-labelledby="v-pills-wifi-tab" tabindex="0" data-section="wifi">
-                                {% include 'settings/wifi.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-ethernet" role="tabpanel" aria-labelledby="v-pills-ethernet-tab" tabindex="0" data-section="ethernet">
-                                {% include 'settings/ethernet.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-bluetooth" role="tabpanel" aria-labelledby="v-pills-bluetooth-tab" tabindex="0" data-section="bluetooth">
-                                {% include 'settings/bluetooth.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-network" role="tabpanel" aria-labelledby="v-pills-network-tab" tabindex="0" data-section="network">
-                                {% include 'settings/network.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-usb" role="tabpanel" aria-labelledby="v-pills-usb-tab" tabindex="0" data-section="usb">
-                                {% include 'settings/usb.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-system" role="tabpanel" aria-labelledby="v-pills-system-tab" tabindex="0" data-section="system">
-                                {% include 'settings/system.html' %}
-                            </div>
+                    </div>
+
+                    <div class="tab-content bg-body-tertiary w-100 border-start p-2 rounded-bottom-1" id="settings-container">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0" data-section="general">
+                            {% include 'settings/general.html' %}
                         </div>
+                        <div class="tab-pane fade" id="v-pills-modules" role="tabpanel" aria-labelledby="v-pills-modules-tab" tabindex="0" data-section="modules">
+                            {% include 'settings/modules.html' %}
+                        </div>
+
+                        {# Dynamische Inhalte für Module mit type == "module" #}
+                        {% for mod in modules if mod.type == 'module' %}
+                        <div class="tab-pane fade" id="v-pills-{{ mod.name }}" role="tabpanel" aria-labelledby="v-pills-{{ mod.name }}-tab" tabindex="0" data-section="{{ mod.name }}">
+                            {% include 'settings/' ~ mod.name ~ '.html' %}
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

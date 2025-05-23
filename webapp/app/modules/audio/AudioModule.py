@@ -2,8 +2,18 @@ import subprocess
 
 import sounddevice
 
+from app.lib.ModuleInterface import ModuleInterface
 
-class AudioModule:
+
+class AudioModule(ModuleInterface):
+    @staticmethod
+    def get_info():
+        return {
+            "name": "audio",  # interne id
+            "display_name": "Audio",
+            "icon": "bi-cog",
+            "type": "module"  # oder "submodule"
+        }
 
     @staticmethod
     def get_audio_device1():

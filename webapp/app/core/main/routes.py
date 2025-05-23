@@ -17,8 +17,13 @@ def index():
     if not current_user.is_authenticated:
         return login()
 
+    modules = []
+    for name in Backend().list_modules():
+        info = Backend().get(name).get_info()
+        modules.append(info)
+
     # hostname = socket.getfqdn()
-    return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend())
+    return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend(), modules=modules)
 
 @main_bp.route('/hotspot-detect.html')
 def hotspot_detect():

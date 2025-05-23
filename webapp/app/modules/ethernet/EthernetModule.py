@@ -9,6 +9,15 @@ class EthernetModule:
             "connected": True,
         }
 
+    @staticmethod
+    def get_info():
+        return {
+            "name": "ethernet",  # interne id
+            "display_name": "Ethernet",
+            "icon": "bi-ethernet",
+            "type": "module"  # oder "submodule"
+        }
+
     def get_settings(self) -> dict:
         return self.settings
 

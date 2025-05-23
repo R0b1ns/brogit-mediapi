@@ -1,6 +1,15 @@
 import subprocess
 
 
+# @staticmethod
+# def get_info():
+#     return {
+#         "name": "network",  # interne id
+#         "display_name": "Network",
+#         "icon": "bi-hdd-network",
+#         "type": "module"  # oder "submodule"
+#     }
+
 def get_dns_servers_full() -> list[str]:
     try:
         result = subprocess.run(['resolvectl', 'status'], capture_output=True, text=True, check=True)

@@ -9,8 +9,18 @@ from typing import List, Tuple
 from crontab import CronTab
 from git import Repo, GitCommandError
 
+from app.lib.ModuleInterface import ModuleInterface
 
-class SystemModule:
+
+class SystemModule(ModuleInterface):
+    @staticmethod
+    def get_info():
+        return {
+            "name": "system",  # interne id
+            "display_name": "System",
+            "icon": "bi-motherboard",
+            "type": "module"  # oder "submodule"
+        }
 
     @staticmethod
     def get_hostname():

@@ -1,8 +1,19 @@
 import re
 import subprocess
 
+from app.lib.ModuleInterface import ModuleInterface
 
-class USBModule:
+
+class USBModule(ModuleInterface):
+    @staticmethod
+    def get_info():
+        return {
+            "name": "usb",  # interne id
+            "display_name": "USB",
+            "icon": "bi-usb-symbol",
+            "type": "module"  # oder "submodule"
+        }
+
     @staticmethod
     def is_available():
         return True
