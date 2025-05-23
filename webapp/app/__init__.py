@@ -4,8 +4,7 @@ import unicodedata
 from http import HTTPStatus
 from urllib.parse import urlparse
 
-from flask import Flask, render_template, session, request, jsonify, redirect, flash, url_for, abort, \
-    send_from_directory
+from flask import Flask
 from flask_cors import CORS
 
 from app.config import register_modules
@@ -19,10 +18,15 @@ def create_app():
     # TODO: Replace key with something from config
     app.secret_key = 'your_secret_key'
 
+    app.config['DEBUG'] = True
+    app.config['PROPAGATE_EXCEPTIONS'] = True
+
     # Flask-Babel config
     # Supported languages
     app.config['LANGUAGES'] = ['en', 'de']
     app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+    # base_dir = os.path.abspath(os.path.dirname(__file__))
+    # app.config['BABEL_TRANSLATION_DIRECTORIES'] = os.path.join(base_dir, "translations")
     # https://python-babel.github.io/flask-babel/
     # TODO: Load config from config file
     # BABEL_TRANSLATION_DIRECTORIES=/path/to/translations;/another/path/
@@ -36,7 +40,7 @@ def create_app():
     # Init Extensions
     socketio.init_app(app)
     csrf.init_app(app)
-    babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
+    babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone, default_locale='en', default_domain='messages', default_translation_directories='translations')
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
     limiter.init_app(app)
@@ -45,10 +49,11 @@ def create_app():
     # Load backend
     register_modules()
 
-    from app.core.auth import auth_bp
-    from app.core.main import main_bp
+    with app.app_context():
+        from app.core.auth import auth_bp
+        from app.core.main import main_bp
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(main_bp)
+        app.register_blueprint(auth_bp)
+        app.register_blueprint(main_bp)
 
-    return app, socketio
+        return app, socketio

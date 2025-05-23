@@ -3,7 +3,7 @@ import os
 from flask import send_from_directory, current_app, render_template, request, jsonify, flash
 from flask_login import login_required, current_user
 from flask_socketio import emit
-from flask_babel import _
+from flask_babel import _, lazy_gettext
 
 from app.core.auth.routes import login
 from app.core.main import main_bp
@@ -16,6 +16,8 @@ from app.lib.wifi import WifiHelper
 def index():
     if not current_user.is_authenticated:
         return login()
+
+    print(_('Username'))
 
     # hostname = socket.getfqdn()
     return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend())
