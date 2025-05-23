@@ -55,56 +55,56 @@ msgstr "Einstellungen"
 
 #: templates/index.html:45
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: templates/index.html:47
 msgid "Sign out"
-msgstr ""
+msgstr "Abmelden"
 
 #: templates/nested_settings_modal.html:13
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: templates/nested_settings_modal.html:14
 msgid "Modules"
-msgstr ""
+msgstr "Module"
 
 #: templates/nested_settings_modal.html:16 templates/settings/ethernet.html:1
 msgid "Ethernet"
-msgstr ""
+msgstr "Ethernet"
 
 #: templates/nested_settings_modal.html:17 templates/settings/bluetooth.html:1
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: templates/nested_settings_modal.html:18
 msgid "Network"
-msgstr ""
+msgstr "Netzwerk"
 
 #: templates/nested_settings_modal.html:19 templates/settings/usb.html:5
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #: templates/nested_settings_modal.html:20 templates/settings/system.html:1
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: templates/settings/bluetooth.html:7
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiviert"
 
 #: templates/settings/bluetooth.html:16 templates/settings/general.html:7
 #: templates/settings/general.html:11
 msgid "Device Name"
-msgstr ""
+msgstr "Gerätename"
 
 #: templates/settings/bluetooth.html:27
 msgid "Audio device"
-msgstr ""
+msgstr "Audiogerät"
 
 #: templates/settings/ethernet.html:7
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: templates/settings/ethernet.html:10
 #, fuzzy
@@ -117,11 +117,11 @@ msgstr ""
 
 #: templates/settings/ethernet.html:25
 msgid "IP Address"
-msgstr ""
+msgstr "IP Adresse"
 
 #: templates/settings/ethernet.html:35
 msgid "Netmask"
-msgstr ""
+msgstr "Netzmaske"
 
 #: templates/settings/ethernet.html:45
 msgid "Gateway"
@@ -129,84 +129,84 @@ msgstr ""
 
 #: templates/settings/general.html:20
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: templates/settings/modules.html:8 templates/settings/modules.html:25
 msgid "License"
-msgstr ""
+msgstr "Lizenz"
 
 #: templates/settings/network.html:5
 msgid "DNS Server"
-msgstr ""
+msgstr "DNS Server"
 
 #: templates/settings/network.html:14
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: templates/settings/network.html:24 templates/settings/network.html:38
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #: templates/settings/network.html:24
 msgid "HTTP Proxy Host"
-msgstr ""
+msgstr "HTTP Proxy Host"
 
 #: templates/settings/network.html:26 templates/settings/network.html:40
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: templates/settings/network.html:26
 msgid "HTTP Proxy Port"
-msgstr ""
+msgstr "HTTP Proxy Port"
 
 #: templates/settings/network.html:38 templates/settings/network.html:40
 msgid "HTTPS Proxy Host"
-msgstr ""
+msgstr "HTTPS Proxy Host"
 
 #: templates/settings/system.html:7
 msgid "Keep system up to date"
-msgstr ""
+msgstr "System auf dem neuesten Stand halten"
 
 #: templates/settings/system.html:18
 msgid "Enable automatic updates"
-msgstr ""
+msgstr "Aktiviere automatische updates"
 
 #: templates/settings/system.html:24
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: templates/settings/system.html:34
 msgid "Branch"
-msgstr ""
+msgstr "Branch"
 
 #: templates/settings/system.html:39
 msgid "Commit"
-msgstr ""
+msgstr "Commit"
 
 #: templates/settings/system.html:44
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 #: templates/settings/system.html:51
 #, fuzzy
 msgid "User"
-msgstr "Benutzername"
+msgstr "Benutzer"
 
 #: templates/settings/system.html:76
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: templates/settings/system.html:78
 msgid "Reboot"
-msgstr ""
+msgstr "Neustarten"
 
 #: templates/settings/system.html:79
 msgid "Restore factory defaults"
-msgstr ""
+msgstr "Werkseinstellungen wiederherstellen"
 
 #: templates/theme_switcher/nested_for_settings.html:1
 msgid "Appearance"
-msgstr ""
+msgstr "Darstellung"
 
 #: templates/theme_switcher/nested_for_settings.html:1
 msgid "Local Storage"

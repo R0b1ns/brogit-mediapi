@@ -1,0 +1,8 @@
+network:
+
+
+system:
+  auto-update: !!bool "true"
+
+app:
+  auto-update: true
