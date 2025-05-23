@@ -1,0 +1,1 @@
+https://github.com/mikebrady/shairport-sync/issues/907
