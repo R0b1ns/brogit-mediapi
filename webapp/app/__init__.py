@@ -57,8 +57,10 @@ def create_app():
     with app.app_context():
         from app.core.auth import auth_bp
         from app.core.main import main_bp
+        from app.core.api import api_bp
 
         app.register_blueprint(auth_bp)
         app.register_blueprint(main_bp)
+        app.register_blueprint(api_bp)
 
         return app, socketio

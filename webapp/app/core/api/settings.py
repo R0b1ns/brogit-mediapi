@@ -1,17 +1,17 @@
 from flask import jsonify, request
 
-from app.core.api import api
+from app.core.api import api_bp
 from app.lib.Backend import Backend
 
 
-@api.route('/settings/<section>', methods=['GET'])
+@api_bp.route('/settings/<section>', methods=['GET'])
 def get_settings(section):
     module = Backend().get(section)
     if not module:
         return jsonify({"error": "Unknown section"}), 404
     return jsonify(module.get_settings())
 
-@api.route('/settings/<section>', methods=['POST'])
+@api_bp.route('/settings/<section>', methods=['POST'])
 def update_settings(section):
     module = Backend().get(section)
     if not module:
@@ -22,7 +22,7 @@ def update_settings(section):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@api.route('/settings/<section>/<action>', methods=['POST'])
+@api_bp.route('/settings/<section>/<action>', methods=['POST'])
 def call_action(section, action):
     module = Backend().get(section)
     if not module:
