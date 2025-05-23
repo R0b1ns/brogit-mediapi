@@ -1,0 +1,232 @@
+# English translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-05-23 08:56+0200\n"
+"PO-Revision-Date: 2025-05-22 23:33+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: core/auth/models.py:24 templates/settings/system.html:57
+msgid "Username"
+msgstr "UsernameX"
+
+#: core/auth/models.py:25 templates/settings/system.html:67
+msgid "Password"
+msgstr ""
+
+#: core/auth/models.py:26
+msgid "Log In"
+msgstr ""
+
+#: core/auth/routes.py:30
+msgid "Invalid credentials."
+msgstr ""
+
+#: core/main/routes.py:39
+msgid "SSID is required"
+msgstr ""
+
+#: core/main/routes.py:43
+msgid "Connected to %(value)"
+msgstr ""
+
+#: core/main/routes.py:45
+msgid "It was unable to connect to the new network. Please check your credentials"
+msgstr ""
+
+#: templates/index.html:44 templates/nested_settings_modal.html:6
+#: templates/settings/modules.html:5 templates/settings/modules.html:22
+msgid "Settings"
+msgstr ""
+
+#: templates/index.html:45
+msgid "Info"
+msgstr ""
+
+#: templates/index.html:47
+msgid "Sign out"
+msgstr ""
+
+#: templates/nested_settings_modal.html:13
+msgid "General"
+msgstr ""
+
+#: templates/nested_settings_modal.html:14
+msgid "Modules"
+msgstr ""
+
+#: templates/nested_settings_modal.html:16 templates/settings/ethernet.html:1
+msgid "Ethernet"
+msgstr ""
+
+#: templates/nested_settings_modal.html:17 templates/settings/bluetooth.html:1
+msgid "Bluetooth"
+msgstr ""
+
+#: templates/nested_settings_modal.html:18
+msgid "Network"
+msgstr ""
+
+#: templates/nested_settings_modal.html:19 templates/settings/usb.html:5
+msgid "USB"
+msgstr ""
+
+#: templates/nested_settings_modal.html:20 templates/settings/system.html:1
+msgid "System"
+msgstr ""
+
+#: templates/settings/bluetooth.html:7
+msgid "Enabled"
+msgstr ""
+
+#: templates/settings/bluetooth.html:16 templates/settings/general.html:7
+#: templates/settings/general.html:11
+msgid "Device Name"
+msgstr ""
+
+#: templates/settings/bluetooth.html:27
+msgid "Audio device"
+msgstr ""
+
+#: templates/settings/ethernet.html:7
+msgid "Status"
+msgstr ""
+
+#: templates/settings/ethernet.html:10
+msgid "Connected"
+msgstr ""
+
+#: templates/settings/ethernet.html:19
+msgid "Obtain IP address automatically"
+msgstr ""
+
+#: templates/settings/ethernet.html:25
+msgid "IP Address"
+msgstr ""
+
+#: templates/settings/ethernet.html:35
+msgid "Netmask"
+msgstr ""
+
+#: templates/settings/ethernet.html:45
+msgid "Gateway"
+msgstr ""
+
+#: templates/settings/general.html:20
+msgid "Language"
+msgstr ""
+
+#: templates/settings/modules.html:8 templates/settings/modules.html:25
+msgid "License"
+msgstr ""
+
+#: templates/settings/network.html:5
+msgid "DNS Server"
+msgstr ""
+
+#: templates/settings/network.html:14
+msgid "Proxy"
+msgstr ""
+
+#: templates/settings/network.html:24 templates/settings/network.html:38
+msgid "Host"
+msgstr ""
+
+#: templates/settings/network.html:24
+msgid "HTTP Proxy Host"
+msgstr ""
+
+#: templates/settings/network.html:26 templates/settings/network.html:40
+msgid "Port"
+msgstr ""
+
+#: templates/settings/network.html:26
+msgid "HTTP Proxy Port"
+msgstr ""
+
+#: templates/settings/network.html:38 templates/settings/network.html:40
+msgid "HTTPS Proxy Host"
+msgstr ""
+
+#: templates/settings/system.html:7
+msgid "Keep system up to date"
+msgstr ""
+
+#: templates/settings/system.html:18
+msgid "Enable automatic updates"
+msgstr ""
+
+#: templates/settings/system.html:24
+msgid "Version"
+msgstr ""
+
+#: templates/settings/system.html:34
+msgid "Branch"
+msgstr ""
+
+#: templates/settings/system.html:39
+msgid "Commit"
+msgstr ""
+
+#: templates/settings/system.html:44
+msgid "Update"
+msgstr ""
+
+#: templates/settings/system.html:51
+#, fuzzy
+msgid "User"
+msgstr "UsernameX"
+
+#: templates/settings/system.html:76
+msgid "Reset"
+msgstr ""
+
+#: templates/settings/system.html:78
+msgid "Reboot"
+msgstr ""
+
+#: templates/settings/system.html:79
+msgid "Restore factory defaults"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:1
+msgid "Appearance"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:1
+msgid "Local Storage"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:2
+msgid "Toggle theme (auto)"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:4
+#: templates/theme_switcher/nested_for_settings.html:25
+msgid "Auto"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:5
+msgid "Toggle theme"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:11
+msgid "Light"
+msgstr ""
+
+#: templates/theme_switcher/nested_for_settings.html:18
+msgid "Dark"
+msgstr ""
+
