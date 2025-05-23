@@ -11,3 +11,5 @@ pam
 six
 gitpython
 python-crontab
+python-dotenv
+pyyaml
