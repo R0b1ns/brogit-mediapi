@@ -7,6 +7,7 @@ from app.modules.usb.USBModule import USBModule
 
 def register_modules():
     b = Backend()
+    # TODO: Add config to modules
 
     b.add_module('usb', USBModule)
     b.add_module('system', SystemModule)

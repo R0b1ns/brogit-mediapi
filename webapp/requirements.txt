@@ -9,3 +9,5 @@ gunicorn
 eventlet
 pam
 six
+gitpython
+python-crontab
