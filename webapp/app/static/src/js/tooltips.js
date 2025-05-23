@@ -1,4 +1,4 @@
-/*$(document).ready(function(){
+$(document).ready(function(){
     // Init Tooltips
     (() => {
       'use strict'
@@ -7,4 +7,4 @@
         new bootstrap.Tooltip(tooltipTriggerEl)
       })
     })()
-});*/
+});

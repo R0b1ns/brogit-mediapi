@@ -20,29 +20,29 @@
                                 <button class="nav-link text-start w-100" id="v-pills-system-tab" data-bs-toggle="pill" data-bs-target="#v-pills-system" type="button" role="tab" aria-controls="v-pills-system" aria-selected="false" title="System"><i class="bi bi-motherboard"></i><span class="d-none d-md-inline"> {{ _('System') }}</span></button>
                             </div>
                         </div>
-                        <div class="tab-content bg-body-tertiary w-100 border-start p-2 rounded-bottom-1" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+                        <div class="tab-content bg-body-tertiary w-100 border-start p-2 rounded-bottom-1" id="settings-container">
+                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0" data-section="general">
                                 {% include 'settings/general.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-modules" role="tabpanel" aria-labelledby="v-pills-modules-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-modules" role="tabpanel" aria-labelledby="v-pills-modules-tab" tabindex="0" data-section="modules">
                                 {% include 'settings/modules.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-wifi" role="tabpanel" aria-labelledby="v-pills-wifi-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-wifi" role="tabpanel" aria-labelledby="v-pills-wifi-tab" tabindex="0" data-section="wifi">
                                 {% include 'settings/wifi.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-ethernet" role="tabpanel" aria-labelledby="v-pills-ethernet-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-ethernet" role="tabpanel" aria-labelledby="v-pills-ethernet-tab" tabindex="0" data-section="ethernet">
                                 {% include 'settings/ethernet.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-bluetooth" role="tabpanel" aria-labelledby="v-pills-bluetooth-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-bluetooth" role="tabpanel" aria-labelledby="v-pills-bluetooth-tab" tabindex="0" data-section="bluetooth">
                                 {% include 'settings/bluetooth.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-network" role="tabpanel" aria-labelledby="v-pills-network-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-network" role="tabpanel" aria-labelledby="v-pills-network-tab" tabindex="0" data-section="network">
                                 {% include 'settings/network.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-usb" role="tabpanel" aria-labelledby="v-pills-usb-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-usb" role="tabpanel" aria-labelledby="v-pills-usb-tab" tabindex="0" data-section="usb">
                                 {% include 'settings/usb.html' %}
                             </div>
-                            <div class="tab-pane fade" id="v-pills-system" role="tabpanel" aria-labelledby="v-pills-system-tab" tabindex="0">
+                            <div class="tab-pane fade" id="v-pills-system" role="tabpanel" aria-labelledby="v-pills-system-tab" tabindex="0" data-section="system">
                                 {% include 'settings/system.html' %}
                             </div>
                         </div>

@@ -10,13 +10,18 @@ from flask_cors import CORS
 from app.config import register_modules
 from app.core.locale.models import get_locale, get_timezone
 from app.lib.common import setup_logging
+from app.lib.config import load_config
 
 
 def create_app():
     app = Flask(__name__)
 
+    # TODO: Config
+    # global_config = load_config('../.env', 'CONFIG_FILE')
+    # exit()
+
     # TODO: Replace key with something from config
-    app.secret_key = 'your_secret_key'
+    app.secret_key = 'your_secret_key' # global_config.get('SECRET_KEY')
 
     app.config['DEBUG'] = True
     app.config['PROPAGATE_EXCEPTIONS'] = True
