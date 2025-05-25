@@ -1,111 +1,83 @@
-import os
 import subprocess
-from typing import Optional
+import os
+import logging
+from typing import Optional, List, Dict
 
-class SystemProxy:
+logger = logging.getLogger(__name__)
+
+class SystemProxyManager:
     """
-    Manage system-wide proxy settings via /etc/environment.
+    Manage system proxy settings via the system_proxy.sh script.
+
+    Methods support getting current proxy settings,
+    setting proxies, and clearing proxy configuration.
 
     Args:
-        config (dict): Configuration dictionary with optional keys:
-            - 'env_file' (str): Path to environment file (default: '/etc/environment')
+        config (dict): expects:
+            network:
+                system_proxy:
+                    script_path: str (path to system_proxy.sh)
+                    timeout: Optional[int] in seconds
     """
 
     def __init__(self, config: dict):
-        self.config = config
-        self.env_file = config.get('env_file', '/etc/environment')
+        proxy_config = config.get('network', {}).get('system_proxy', {})
+        self.script_path = os.path.abspath(proxy_config.get(
+            'script_path',
+            os.path.join(os.path.dirname(__file__), 'system_proxy.sh')
+        ))
+        self.timeout = proxy_config.get('timeout', 5)
 
-    def get_proxy(self) -> dict[str, Optional[str]]:
+        if not os.path.isfile(self.script_path) or not os.access(self.script_path, os.X_OK):
+            raise FileNotFoundError(f"Script not found or not executable: {self.script_path}")
+
+    def _run(self, action: str, *args: str) -> str:
+        cmd = [self.script_path, action] + list(args)
+        logger.debug(f"Running: {' '.join(cmd)}")
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=self.timeout,
+            check=False
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"{action} failed: {result.stderr.strip()}")
+        return result.stdout.strip()
+
+    def get_proxy(self) -> Dict[str, Optional[str]]:
         """
-        Read current proxy settings from environment file.
-
-        Returns:
-            dict[str, Optional[str]]: Proxy settings for http, https, ftp, no_proxy.
+        Returns a dict with keys: http_proxy, https_proxy, no_proxy.
+        Values may be empty strings if not set.
         """
-        proxies = {"http": None, "https": None, "ftp": None, "no_proxy": None}
-        try:
-            with open(self.env_file) as f:
-                for line in f:
-                    for key in proxies:
-                        if line.strip().startswith(f"{key}_proxy="):
-                            value = line.split("=", 1)[1].strip().strip('"').strip("'")
-                            proxies[key] = value
-        except Exception:
-            pass
-        return proxies
+        output = self._run("get_proxy")
+        result = {}
+        for line in output.splitlines():
+            if '=' in line:
+                key, val = line.strip().split('=', 1)
+                result[key] = val if val else None
+        # Ensure keys exist
+        for k in ['http_proxy', 'https_proxy', 'no_proxy']:
+            result.setdefault(k, None)
+        return result
 
-    def set_proxy(
-        self,
-        http: Optional[str] = None,
-        https: Optional[str] = None,
-        ftp: Optional[str] = None,
-        no_proxy: Optional[str] = None,
-    ) -> bool:
+    def set_proxy(self, http_proxy: str, https_proxy: Optional[str] = None, no_proxy: Optional[str] = None) -> None:
         """
-        Set or update proxy settings in environment file.
-
-        Args:
-            http (str|None): HTTP proxy URL.
-            https (str|None): HTTPS proxy URL.
-            ftp (str|None): FTP proxy URL.
-            no_proxy (str|None): Domains/IPs to exclude.
-
-        Returns:
-            bool: True on success, False otherwise.
+        Sets proxy variables. If https_proxy or no_proxy are omitted,
+        https_proxy defaults to http_proxy, no_proxy defaults to empty string.
         """
-        try:
-            env_lines = []
-            existing = self.get_proxy()
-            updates = {
-                "http_proxy": http if http is not None else existing["http"],
-                "https_proxy": https if https is not None else existing["https"],
-                "ftp_proxy": ftp if ftp is not None else existing["ftp"],
-                "no_proxy": no_proxy if no_proxy is not None else existing["no_proxy"],
-            }
-            # Preserve unrelated lines
-            if os.path.exists(self.env_file):
-                with open(self.env_file) as f:
-                    for line in f:
-                        if not any(line.strip().startswith(k) for k in updates):
-                            env_lines.append(line.rstrip())
+        args = [http_proxy]
+        if https_proxy is not None:
+            args.append(https_proxy)
+        if no_proxy is not None:
+            # If https_proxy omitted but no_proxy given, https_proxy must be http_proxy (add if missing)
+            if https_proxy is None:
+                args.append(http_proxy)
+            args.append(no_proxy)
+        self._run("set_proxy", *args)
 
-            # Add/replace proxy lines
-            for key, val in updates.items():
-                if val:
-                    env_lines.append(f'{key}="{val}"')
-
-            with open(self.env_file, "w") as f:
-                f.write("\n".join(env_lines) + "\n")
-
-            return True
-        except Exception:
-            return False
-
-    def clear_proxy(self) -> bool:
+    def clear_proxy(self) -> None:
         """
-        Remove all proxy-related entries from environment file.
-
-        Returns:
-            bool: True on success, False otherwise.
+        Clears proxy environment variables and git proxy config.
         """
-        try:
-            if not os.path.exists(self.env_file):
-                return True
-            with open(self.env_file) as f:
-                lines = f.readlines()
-            with open(self.env_file, "w") as f:
-                for line in lines:
-                    if not any(line.strip().startswith(k) for k in ["http_proxy", "https_proxy", "ftp_proxy", "no_proxy"]):
-                        f.write(line)
-            return True
-        except Exception:
-            return False
-
-    def reload_environment(self) -> None:
-        """
-        Reload systemd user environment to apply changes.
-
-        Note: A full logout/login or reboot might be required for system-wide effect.
-        """
-        subprocess.run(["systemctl", "--user", "daemon-reexec"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run(["systemctl", "--user", "import-environment"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        self._run("clear_proxy")

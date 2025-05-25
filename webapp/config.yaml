@@ -3,6 +3,9 @@ network:
     script_path: 'scripts/network_manager.sh'
     timeout: 3
     default_interface: 'eth0'
+  system_proxy:
+    script_path: 'scripts/system_proxy.sh'
+    timeout: 3
 
 system:
   auto-update: !!bool "true"
