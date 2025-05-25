@@ -12,7 +12,8 @@ class NetworkInterfaceManager:
     Interface to manage Linux network interfaces via a shell script.
 
     Supports checking link status, retrieving IP information,
-    setting static IPs, and enabling DHCP — both synchronously and asynchronously.
+    setting static IPs, enabling DHCP on NetworkManager connections,
+    and listing interfaces and connections.
 
     Args:
         config (dict): YAML-loaded dictionary. Expects:
@@ -35,14 +36,16 @@ class NetworkInterfaceManager:
         if not os.path.isfile(self.script_path) or not os.access(self.script_path, os.X_OK):
             raise FileNotFoundError(f"Script not found or not executable: {self.script_path}")
 
-    def _get_interface(self, interface: Optional[str]) -> str:
-        iface = interface or self.default_interface
-        if not iface:
-            raise ValueError("No network interface specified.")
-        return iface
+    def _get_target(self, target: Optional[str]) -> str:
+        t = target or self.default_interface
+        if not t:
+            raise ValueError("No network interface or connection specified.")
+        return t
 
-    def _build_cmd(self, action: str, iface: str, *args: str) -> List[str]:
-        return [self.script_path, action, iface] + list(args)
+    def _build_cmd(self, action: str, target: Optional[str] = None, *args: str) -> List[str]:
+        if target is None:
+            return [self.script_path, action]
+        return [self.script_path, action, target] + list(args)
 
     def _parse_ip_output(self, output: str) -> Dict[str, Optional[str]]:
         result = {'ip': None, 'subnet': None, 'gateway': None, 'method': None}
@@ -53,8 +56,8 @@ class NetworkInterfaceManager:
                     result[key] = value or None
         return result
 
-    def _run(self, action: str, iface: str, *args: str) -> str:
-        cmd = self._build_cmd(action, iface, *args)
+    def _run(self, action: str, target: Optional[str] = None, *args: str) -> str:
+        cmd = self._build_cmd(action, target, *args)
         logger.debug(f"Running sync: {' '.join(cmd)}")
         result = subprocess.run(
             cmd, capture_output=True, text=True,
@@ -64,8 +67,8 @@ class NetworkInterfaceManager:
             raise RuntimeError(f"{action} failed: {result.stderr.strip()}")
         return result.stdout.strip()
 
-    async def _run_async(self, action: str, iface: str, *args: str) -> str:
-        cmd = self._build_cmd(action, iface, *args)
+    async def _run_async(self, action: str, target: Optional[str] = None, *args: str) -> str:
+        cmd = self._build_cmd(action, target, *args)
         logger.debug(f"Running async: {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_exec(
             *cmd,
@@ -82,19 +85,20 @@ class NetworkInterfaceManager:
             raise RuntimeError(f"{action} failed: {stderr.decode().strip()}")
         return stdout.decode().strip()
 
-    # Sync Methods
+    # --- Sync Methods ---
+
     def is_connected(self, interface: Optional[str] = None) -> bool:
         """
         Returns True if the interface has carrier/link.
         """
-        output = self._run("is_connected", self._get_interface(interface))
+        output = self._run("is_connected", self._get_target(interface))
         return output == "1"
 
     def get_ip_info(self, interface: Optional[str] = None) -> Dict[str, Optional[str]]:
         """
         Returns a dictionary with keys: ip, subnet, gateway, method (manual|dhcp).
         """
-        output = self._run("get_ip_info", self._get_interface(interface))
+        output = self._run("get_ip_info", self._get_target(interface))
         return self._parse_ip_output(output)
 
     def set_static_ip(self, interface: Optional[str], ip: str, subnet: str, gateway: Optional[str] = None) -> bool:
@@ -102,30 +106,54 @@ class NetworkInterfaceManager:
         Sets a static IP configuration on the interface.
         """
         args = [ip, subnet] + ([gateway] if gateway else [])
-        self._run("set_static_ip", self._get_interface(interface), *args)
+        self._run("set_static_ip", self._get_target(interface), *args)
         return True
 
-    def enable_dhcp(self, interface: Optional[str] = None) -> bool:
+    def enable_dhcp(self, connection_name: Optional[str] = None) -> bool:
         """
-        Enables DHCP on the interface using NetworkManager.
+        Enables DHCP on the specified NetworkManager connection.
+        Note: expects NetworkManager connection name, not interface name.
         """
-        self._run("enable_dhcp", self._get_interface(interface))
+        self._run("enable_dhcp", self._get_target(connection_name))
         return True
 
-    # Async Methods
+    def get_interfaces(self) -> List[str]:
+        """
+        Returns a list of all network interfaces.
+        """
+        output = self._run("get_interfaces")
+        return output.splitlines()
+
+    def get_connections(self) -> List[str]:
+        """
+        Returns a list of all NetworkManager connections.
+        """
+        output = self._run("get_connections")
+        return output.splitlines()
+
+    # --- Async Methods ---
+
     async def is_connected_async(self, interface: Optional[str] = None) -> bool:
-        output = await self._run_async("is_connected", self._get_interface(interface))
+        output = await self._run_async("is_connected", self._get_target(interface))
         return output == "1"
 
     async def get_ip_info_async(self, interface: Optional[str] = None) -> Dict[str, Optional[str]]:
-        output = await self._run_async("get_ip_info", self._get_interface(interface))
+        output = await self._run_async("get_ip_info", self._get_target(interface))
         return self._parse_ip_output(output)
 
     async def set_static_ip_async(self, interface: Optional[str], ip: str, subnet: str, gateway: Optional[str] = None) -> bool:
         args = [ip, subnet] + ([gateway] if gateway else [])
-        await self._run_async("set_static_ip", self._get_interface(interface), *args)
+        await self._run_async("set_static_ip", self._get_target(interface), *args)
         return True
 
-    async def enable_dhcp_async(self, interface: Optional[str] = None) -> bool:
-        await self._run_async("enable_dhcp", self._get_interface(interface))
+    async def enable_dhcp_async(self, connection_name: Optional[str] = None) -> bool:
+        await self._run_async("enable_dhcp", self._get_target(connection_name))
         return True
+
+    async def get_interfaces_async(self) -> List[str]:
+        output = await self._run_async("get_interfaces")
+        return output.splitlines()
+
+    async def get_connections_async(self) -> List[str]:
+        output = await self._run_async("get_connections")
+        return output.splitlines()
