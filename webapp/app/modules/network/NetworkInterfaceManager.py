@@ -131,6 +131,29 @@ class NetworkInterfaceManager:
         output = self._run("get_connections")
         return output.splitlines()
 
+    def get_dns(self, interface: Optional[str] = None) -> List[str]:
+        """
+        Returns a list of configured DNS servers.
+        """
+        output = self._run("get_dns", self._get_target(interface))
+        return output.splitlines()
+
+    def set_dns(self, interface: Optional[str], dns_servers: List[str]) -> bool:
+        """
+        Sets static DNS servers on the interface.
+        """
+        if not dns_servers:
+            raise ValueError("At least one DNS server must be provided.")
+        self._run("set_dns", self._get_target(interface), *dns_servers)
+        return True
+
+    def reset_dns(self, interface: Optional[str]) -> bool:
+        """
+        Resets DNS to automatic (DHCP-provided).
+        """
+        self._run("reset_dns", self._get_target(interface))
+        return True
+
     # --- Async Methods ---
 
     async def is_connected_async(self, interface: Optional[str] = None) -> bool:
@@ -157,3 +180,17 @@ class NetworkInterfaceManager:
     async def get_connections_async(self) -> List[str]:
         output = await self._run_async("get_connections")
         return output.splitlines()
+
+    async def get_dns_async(self, interface: Optional[str] = None) -> List[str]:
+        output = await self._run_async("get_dns", self._get_target(interface))
+        return output.splitlines()
+
+    async def set_dns_async(self, interface: Optional[str], dns_servers: List[str]) -> bool:
+        if not dns_servers:
+            raise ValueError("At least one DNS server must be provided.")
+        await self._run_async("set_dns", self._get_target(interface), *dns_servers)
+        return True
+
+    async def reset_dns_async(self, interface: Optional[str]) -> bool:
+        await self._run_async("reset_dns", self._get_target(interface))
+        return True

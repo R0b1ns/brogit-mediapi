@@ -14,31 +14,41 @@ require_root() {
 
 print_help() {
     cat <<EOF
-Usage: $0 <action> <target> [args...]
+Usage: $0 <action> <interface> [args...]
 
 Actions:
   is_connected <interface>
       Returns 1 if interface is up, else 0.
 
   get_ip_info <interface>
-      Prints ip, subnet (CIDR), gateway, and method (auto/manual).
+      Prints IP, subnet (CIDR), gateway, and method (auto/manual).
+
+  get_dns <interface>
+      Prints the currently configured DNS servers.
+
+  set_dns <interface> <dns1> [dns2] [...]
+      Sets one or more static DNS servers.
+
+  reset_dns <interface>
+      Restores DNS from DHCP and clears static DNS entries.
 
   set_static_ip <interface> <ip> <subnet> [gateway]
       Sets a static IP address with optional gateway.
 
-  enable_dhcp <connection_name>
-      Enables DHCP for the specified NetworkManager connection.
+  enable_dhcp <interface>
+      Enables DHCP via NetworkManager.
 
   get_interfaces
-      Lists all network interfaces.
+      Lists available network interfaces.
 
   get_connections
-      Lists all NetworkManager connections.
+      Lists NetworkManager connections.
 
   help
       Shows this help text.
 EOF
 }
+
 
 is_connected() {
     [[ -e "/sys/class/net/$TARGET/operstate" ]] && \
@@ -89,13 +99,25 @@ set_static_ip() {
 enable_dhcp() {
     require_root
 
-    # TARGET ist hier der Verbindungsname
-    nmcli con mod "$TARGET" ipv4.method auto || {
-        echo "Failed to set DHCP method on connection $TARGET" >&2
+    # Finde passende Verbindung für das Interface
+    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$IFACE\$" | cut -d: -f1)
+    if [[ -z "$CON_NAME" ]]; then
+        CON_NAME=$(nmcli -t -f NAME,DEVICE con show | grep ":$IFACE\$" | cut -d: -f1 | head -n1)
+    fi
+
+    if [[ -z "$CON_NAME" ]]; then
+        echo "No connection found for interface: $IFACE" >&2
+        exit 1
+    fi
+
+    # Setze Methode auf DHCP und aktiviere
+    nmcli con mod "$CON_NAME" ipv4.method auto || {
+        echo "Failed to set DHCP method for $CON_NAME" >&2
         exit 1
     }
-    nmcli con up "$TARGET" || {
-        echo "Failed to bring connection $TARGET up" >&2
+
+    nmcli con up "$CON_NAME" || {
+        echo "Failed to bring up $CON_NAME" >&2
         exit 1
     }
 
@@ -108,6 +130,48 @@ get_interfaces() {
 
 get_connections() {
     nmcli -t -f NAME con show
+}
+
+get_dns() {
+    nmcli -t -f IP4.DNS device show "$IFACE" 2>/dev/null | grep -v '^$' | awk -F: '{print $2}'
+}
+
+set_dns() {
+    require_root
+
+    if [[ $# -lt 3 ]]; then
+        echo "Usage: $0 set_dns <interface> <dns1> [dns2] [...]" >&2
+        exit 1
+    fi
+
+    shift 2
+    DNS_LIST="$*"
+
+    if ! nmcli con show "$IFACE" &>/dev/null; then
+        echo "Connection for $IFACE not found." >&2
+        exit 1
+    fi
+
+    nmcli con mod "$IFACE" ipv4.ignore-auto-dns yes || exit 1
+    nmcli con mod "$IFACE" ipv4.dns "$DNS_LIST" || exit 1
+    nmcli con up "$IFACE" || exit 1
+
+    echo "OK"
+}
+
+reset_dns() {
+    require_root
+
+    if ! nmcli con show "$IFACE" &>/dev/null; then
+        echo "Connection for $IFACE not found." >&2
+        exit 1
+    fi
+
+    nmcli con mod "$IFACE" ipv4.ignore-auto-dns no || exit 1
+    nmcli con mod "$IFACE" -ipv4.dns || exit 1
+    nmcli con up "$IFACE" || exit 1
+
+    echo "OK"
 }
 
 # === Dispatcher ===
@@ -126,6 +190,9 @@ fi
 case "$ACTION" in
     is_connected) is_connected ;;
     get_ip_info) get_ip_info ;;
+    get_dns) get_dns ;;
+    set_dns) set_dns "$@" ;;
+    reset_dns) reset_dns ;;
     set_static_ip) set_static_ip "$@" ;;
     enable_dhcp) enable_dhcp ;;
     get_interfaces) get_interfaces ;;
