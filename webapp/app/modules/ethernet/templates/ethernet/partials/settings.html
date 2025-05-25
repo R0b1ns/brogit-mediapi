@@ -1,74 +1,103 @@
 <h5>{{ _('Ethernet') }}</h5>
 
-<ul class="list-group mb-2">
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-sm-6 col-md-7">
-                <label for="settings-ethernet-connected">{{ _('Status') }}</label>
-            </div>
-            <div class="col-sm-6 col-md-5 text-end">
-                <span id="settings-ethernet-connected" class="text-success">Connected <i class="bi bi-check-circle align-top"></i></span>
-            </div>
-        </div>
-    </li>
-</ul>
-<ul class="list-group mb-2">
-    <li class="list-group-item">
-        <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-ip-dhcp" autocomplete="off">
-            <label class="form-check-label w-100 text-start" for="settings-ethernet-ip-dhcp">{{ _('Automatic configuration (DHCP)') }}</label>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-sm-6 col-md-9">
-                <label for="settings-ethernet-ip" class="list-group-item-mod ps-3">{{ _('IP Address') }}</label>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <input class="form-control form-control-sm" type="text" id="settings-ethernet-ip" autocomplete="off" placeholder="192.168.0.32" disabled>
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-sm-6 col-md-9">
-                <label for="settings-ethernet-netmask" class="list-group-item-mod ps-3">{{ _('Netmask') }}</label>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <input class="form-control form-control-sm" type="text" id="settings-ethernet-netmask" autocomplete="off" placeholder="255.255.255.0" disabled>
-            </div>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-sm-6 col-md-9">
-                <label for="settings-ethernet-gateway" class="list-group-item-mod ps-3">{{ _('Gateway') }}</label>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <input class="form-control form-control-sm" type="text" id="settings-ethernet-gateway" autocomplete="off" placeholder="192.168.0.1" disabled>
-            </div>
-        </div>
-    </li>
-</ul>
+<!-- Shimmer Loader für granularen Ladeeffekt -->
+<div id="ethernet-placeholder" class="placeholder-glow">
+  <ul class="list-group mb-2">
+    <li class="list-group-item placeholder-shimmer" style="height: 1.75rem; width: 30%; margin-bottom: 0.5rem;"></li>
+    <li class="list-group-item placeholder-shimmer" style="height: 2.5rem; width: 100%; margin-bottom: 0.5rem;"></li>
+    <li class="list-group-item placeholder-shimmer" style="height: 2.5rem; width: 100%; margin-bottom: 0.5rem;"></li>
+    <li class="list-group-item placeholder-shimmer" style="height: 2.5rem; width: 100%; margin-bottom: 0.5rem;"></li>
+    <li class="list-group-item placeholder-shimmer" style="height: 2.5rem; width: 100%; margin-bottom: 0.5rem;"></li>
+  </ul>
 
-<h6>{{ _('DNS') }}</h6>
+  <h6>{{ _('DNS') }}</h6>
+  <ul class="list-group mb-2">
+    <li class="list-group-item placeholder-shimmer" style="height: 2.5rem; width: 100%; margin-bottom: 0.5rem;"></li>
+    <li class="list-group-item placeholder-shimmer" style="height: 6rem; width: 100%;"></li>
+  </ul>
+</div>
 
-<ul class="list-group mb-2">
+<!-- Echte Settings, zunächst versteckt -->
+<div id="ethernet-settings" class="d-none">
+  <ul class="list-group mb-2">
     <li class="list-group-item">
-        <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-dns-dhcp" autocomplete="off">
-            <label class="form-check-label w-100 text-start" for="settings-ethernet-dns-dhcp">{{ _('Automatic configuration (DHCP)') }}</label>
+      <div class="row">
+        <div class="col-sm-6 col-md-7">
+          <label for="settings-ethernet-connected">{{ _('Status') }}</label>
         </div>
+        <div class="col-sm-6 col-md-5 text-end">
+          <span id="settings-ethernet-connected" class="text-success">Connected <i class="bi bi-check-circle align-top"></i></span>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <ul class="list-group mb-0">
+    <li class="list-group-item">
+      <div class="form-check-reverse form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-ip-dhcp" autocomplete="off">
+        <label class="form-check-label w-100 text-start" for="settings-ethernet-ip-dhcp">{{ _('Automatic configuration (DHCP)') }}</label>
+      </div>
     </li>
     <li class="list-group-item">
-        <div class="row">
-            <div class="col-12">
-                <div class="form-floating ms-3">
-                    <textarea class="form-control" id="settings-ethernet-dns-servers" style="height: 100px"></textarea>
-                    <label for="settings-ethernet-dns-servers">{{ _('DNS Server') }}</label>
-                    <small class="text-muted">{{ _('Enter one server address per line.') }}</small>
-                </div>
-            </div>
+      <div class="row">
+        <div class="col-sm-6 col-md-9">
+          <label for="settings-ethernet-ip" class="list-group-item-mod ps-3">{{ _('IP Address') }}</label>
         </div>
+        <div class="col-sm-6 col-md-3">
+          <input class="form-control form-control-sm" type="text" id="settings-ethernet-ip" placeholder="192.168.0.32" disabled>
+        </div>
+      </div>
     </li>
-</ul>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-sm-6 col-md-9">
+          <label for="settings-ethernet-netmask" class="list-group-item-mod ps-3">{{ _('Netmask') }}</label>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <input class="form-control form-control-sm" type="text" id="settings-ethernet-netmask" placeholder="255.255.255.0" disabled>
+        </div>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-sm-6 col-md-9">
+          <label for="settings-ethernet-gateway" class="list-group-item-mod ps-3">{{ _('Gateway') }}</label>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <input class="form-control form-control-sm" type="text" id="settings-ethernet-gateway" placeholder="192.168.0.1" disabled>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Save Button außerhalb der List-Group -->
+  <div class="text-end mt-2 mb-4">
+    <button class="btn btn-sm btn-primary d-none" id="settings-ethernet-save">{{ _('Save') }}</button>
+  </div>
+
+  <h6>{{ _('DNS') }}</h6>
+
+  <ul class="list-group mb-2">
+    <li class="list-group-item">
+      <div class="form-check-reverse form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-dns-dhcp" autocomplete="off">
+        <label class="form-check-label w-100 text-start" for="settings-ethernet-dns-dhcp">{{ _('Automatic configuration (DHCP)') }}</label>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-12">
+          <div class="form-floating ms-3">
+            <textarea class="form-control" id="settings-ethernet-dns-servers" style="height: 100px"></textarea>
+            <label for="settings-ethernet-dns-servers">{{ _('DNS Server') }}</label>
+            <small class="text-muted">{{ _('Enter one server address per line.') }}</small>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('module.ethernet.static', filename='settings.css') }}">
+<script src="{{ url_for('module.ethernet.static', filename='settings.js') }}"></script>

@@ -3,13 +3,13 @@ $(document).ready(function() {
   $('#v-pills-tab button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
     const targetSelector = $(e.target).data('bsTarget');
     const section = $(targetSelector).data('section');
-    loadSettings(section, $(targetSelector));
+    // loadSettings(section, $(targetSelector));
   });
 
   // Initiales Laden für aktiven Tab
   const initialSection = $('#settings-container > div.tab-pane.active').data('section');
   if (initialSection) {
-    loadSettings(initialSection, $('#settings-container > div.tab-pane.active'));
+    // loadSettings(initialSection, $('#settings-container > div.tab-pane.active'));
   }
 
   // Änderungsevents (delegated) für alle Sektionen

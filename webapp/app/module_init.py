@@ -46,7 +46,7 @@ class Modules:
         self.module_path = module_path
         self.loaded_modules = {}
 
-        self.module_bp = Blueprint('module_bp', __name__, url_prefix='/module')
+        self.module_bp = Blueprint('module', __name__, url_prefix='/module')
 
     def get_blueprint(self):
         return self.module_bp

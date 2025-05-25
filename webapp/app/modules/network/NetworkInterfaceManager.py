@@ -26,10 +26,8 @@ class NetworkInterfaceManager:
 
     def __init__(self, config: dict):
         net_config = config.get('network', {}).get('network_manager', {})
-        self.script_path = os.path.abspath(net_config.get(
-            'script_path',
-            os.path.join(os.path.dirname(__file__), 'network_manager.sh')
-        ))
+        self.script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), net_config.get('script_path', os.path.join('scripts', 'network_manager.sh'))))
+
         self.default_interface = net_config.get('default_interface')
         self.timeout = net_config.get('timeout', 5)
 

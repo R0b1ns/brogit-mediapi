@@ -1,0 +1,20 @@
+.placeholder-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #e0e0e0;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.placeholder-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  height: 100%; width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% { left: 100%; }
+}
