@@ -10,7 +10,8 @@ class BluetoothModule(ModuleInterface):
             "name": "bluetooth",  # interne id
             "display_name": "Bluetooth",
             "icon": "bi-bluetooth",
-            "type": "module"  # oder "submodule"
+            "type": "module",  # oder "submodule"
+            'has_settings': True
         }
 
     @staticmethod

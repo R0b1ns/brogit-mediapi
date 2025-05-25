@@ -8,7 +8,8 @@ class WifiModule(ModuleInterface):
             "name": "wifi",  # interne id
             "display_name": "Wifi",
             "icon": "bi-wifi",
-            "type": "module"  # oder "submodule"
+            "type": "module",  # oder "submodule"
+            'has_settings': True
         }
 
     def is_connected(self) -> bool:

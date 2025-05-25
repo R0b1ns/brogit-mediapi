@@ -20,7 +20,8 @@ class EthernetModule(ModuleInterface):
             "name": "ethernet",  # interne id
             "display_name": "Ethernet",
             "icon": "bi-ethernet",
-            "type": "module"  # oder "submodule"
+            "type": "module",  # oder "submodule"
+            'has_settings': True
         }
 
     def get_settings(self) -> dict:

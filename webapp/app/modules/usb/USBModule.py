@@ -11,7 +11,8 @@ class USBModule(ModuleInterface):
             "name": "usb",  # interne id
             "display_name": "USB",
             "icon": "bi-usb-symbol",
-            "type": "module"  # oder "submodule"
+            "type": "module",  # oder "submodule"
+            'has_settings': True
         }
 
     @staticmethod

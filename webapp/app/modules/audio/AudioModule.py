@@ -12,7 +12,8 @@ class AudioModule(ModuleInterface):
             "name": "audio",  # interne id
             "display_name": "Audio",
             "icon": "bi-cog",
-            "type": "module"  # oder "submodule"
+            "type": "module",  # oder "submodule"
+            'has_settings': True
         }
 
     @staticmethod

@@ -19,7 +19,8 @@ class SystemModule(ModuleInterface):
             "name": "system",  # interne id
             "display_name": "System",
             "icon": "bi-motherboard",
-            "type": "module"  # oder "submodule"
+            "type": "module",  # oder "submodule"
+            'has_settings': True
         }
 
     @staticmethod

@@ -17,8 +17,7 @@
                                 <i class="bi bi-window-stack"></i><span class="d-none d-md-inline"> {{ _('Modules') }}</span>
                             </button>
 
-                            {# Dynamische Tabs für Module mit type == "module" #}
-                            {% for mod in modules if mod.type == 'module' %}
+                            {% for mod in modules if mod.type == 'module' and mod.has_settings %}
                             <button class="nav-link text-start w-100" id="v-pills-{{ mod.name }}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{ mod.name }}" type="button" role="tab" aria-controls="v-pills-{{ mod.name }}" aria-selected="false" title="{{ mod.display_name }}">
                                 <i class="{{ mod.icon }}"></i><span class="d-none d-md-inline"> {{ _(mod.display_name) }}</span>
                             </button>
@@ -34,8 +33,7 @@
                             {% include 'settings/modules.html' %}
                         </div>
 
-                        {# Dynamische Inhalte für Module mit type == "module" #}
-                        {% for mod in modules if mod.type == 'module' %}
+                        {% for mod in modules if mod.type == 'module' and mod.has_settings %}
                         <div class="tab-pane fade" id="v-pills-{{ mod.name }}" role="tabpanel" aria-labelledby="v-pills-{{ mod.name }}-tab" tabindex="0" data-section="{{ mod.name }}">
                             {% include mod.name ~ '/partials/settings.html' %}
                         </div>
