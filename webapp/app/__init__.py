@@ -37,8 +37,8 @@ def create_app():
     limiter.init_app(app)
     CORS(app, resources={r"/": {"origins": "*"}})
 
-    # Load backend
-    register_modules(config)
+    # Load modules
+    register_modules(app, config)
 
     with app.app_context():
         from app.core.auth import auth_bp

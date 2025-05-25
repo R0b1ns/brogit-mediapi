@@ -8,7 +8,12 @@ from app.modules.usb.USBModule import USBModule
 from app.modules.wifi.WifiModule import WifiModule
 
 
-def register_modules(config):
+def register_modules(app, config):
+    # TODO: Combine that in one generic solution
+    m = Modules(app)
+
+    m.add_module('network')
+
     b = Backend(config)
 
     b.add_module('wifi', WifiModule)
@@ -23,3 +28,26 @@ def register_modules(config):
     # Submodules
     b.add_module('shairport_sync', ShairportSyncModule)
     b.add_module('gmrender_resurrect', GmrenderResurrectModule)
+
+import importlib
+
+class Modules:
+    def __init__(self, app, module_path='app.modules'):
+        self.app = app
+        self.module_path = module_path
+        self.loaded_modules = {}
+
+    def add_module(self, name):
+        full_path = f"{self.module_path}.{name}"
+        mod = importlib.import_module(full_path)
+
+        # Suche nach einem Attribut wie "network_bp"
+        for attr in dir(mod):
+            obj = getattr(mod, attr)
+            if hasattr(obj, 'name') and hasattr(obj, 'route'):
+                # Sieht aus wie ein Blueprint
+                self.app.register_blueprint(obj)
+                self.loaded_modules[name] = obj
+                break
+        else:
+            raise ValueError(f"No blueprint found in module {name}")
