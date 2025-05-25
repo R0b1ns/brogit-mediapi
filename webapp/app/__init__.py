@@ -7,10 +7,10 @@ from urllib.parse import urlparse
 from flask import Flask
 from flask_cors import CORS
 
-from app.config import register_modules
+from app.module_init import register_modules
 from app.core.locale.models import get_locale, get_timezone
 from app.lib.common import setup_logging
-from app.lib.config import load_config
+from app.lib.config_management import load_config
 
 
 def create_app():
