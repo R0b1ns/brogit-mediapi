@@ -138,6 +138,23 @@ class NetworkInterfaceManager:
         output = self._run("get_dns", self._get_target(interface))
         return output.splitlines()
 
+    def get_dns_info(self, interface: Optional[str] = None) -> Dict[str, Optional[List[str]]]:
+        """
+        Returns dict with keys:
+          - method: 'auto' or 'manual'
+          - dns: list of DNS servers
+        """
+        output = self._run("get_dns_info", self._get_target(interface))
+        lines = output.splitlines()
+        method = None
+        dns_servers = []
+        for line in lines:
+            if line.startswith("method="):
+                method = line.split("=", 1)[1]
+            else:
+                dns_servers.append(line.strip())
+        return {"method": method, "dns": dns_servers}
+
     def set_dns(self, interface: Optional[str], dns_servers: List[str]) -> bool:
         """
         Sets static DNS servers on the interface.
@@ -184,6 +201,18 @@ class NetworkInterfaceManager:
     async def get_dns_async(self, interface: Optional[str] = None) -> List[str]:
         output = await self._run_async("get_dns", self._get_target(interface))
         return output.splitlines()
+
+    async def get_dns_info_async(self, interface: Optional[str] = None) -> Dict[str, Optional[List[str]]]:
+        output = await self._run_async("get_dns_info", self._get_target(interface))
+        lines = output.splitlines()
+        method = None
+        dns_servers = []
+        for line in lines:
+            if line.startswith("method="):
+                method = line.split("=", 1)[1]
+            else:
+                dns_servers.append(line.strip())
+        return {"method": method, "dns": dns_servers}
 
     async def set_dns_async(self, interface: Optional[str], dns_servers: List[str]) -> bool:
         if not dns_servers:

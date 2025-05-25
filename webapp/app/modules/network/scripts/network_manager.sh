@@ -26,6 +26,9 @@ Actions:
   get_dns <interface>
       Prints the currently configured DNS servers.
 
+  get_dns_info <interface>
+    Prints whether DNS is set automatically (DHCP) or manually, plus the DNS servers.
+
   set_dns <interface> <dns1> [dns2] [...]
       Sets one or more static DNS servers.
 
@@ -141,6 +144,30 @@ get_dns() {
     nmcli -t -f IP4.DNS device show "$TARGET" 2>/dev/null | grep -v '^$' | tr ';' '\n'
 }
 
+get_dns_info() {
+    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$TARGET\$" | cut -d: -f1)
+    if [[ -z "$CON_NAME" ]]; then
+        CON_NAME=$(nmcli -t -f NAME,DEVICE con show | grep ":$TARGET\$" | cut -d: -f1 | head -n1)
+    fi
+
+    if [[ -z "$CON_NAME" ]]; then
+        echo "Connection for interface $TARGET not found." >&2
+        exit 1
+    fi
+
+    DNS_SERVERS=$(nmcli -g IP4.DNS con show "$CON_NAME" | grep -v '^$')
+    AUTO_FLAG=$(nmcli -g ipv4.ignore-auto-dns con show "$CON_NAME")
+
+    if [[ "$AUTO_FLAG" == "yes" ]]; then
+        METHOD="manual"
+    else
+        METHOD="auto"
+    fi
+
+    echo "method=$METHOD"
+    echo "$DNS_SERVERS"
+}
+
 set_dns() {
     require_root
 
@@ -218,6 +245,7 @@ case "$ACTION" in
     is_connected) is_connected ;;
     get_ip_info) get_ip_info ;;
     get_dns) get_dns ;;
+    get_dns_info) get_dns_info ;;
     set_dns) set_dns "$@" ;;
     reset_dns) reset_dns "$@" ;;
     set_static_ip) set_static_ip "$@" ;;

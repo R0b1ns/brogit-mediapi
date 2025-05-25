@@ -11,7 +11,7 @@ def get_settings():
     return jsonify({
         "status": eth_adapter.is_connected(),
         "interface": eth_adapter.get_ip_info(),
-        'dns': eth_adapter.get_dns()
+        'dns': eth_adapter.get_dns_info()
     })
 
 @module_bp.route('/api/settings/interface', methods=['POST'])
