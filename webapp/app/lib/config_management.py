@@ -1,47 +1,34 @@
 import configparser
-import os
+import logging
 from typing import Optional
 
 import yaml
 from dotenv import dotenv_values
 
-# TODO: THis is a whole draft.
-
 def load_config(env_path: str, config_path: str) -> dict:
     config = {}
 
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    print(BASE_DIR)
+    env_config = dotenv_values(env_path)
+    config.update({
+        'environment': dict(env_config)
+    })
 
-    BASE_DIR = os.getcwd()
-    print(BASE_DIR)
+    config_file_path = env_config.get(config_path)
 
-    from pathlib import Path
+    if not config_file_path:
+        raise KeyError(f'"{config_path}" is not configured in Environment.')
 
-    BASE_DIR = Path(__file__).resolve().parent
-    print(BASE_DIR)
+    # This output is before config step. So logger is not configured here. You may not see this info
+    logging.info(f'Load config from: {config_file_path}')
 
-    env = dotenv_values('app/.env')
-    # config.update(env)
+    with open(config_file_path, "r") as f:
+        yaml_config = yaml.safe_load(f)
 
-    print(env)
-
-    print(env.get('CONFIG_FILE'))
-
-    exit()
-
-    with open("config.yaml", "r") as f:
-        config = yaml.safe_load(f)
-
-    # # .ini laden
-    # parser = configparser.ConfigParser()
-    # parser.read(ini_path)
-    # for section in parser.sections():
-    #     for key, val in parser.items(section):
-    #         config[f"{section.upper()}_{key.upper()}"] = val
+    config.update(yaml_config)
 
     return config
 
+# TODO: This is just a draft
 class ConfigHandler:
     """
     Reads and writes configuration from an .ini file.

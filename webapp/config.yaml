@@ -5,4 +5,16 @@ system:
   auto-update: !!bool "true"
 
 app:
+  # Flask App Config
+  DEBUG: True
+  PROPAGATE_EXCEPTIONS: True
+
+
+  # Supported languages
+  LANGUAGES: ['en', 'de']
+  # https://python-babel.github.io/flask-babel/
+  BABEL_DEFAULT_LOCALE: 'en'
+  BABEL_TRANSLATION_DIRECTORIES: 'translations'
+  BABEL_DOMAIN: 'messages'
+
   auto-update: true
