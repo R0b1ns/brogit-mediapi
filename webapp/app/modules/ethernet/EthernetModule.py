@@ -1,5 +1,10 @@
-class EthernetModule:
-    def __init__(self):
+from app.lib.ModuleInterface import ModuleInterface
+
+
+class EthernetModule(ModuleInterface):
+    def __init__(self, config):
+        super().__init__(config)
+
         # Beispiel interner Status
         self.settings = {
             "dhcp": True,

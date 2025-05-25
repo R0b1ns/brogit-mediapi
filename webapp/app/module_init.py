@@ -8,9 +8,8 @@ from app.modules.usb.USBModule import USBModule
 from app.modules.wifi.WifiModule import WifiModule
 
 
-def register_modules():
-    b = Backend()
-    # TODO: Add config to modules
+def register_modules(config):
+    b = Backend(config)
 
     b.add_module('wifi', WifiModule)
     b.add_module('ethernet', EthernetModule)
