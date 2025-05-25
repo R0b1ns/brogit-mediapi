@@ -1,5 +1,8 @@
 network:
-
+  network_manager:
+    script_path: 'scripts/network_manager.sh'
+    timeout: 3
+    default_interface: 'eth0'
 
 system:
   auto-update: !!bool "true"

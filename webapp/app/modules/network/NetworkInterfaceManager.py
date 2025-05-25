@@ -1,153 +1,131 @@
 import subprocess
-import re
-from typing import Optional, Dict
+import asyncio
+import os
+import logging
+from typing import Optional, Dict, List
+
+logger = logging.getLogger(__name__)
+
 
 class NetworkInterfaceManager:
     """
-    Manage network interfaces: check status, get/set IP, subnet mask, gateway,
-    and enable DHCP.
+    Interface to manage Linux network interfaces via a shell script.
+
+    Supports checking link status, retrieving IP information,
+    setting static IPs, and enabling DHCP — both synchronously and asynchronously.
 
     Args:
-        config (dict): Configuration dictionary with optional keys:
-            - 'ip_cmd' (str): Path to ip command (default: 'ip')
-            - 'nmcli_cmd' (str): Path to nmcli command (default: 'nmcli')
-            - 'default_interface' (str): Default interface if none provided (default: None)
+        config (dict): YAML-loaded dictionary. Expects:
+            network:
+              network_manager:
+                script_path: str (path to shell script)
+                default_interface: Optional[str]
+                timeout: Optional[int] (seconds)
     """
 
     def __init__(self, config: dict):
-        self.config = config
-        self.ip_cmd = config.get('ip_cmd', 'ip')
-        self.nmcli_cmd = config.get('nmcli_cmd', 'nmcli')
-        self.default_interface = config.get('default_interface', None)
+        net_config = config.get('network', {}).get('network_manager', {})
+        self.script_path = os.path.abspath(net_config.get(
+            'script_path',
+            os.path.join(os.path.dirname(__file__), 'network_manager.sh')
+        ))
+        self.default_interface = net_config.get('default_interface')
+        self.timeout = net_config.get('timeout', 5)
 
-    def _get_interface(self, interface: Optional[str]) -> Optional[str]:
-        return interface or self.default_interface
+        if not os.path.isfile(self.script_path) or not os.access(self.script_path, os.X_OK):
+            raise FileNotFoundError(f"Script not found or not executable: {self.script_path}")
 
-    def is_connected(self, interface: Optional[str]) -> bool:
-        """
-        Check if the interface is connected (carrier detected).
-
-        Args:
-            interface (str|None): Interface name.
-
-        Returns:
-            bool: True if connected, False otherwise.
-        """
-        iface = self._get_interface(interface)
+    def _get_interface(self, interface: Optional[str]) -> str:
+        iface = interface or self.default_interface
         if not iface:
-            return False
+            raise ValueError("No network interface specified.")
+        return iface
+
+    def _build_cmd(self, action: str, iface: str, *args: str) -> List[str]:
+        return [self.script_path, action, iface] + list(args)
+
+    def _parse_ip_output(self, output: str) -> Dict[str, Optional[str]]:
+        result = {'ip': None, 'subnet': None, 'gateway': None, 'method': None}
+        for line in output.splitlines():
+            if '=' in line:
+                key, value = line.strip().split('=', 1)
+                if key in result:
+                    result[key] = value or None
+        return result
+
+    def _run(self, action: str, iface: str, *args: str) -> str:
+        cmd = self._build_cmd(action, iface, *args)
+        logger.debug(f"Running sync: {' '.join(cmd)}")
+        result = subprocess.run(
+            cmd, capture_output=True, text=True,
+            timeout=self.timeout, check=False
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"{action} failed: {result.stderr.strip()}")
+        return result.stdout.strip()
+
+    async def _run_async(self, action: str, iface: str, *args: str) -> str:
+        cmd = self._build_cmd(action, iface, *args)
+        logger.debug(f"Running async: {' '.join(cmd)}")
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
         try:
-            result = subprocess.run([self.ip_cmd, 'link', 'show', iface], capture_output=True, text=True, check=True)
-            # look for "state UP" and "LOWER_UP" indicating connected
-            return 'state UP' in result.stdout and 'LOWER_UP' in result.stdout
-        except subprocess.CalledProcessError:
-            return False
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=self.timeout)
+        except asyncio.TimeoutError:
+            proc.kill()
+            raise TimeoutError(f"Command '{action}' timed out")
 
-    def get_ip_info(self, interface: Optional[str]) -> Dict[str, Optional[str]]:
+        if proc.returncode != 0:
+            raise RuntimeError(f"{action} failed: {stderr.decode().strip()}")
+        return stdout.decode().strip()
+
+    # Sync Methods
+    def is_connected(self, interface: Optional[str] = None) -> bool:
         """
-        Get IP address, subnet mask (CIDR), and gateway of the interface.
-
-        Args:
-            interface (str|None): Interface name.
-
-        Returns:
-            dict: { 'ip': str|None, 'subnet': str|None, 'gateway': str|None }
+        Returns True if the interface has carrier/link.
         """
-        iface = self._get_interface(interface)
-        if not iface:
-            return {'ip': None, 'subnet': None, 'gateway': None}
+        output = self._run("is_connected", self._get_interface(interface))
+        return output == "1"
 
-        ip_addr = None
-        subnet = None
-        gateway = None
-
-        try:
-            # Get IP address and subnet CIDR
-            result = subprocess.run([self.ip_cmd, '-o', '-f', 'inet', 'addr', 'show', iface],
-                                    capture_output=True, text=True, check=True)
-            # Output example: "2: eth0    inet 192.168.1.100/24 brd 192.168.1.255 scope global dynamic eth0\n"
-            for line in result.stdout.splitlines():
-                parts = line.split()
-                if 'inet' in parts:
-                    idx = parts.index('inet')
-                    ip_cidr = parts[idx + 1]
-                    ip_addr, subnet = ip_cidr.split('/')
-                    break
-
-            # Get gateway via nmcli or ip route
-            # Try nmcli first
-            try:
-                gw_result = subprocess.run([self.nmcli_cmd, '-t', '-f', 'IP4.GATEWAY', 'device', 'show', iface],
-                                           capture_output=True, text=True, check=True)
-                for line in gw_result.stdout.splitlines():
-                    if line.strip():
-                        gateway = line.strip()
-                        break
-            except subprocess.CalledProcessError:
-                # fallback to ip route
-                route_result = subprocess.run([self.ip_cmd, 'route', 'show', 'dev', iface],
-                                              capture_output=True, text=True, check=True)
-                for line in route_result.stdout.splitlines():
-                    if line.startswith('default via '):
-                        gateway = line.split()[2]
-                        break
-        except Exception:
-            pass
-
-        return {'ip': ip_addr, 'subnet': subnet, 'gateway': gateway}
+    def get_ip_info(self, interface: Optional[str] = None) -> Dict[str, Optional[str]]:
+        """
+        Returns a dictionary with keys: ip, subnet, gateway, method (manual|dhcp).
+        """
+        output = self._run("get_ip_info", self._get_interface(interface))
+        return self._parse_ip_output(output)
 
     def set_static_ip(self, interface: Optional[str], ip: str, subnet: str, gateway: Optional[str] = None) -> bool:
         """
-        Set static IP, subnet mask (CIDR) and optionally gateway for an interface.
-
-        Args:
-            interface (str|None): Interface name.
-            ip (str): IP address (e.g. '192.168.1.100').
-            subnet (str): Subnet mask as CIDR (e.g. '24').
-            gateway (str|None): Gateway IP.
-
-        Returns:
-            bool: True if successful.
+        Sets a static IP configuration on the interface.
         """
-        iface = self._get_interface(interface)
-        if not iface:
-            return False
+        args = [ip, subnet] + ([gateway] if gateway else [])
+        self._run("set_static_ip", self._get_interface(interface), *args)
+        return True
 
-        try:
-            # Delete existing IPs on iface
-            subprocess.run(['sudo', self.ip_cmd, 'addr', 'flush', 'dev', iface], check=True)
-            # Add new IP + subnet
-            subprocess.run(['sudo', self.ip_cmd, 'addr', 'add', f'{ip}/{subnet}', 'dev', iface], check=True)
-            # Bring interface up
-            subprocess.run(['sudo', self.ip_cmd, 'link', 'set', iface, 'up'], check=True)
-
-            # Set gateway if provided
-            if gateway:
-                # Delete default route if exists
-                subprocess.run(['sudo', self.ip_cmd, 'route', 'del', 'default'], check=False)
-                subprocess.run(['sudo', self.ip_cmd, 'route', 'add', 'default', 'via', gateway, 'dev', iface], check=True)
-
-            return True
-        except subprocess.CalledProcessError:
-            return False
-
-    def enable_dhcp(self, interface: Optional[str]) -> bool:
+    def enable_dhcp(self, interface: Optional[str] = None) -> bool:
         """
-        Enable DHCP on the interface via NetworkManager.
-
-        Args:
-            interface (str|None): Interface name.
-
-        Returns:
-            bool: True if successful.
+        Enables DHCP on the interface using NetworkManager.
         """
-        iface = self._get_interface(interface)
-        if not iface:
-            return False
-        try:
-            # Use nmcli to set IPv4 method to auto (DHCP)
-            subprocess.run(['sudo', self.nmcli_cmd, 'con', 'mod', iface, 'ipv4.method', 'auto'], check=True)
-            subprocess.run(['sudo', self.nmcli_cmd, 'con', 'up', iface], check=True)
-            return True
-        except subprocess.CalledProcessError:
-            return False
+        self._run("enable_dhcp", self._get_interface(interface))
+        return True
+
+    # Async Methods
+    async def is_connected_async(self, interface: Optional[str] = None) -> bool:
+        output = await self._run_async("is_connected", self._get_interface(interface))
+        return output == "1"
+
+    async def get_ip_info_async(self, interface: Optional[str] = None) -> Dict[str, Optional[str]]:
+        output = await self._run_async("get_ip_info", self._get_interface(interface))
+        return self._parse_ip_output(output)
+
+    async def set_static_ip_async(self, interface: Optional[str], ip: str, subnet: str, gateway: Optional[str] = None) -> bool:
+        args = [ip, subnet] + ([gateway] if gateway else [])
+        await self._run_async("set_static_ip", self._get_interface(interface), *args)
+        return True
+
+    async def enable_dhcp_async(self, interface: Optional[str] = None) -> bool:
+        await self._run_async("enable_dhcp", self._get_interface(interface))
+        return True
