@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-network_bp = Blueprint(
-    'network',
+system_bp = Blueprint(
+    'system',
     __name__,
     template_folder='templates',
     static_folder='static',

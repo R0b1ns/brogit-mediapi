@@ -12,7 +12,13 @@ def register_modules(app, config):
     # TODO: Combine that in one generic solution
     m = Modules(app)
 
+    m.add_module('wifi')
+    m.add_module('ethernet')
+    m.add_module('bluetooth')
+
     m.add_module('network')
+    m.add_module('usb')
+    m.add_module('system')
 
     b = Backend(config)
 

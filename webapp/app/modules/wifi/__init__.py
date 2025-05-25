@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-network_bp = Blueprint(
-    'network',
+wifi_bp = Blueprint(
+    'wifi',
     __name__,
     template_folder='templates',
     static_folder='static',

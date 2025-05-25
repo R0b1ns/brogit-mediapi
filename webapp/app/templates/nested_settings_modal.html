@@ -37,7 +37,7 @@
                         {# Dynamische Inhalte für Module mit type == "module" #}
                         {% for mod in modules if mod.type == 'module' %}
                         <div class="tab-pane fade" id="v-pills-{{ mod.name }}" role="tabpanel" aria-labelledby="v-pills-{{ mod.name }}-tab" tabindex="0" data-section="{{ mod.name }}">
-                            {% include 'settings/' ~ mod.name ~ '.html' %}
+                            {% include mod.name ~ '/partials/settings.html' %}
                         </div>
                         {% endfor %}
                     </div>
