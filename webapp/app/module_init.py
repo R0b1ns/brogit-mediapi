@@ -1,3 +1,5 @@
+from flask import Blueprint
+
 from app.lib.Backend import Backend
 from app.modules.bluetooth.BluetoothModule import BluetoothModule
 from app.modules.ethernet.EthernetModule import EthernetModule
@@ -11,7 +13,7 @@ from app.modules.wifi.WifiModule import WifiModule
 
 def register_modules(app, config):
     # TODO: Combine that in one generic solution
-    m = Modules(app)
+    m = Modules()
 
     m.add_module('wifi')
     m.add_module('ethernet')
@@ -20,6 +22,8 @@ def register_modules(app, config):
     m.add_module('network')
     m.add_module('usb')
     m.add_module('system')
+
+    app.register_blueprint(m.get_blueprint())
 
     b = Backend(config)
 
@@ -38,10 +42,14 @@ def register_modules(app, config):
 import importlib
 
 class Modules:
-    def __init__(self, app, module_path='app.modules'):
-        self.app = app
+    def __init__(self, module_path='app.modules'):
         self.module_path = module_path
         self.loaded_modules = {}
+
+        self.module_bp = Blueprint('module_bp', __name__, url_prefix='/module')
+
+    def get_blueprint(self):
+        return self.module_bp
 
     def add_module(self, name):
         full_path = f"{self.module_path}.{name}"
@@ -52,7 +60,7 @@ class Modules:
             obj = getattr(mod, attr)
             if hasattr(obj, 'name') and hasattr(obj, 'route'):
                 # Sieht aus wie ein Blueprint
-                self.app.register_blueprint(obj)
+                self.module_bp.register_blueprint(obj)
                 self.loaded_modules[name] = obj
                 break
         else:

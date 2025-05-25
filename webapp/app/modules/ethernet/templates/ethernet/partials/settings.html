@@ -7,7 +7,7 @@
                 <label for="settings-ethernet-connected">{{ _('Status') }}</label>
             </div>
             <div class="col-sm-6 col-md-5 text-end">
-                <span id="settings-ethernet-connected" class="text-success"></span>
+                <span id="settings-ethernet-connected" class="text-success">Connected <i class="bi bi-check-circle align-top"></i></span>
             </div>
         </div>
     </li>
@@ -46,6 +46,28 @@
             </div>
             <div class="col-sm-6 col-md-3">
                 <input class="form-control form-control-sm" type="text" id="settings-ethernet-gateway" autocomplete="off" placeholder="192.168.0.1" disabled>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<h6>{{ _('DNS') }}</h6>
+
+<ul class="list-group mb-2">
+    <li class="list-group-item">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-dns-dhcp" autocomplete="off">
+            <label class="form-check-label w-100 text-start" for="settings-ethernet-dns-dhcp">{{ _('Automatic configuration (DHCP)') }}</label>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-floating ms-3">
+                    <textarea class="form-control" id="settings-ethernet-dns-servers" style="height: 100px"></textarea>
+                    <label for="settings-ethernet-dns-servers">{{ _('DNS Server') }}</label>
+                    <small class="text-muted">{{ _('Enter one server address per line.') }}</small>
+                </div>
             </div>
         </div>
     </li>

@@ -1,11 +1,11 @@
 from flask import Blueprint
 
-ethernet_bp = Blueprint(
+module_bp = Blueprint(
     'ethernet',
     __name__,
     template_folder='templates',
     static_folder='static',
-    # url_prefix='/network'
+    url_prefix='/ethernet'
 )
 
-# from . import routes
+from . import routes
