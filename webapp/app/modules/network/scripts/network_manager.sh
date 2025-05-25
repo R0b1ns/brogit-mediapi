@@ -64,7 +64,12 @@ get_ip_info() {
     [[ -z "$GATEWAY" ]] && \
         GATEWAY=$(ip route show dev "$TARGET" 2>/dev/null | awk '/^default via/ {print $3; exit}')
 
-    METHOD=$(nmcli -t -f IP4.METHOD device show "$TARGET" 2>/dev/null | grep -v '^$' | head -n1)
+    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$TARGET\$" | cut -d: -f1)
+    if [[ -n "$CON_NAME" ]]; then
+        METHOD=$(nmcli -g ipv4.method con show "$CON_NAME" 2>/dev/null)
+    else
+        METHOD="unknown"
+    fi
 
     echo "ip=${IP:-}"
     echo "subnet=${CIDR:-}"
@@ -100,13 +105,13 @@ enable_dhcp() {
     require_root
 
     # Finde passende Verbindung für das Interface
-    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$IFACE\$" | cut -d: -f1)
+    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$TARGET\$" | cut -d: -f1)
     if [[ -z "$CON_NAME" ]]; then
-        CON_NAME=$(nmcli -t -f NAME,DEVICE con show | grep ":$IFACE\$" | cut -d: -f1 | head -n1)
+        CON_NAME=$(nmcli -t -f NAME,DEVICE con show | grep ":$TARGET\$" | cut -d: -f1 | head -n1)
     fi
 
     if [[ -z "$CON_NAME" ]]; then
-        echo "No connection found for interface: $IFACE" >&2
+        echo "No connection found for interface: $TARGET" >&2
         exit 1
     fi
 
@@ -133,28 +138,37 @@ get_connections() {
 }
 
 get_dns() {
-    nmcli -t -f IP4.DNS device show "$IFACE" 2>/dev/null | grep -v '^$' | awk -F: '{print $2}'
+    nmcli -t -f IP4.DNS device show "$TARGET" 2>/dev/null | grep -v '^$' | tr ';' '\n'
 }
 
 set_dns() {
     require_root
 
+    # Mindestens 3 Argumente: script, set_dns, interface, dns1 ...
     if [[ $# -lt 3 ]]; then
         echo "Usage: $0 set_dns <interface> <dns1> [dns2] [...]" >&2
         exit 1
     fi
 
+    # Interface ist $2, DNS ab $3
+    TARGET="$2"
     shift 2
     DNS_LIST="$*"
 
-    if ! nmcli con show "$IFACE" &>/dev/null; then
-        echo "Connection for $IFACE not found." >&2
+    # Verbindung finden
+    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$TARGET\$" | cut -d: -f1)
+    if [[ -z "$CON_NAME" ]]; then
+        CON_NAME=$(nmcli -t -f NAME,DEVICE con show | grep ":$TARGET\$" | cut -d: -f1 | head -n1)
+    fi
+
+    if [[ -z "$CON_NAME" ]]; then
+        echo "Connection for interface $TARGET not found." >&2
         exit 1
     fi
 
-    nmcli con mod "$IFACE" ipv4.ignore-auto-dns yes || exit 1
-    nmcli con mod "$IFACE" ipv4.dns "$DNS_LIST" || exit 1
-    nmcli con up "$IFACE" || exit 1
+    nmcli con mod "$CON_NAME" ipv4.ignore-auto-dns yes || exit 1
+    nmcli con mod "$CON_NAME" ipv4.dns "$DNS_LIST" || exit 1
+    nmcli con up "$CON_NAME" || exit 1
 
     echo "OK"
 }
@@ -162,14 +176,27 @@ set_dns() {
 reset_dns() {
     require_root
 
-    if ! nmcli con show "$IFACE" &>/dev/null; then
-        echo "Connection for $IFACE not found." >&2
+    if [[ $# -lt 2 ]]; then
+        echo "Usage: $0 reset_dns <interface>" >&2
         exit 1
     fi
 
-    nmcli con mod "$IFACE" ipv4.ignore-auto-dns no || exit 1
-    nmcli con mod "$IFACE" -ipv4.dns || exit 1
-    nmcli con up "$IFACE" || exit 1
+    TARGET="$2"
+
+    # Verbindung finden
+    CON_NAME=$(nmcli -t -f NAME,DEVICE con show --active | grep ":$TARGET\$" | cut -d: -f1)
+    if [[ -z "$CON_NAME" ]]; then
+        CON_NAME=$(nmcli -t -f NAME,DEVICE con show | grep ":$TARGET\$" | cut -d: -f1 | head -n1)
+    fi
+
+    if [[ -z "$CON_NAME" ]]; then
+        echo "Connection for interface $TARGET not found." >&2
+        exit 1
+    fi
+
+    nmcli con mod "$CON_NAME" ipv4.ignore-auto-dns no || exit 1
+    nmcli con mod "$CON_NAME" ipv4.dns "" || exit 1
+    nmcli con up "$CON_NAME" || exit 1
 
     echo "OK"
 }
@@ -192,7 +219,7 @@ case "$ACTION" in
     get_ip_info) get_ip_info ;;
     get_dns) get_dns ;;
     set_dns) set_dns "$@" ;;
-    reset_dns) reset_dns ;;
+    reset_dns) reset_dns "$@" ;;
     set_static_ip) set_static_ip "$@" ;;
     enable_dhcp) enable_dhcp ;;
     get_interfaces) get_interfaces ;;
@@ -203,3 +230,4 @@ case "$ACTION" in
         exit 1
         ;;
 esac
+
