@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-23 08:56+0200\n"
+"POT-Creation-Date: 2025-06-15 19:31+0200\n"
 "PO-Revision-Date: 2025-05-22 23:06+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,11 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: core/auth/models.py:24 templates/settings/system.html:57
+#: core/auth/models.py:24
+#: modules/system/templates/system/partials/settings.html:57
 msgid "Username"
 msgstr "Benutzername"
 
-#: core/auth/models.py:25 templates/settings/system.html:67
+#: core/auth/models.py:25
+#: modules/system/templates/system/partials/settings.html:67
 msgid "Password"
 msgstr "Passwort"
 
@@ -34,19 +36,160 @@ msgstr "Login"
 msgid "Invalid credentials."
 msgstr "Falsche zugangsdaten."
 
-#: core/main/routes.py:39
+#: core/main/routes.py:44
 msgid "SSID is required"
 msgstr "SSID ist benötigt"
 
-#: core/main/routes.py:43
+#: core/main/routes.py:48
 msgid "Connected to %(value)"
 msgstr "Verbunden mit %(value)"
 
-#: core/main/routes.py:45
+#: core/main/routes.py:50
 msgid "It was unable to connect to the new network. Please check your credentials"
 msgstr ""
 "Es war nicht möglich sich mit dem Netzwerk zu verbinden. Bitte überprüfe "
 "deine Zugangsdaten"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:1
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:7
+msgid "Enabled"
+msgstr "Aktiviert"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:16
+#: templates/settings/general.html:10 templates/settings/general.html:14
+msgid "Device Name"
+msgstr "Gerätename"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:27
+msgid "Audio device"
+msgstr "Audiogerät"
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:1
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:13
+#: modules/ethernet/templates/ethernet/partials/settings.html:79
+msgid "DNS"
+msgstr ""
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:26
+msgid "Status"
+msgstr "Status"
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:39
+#: modules/ethernet/templates/ethernet/partials/settings.html:85
+msgid "Automatic configuration (DHCP)"
+msgstr ""
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:45
+msgid "IP Address"
+msgstr "IP Adresse"
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:55
+msgid "Netmask"
+msgstr "Netzmaske"
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:65
+msgid "Gateway"
+msgstr ""
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:76
+msgid "Save"
+msgstr ""
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:93
+#: modules/network/templates/network/partials/settings.html:5
+msgid "DNS Server"
+msgstr "DNS Server"
+
+#: modules/ethernet/templates/ethernet/partials/settings.html:94
+msgid "Enter one server address per line."
+msgstr ""
+
+#: modules/network/templates/network/partials/settings.html:14
+msgid "Proxy"
+msgstr "Proxy"
+
+#: modules/network/templates/network/partials/settings.html:24
+#: modules/network/templates/network/partials/settings.html:38
+msgid "Host"
+msgstr "Host"
+
+#: modules/network/templates/network/partials/settings.html:24
+msgid "HTTP Proxy Host"
+msgstr "HTTP Proxy Host"
+
+#: modules/network/templates/network/partials/settings.html:26
+#: modules/network/templates/network/partials/settings.html:40
+msgid "Port"
+msgstr "Port"
+
+#: modules/network/templates/network/partials/settings.html:26
+msgid "HTTP Proxy Port"
+msgstr "HTTP Proxy Port"
+
+#: modules/network/templates/network/partials/settings.html:38
+#: modules/network/templates/network/partials/settings.html:40
+msgid "HTTPS Proxy Host"
+msgstr "HTTPS Proxy Host"
+
+#: modules/system/templates/system/partials/settings.html:1
+msgid "System"
+msgstr "System"
+
+#: modules/system/templates/system/partials/settings.html:7
+msgid "Keep system up to date"
+msgstr "System auf dem neuesten Stand halten"
+
+#: modules/system/templates/system/partials/settings.html:7
+#, fuzzy
+msgid "Performs APT System Updates."
+msgstr "System auf dem neuesten Stand halten"
+
+#: modules/system/templates/system/partials/settings.html:18
+msgid "Enable automatic updates"
+msgstr "Aktiviere automatische updates"
+
+#: modules/system/templates/system/partials/settings.html:24
+msgid "Version"
+msgstr "Version"
+
+#: modules/system/templates/system/partials/settings.html:34
+msgid "Branch"
+msgstr "Branch"
+
+#: modules/system/templates/system/partials/settings.html:39
+msgid "Commit"
+msgstr "Commit"
+
+#: modules/system/templates/system/partials/settings.html:44
+msgid "Update"
+msgstr "Update"
+
+#: modules/system/templates/system/partials/settings.html:51
+#, fuzzy
+msgid "User"
+msgstr "Benutzer"
+
+#: modules/system/templates/system/partials/settings.html:76
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: modules/system/templates/system/partials/settings.html:78
+msgid "Reboot"
+msgstr "Neustarten"
+
+#: modules/system/templates/system/partials/settings.html:79
+msgid "Restore factory defaults"
+msgstr "Werkseinstellungen wiederherstellen"
+
+#: modules/usb/templates/usb/partials/settings.html:5
+msgid "USB"
+msgstr "USB"
 
 #: templates/index.html:44 templates/nested_settings_modal.html:6
 #: templates/settings/modules.html:5 templates/settings/modules.html:22
@@ -61,148 +204,28 @@ msgstr "Info"
 msgid "Sign out"
 msgstr "Abmelden"
 
-#: templates/nested_settings_modal.html:13
+#: templates/nested_settings_modal.html:14
 msgid "General"
 msgstr "Allgemein"
 
-#: templates/nested_settings_modal.html:14
+#: templates/nested_settings_modal.html:17
 msgid "Modules"
 msgstr "Module"
 
-#: templates/nested_settings_modal.html:16 templates/settings/ethernet.html:1
-msgid "Ethernet"
-msgstr "Ethernet"
-
-#: templates/nested_settings_modal.html:17 templates/settings/bluetooth.html:1
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
-#: templates/nested_settings_modal.html:18
-msgid "Network"
-msgstr "Netzwerk"
-
-#: templates/nested_settings_modal.html:19 templates/settings/usb.html:5
-msgid "USB"
-msgstr "USB"
-
-#: templates/nested_settings_modal.html:20 templates/settings/system.html:1
-msgid "System"
-msgstr "System"
-
-#: templates/settings/bluetooth.html:7
-msgid "Enabled"
-msgstr "Aktiviert"
-
-#: templates/settings/bluetooth.html:16 templates/settings/general.html:7
-#: templates/settings/general.html:11
-msgid "Device Name"
-msgstr "Gerätename"
-
-#: templates/settings/bluetooth.html:27
-msgid "Audio device"
-msgstr "Audiogerät"
-
-#: templates/settings/ethernet.html:7
-msgid "Status"
-msgstr "Status"
-
-#: templates/settings/ethernet.html:10
-#, fuzzy
-msgid "Connected"
-msgstr "Verbunden mit %(value)"
-
-#: templates/settings/ethernet.html:19
-msgid "Obtain IP address automatically"
-msgstr ""
-
-#: templates/settings/ethernet.html:25
-msgid "IP Address"
-msgstr "IP Adresse"
-
-#: templates/settings/ethernet.html:35
-msgid "Netmask"
-msgstr "Netzmaske"
-
-#: templates/settings/ethernet.html:45
-msgid "Gateway"
-msgstr ""
-
-#: templates/settings/general.html:20
+#: templates/settings/general.html:23
 msgid "Language"
 msgstr "Sprache"
+
+#: templates/settings/general.html:26
+msgid "language_de"
+msgstr "Deutsch"
+
+msgid "language_en"
+msgstr "Englisch"
 
 #: templates/settings/modules.html:8 templates/settings/modules.html:25
 msgid "License"
 msgstr "Lizenz"
-
-#: templates/settings/network.html:5
-msgid "DNS Server"
-msgstr "DNS Server"
-
-#: templates/settings/network.html:14
-msgid "Proxy"
-msgstr "Proxy"
-
-#: templates/settings/network.html:24 templates/settings/network.html:38
-msgid "Host"
-msgstr "Host"
-
-#: templates/settings/network.html:24
-msgid "HTTP Proxy Host"
-msgstr "HTTP Proxy Host"
-
-#: templates/settings/network.html:26 templates/settings/network.html:40
-msgid "Port"
-msgstr "Port"
-
-#: templates/settings/network.html:26
-msgid "HTTP Proxy Port"
-msgstr "HTTP Proxy Port"
-
-#: templates/settings/network.html:38 templates/settings/network.html:40
-msgid "HTTPS Proxy Host"
-msgstr "HTTPS Proxy Host"
-
-#: templates/settings/system.html:7
-msgid "Keep system up to date"
-msgstr "System auf dem neuesten Stand halten"
-
-#: templates/settings/system.html:18
-msgid "Enable automatic updates"
-msgstr "Aktiviere automatische updates"
-
-#: templates/settings/system.html:24
-msgid "Version"
-msgstr "Version"
-
-#: templates/settings/system.html:34
-msgid "Branch"
-msgstr "Branch"
-
-#: templates/settings/system.html:39
-msgid "Commit"
-msgstr "Commit"
-
-#: templates/settings/system.html:44
-msgid "Update"
-msgstr "Update"
-
-#: templates/settings/system.html:51
-#, fuzzy
-msgid "User"
-msgstr "Benutzer"
-
-#: templates/settings/system.html:76
-msgid "Reset"
-msgstr "Zurücksetzen"
-
-#: templates/settings/system.html:78
-msgid "Reboot"
-msgstr "Neustarten"
-
-#: templates/settings/system.html:79
-msgid "Restore factory defaults"
-msgstr "Werkseinstellungen wiederherstellen"
 
 #: templates/theme_switcher/nested_for_settings.html:1
 msgid "Appearance"
@@ -232,4 +255,13 @@ msgstr ""
 #: templates/theme_switcher/nested_for_settings.html:18
 msgid "Dark"
 msgstr ""
+
+#~ msgid "Network"
+#~ msgstr "Netzwerk"
+
+#~ msgid "Connected"
+#~ msgstr "Verbunden mit %(value)"
+
+#~ msgid "Obtain IP address automatically"
+#~ msgstr ""
 
