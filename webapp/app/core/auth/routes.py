@@ -1,4 +1,6 @@
-from flask import redirect, url_for, request, abort, render_template, flash, g
+import json
+
+from flask import redirect, url_for, request, abort, render_template, flash, g, session
 from flask_login import login_required, logout_user, login_user
 from flask_babel import _
 
@@ -24,7 +26,9 @@ def login():
         if verify_user(username, password):
             user = User(username)
             login_user(user)
-            g.user = user
+            # g.user is only for this one request
+            # g.user = user
+            session['user'] = user.to_dict()
             # TODO: Log the login to logfile
         else:
             flash(_('Invalid credentials.'))

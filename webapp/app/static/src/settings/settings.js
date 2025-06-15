@@ -16,7 +16,25 @@ $(document).ready(function() {
   $('#settings-container').on('change', 'input, select, textarea', function() {
     const sectionDiv = $(this).closest('[data-section]');
     const section = sectionDiv.data('section');
-    saveSettings(section, sectionDiv);
+
+    if($(this).data('role') == 'form') {
+        const id = $(this).attr('id');
+        const key = id.replace(`settings-${section}-`, '');
+        console.debug("Send data-form: "+key);
+
+        let data = {};
+
+        if ($(this).is(':checkbox')) {
+            data[key] = $(this).prop('checked');
+        } else {
+            data[key] = $(this).val();
+        }
+
+        update_setting(section, data);
+    }
+    else {
+        saveSettings(section, sectionDiv);
+    }
   });
 
   // Funktion: Settings laden
@@ -62,6 +80,21 @@ $(document).ready(function() {
       data: JSON.stringify(data),
       success: function(res) {
         console.log(`Settings for ${section} saved.`);
+      },
+      error: function(err) {
+        console.error(`Failed to save settings for ${section}`, err);
+      }
+    });
+  }
+
+  function update_setting(section, data) {
+    $.ajax({
+      url: `/api/settings/${section}`,
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function(res) {
+        console.log(`Setting for ${section}. saved.`);
       },
       error: function(err) {
         console.error(`Failed to save settings for ${section}`, err);

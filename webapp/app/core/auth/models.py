@@ -1,6 +1,8 @@
+import json
+import logging
 from http import HTTPStatus
 
-from flask import request, abort, redirect, url_for
+from flask import request, abort, redirect, url_for, current_app, session
 from flask_babel import _
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
@@ -9,16 +11,37 @@ from wtforms.validators import DataRequired
 
 from app.extensions import login_manager
 
-
 class User(UserMixin):
     def __init__(self, username: str):
         self.username = username
         # TODO: Implement this on a better way
-        self.locale = 'de'
+        self.locale = 'default'
         self.timezone = 'UTC+2'
+        # self.__load_config()
 
     def get_id(self):
         return self.username
+
+    def update_locale(self, locale):
+        if (locale not in current_app.config.get('LANGUAGES')) and (locale != 'default'):
+            return False
+
+        self.locale = locale
+        session['user'] = self.to_dict()
+        return self.locale
+
+    def to_dict(self):
+        return {
+            k: v for k, v in self.__dict__.items()
+            if not k.startswith('_') and not callable(v)
+        }
+
+    @classmethod
+    def from_dict(cls, user_id, data):
+        obj = cls(user_id)
+        for key, value in data.items():
+            setattr(obj, key, value)
+        return obj
 
 class LoginForm(FlaskForm):
     username = StringField(_('Username'))
@@ -54,6 +77,10 @@ class LoginForm(FlaskForm):
 
 @login_manager.user_loader
 def load_user(user_id):
+    logging.debug("load_user: "+user_id)
+    user_data = session.get('user')
+    if user_data:
+        return User.from_dict(user_id, user_data)
     return User(user_id)
 
 @login_manager.unauthorized_handler
