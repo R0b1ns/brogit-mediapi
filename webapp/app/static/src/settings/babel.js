@@ -1,5 +1,5 @@
 // TODO: Implement this. Its not in use right now
-$('#language-selector').on('change', function() {
+$('#settings-general-language').on('change', function() {
     var language = $(this).val();
 
     // Sende die neue Sprache an den Server
@@ -39,5 +39,6 @@ function loadTranslations() {
 }
 
 $(document).ready(function() {
+    alert("Test");
     loadTranslations();
 });

@@ -19,7 +19,7 @@ def netmask_to_cidr(netmask):
 
 def is_valid_ip(value):
     try:
-        ip_address(value)
+        ipaddress.ip_address(value)
         return True
     except ValueError:
         return False
