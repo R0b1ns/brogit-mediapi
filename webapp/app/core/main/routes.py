@@ -23,7 +23,7 @@ def index():
         modules.append(info)
 
     # hostname = socket.getfqdn()
-    return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend(), modules=modules)
+    return render_template('index.html', hostname=Backend().system.get_hostname(), backend=Backend(), modules=modules, languages=current_app.config['LANGUAGES'])
 
 @main_bp.route('/hotspot-detect.html')
 def hotspot_detect():

@@ -29,4 +29,11 @@ $(document).ready(function(){
     $('#objectPositionSelect').val(settings.objectPosition);
     $('#objectFitSelect').val(settings.objectFit);
 
+    // General configuration
+    $.ajaxSetup({
+        headers: {
+            'X-CSRFToken': csrf_token
+        }
+    });
+
 });
