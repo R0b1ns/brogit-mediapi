@@ -59,8 +59,8 @@ def get_settings_general():
 
     return jsonify({"error": "Not implemented"}), 404
 
-@api_bp.route('/settings/general', methods=['POST'])
-def update_settings_general():
+@api_bp.route('/settings/general/language', methods=['POST'])
+def update_settings_general_language():
     if not request.is_json:
         abort(400, description="Request must be JSON")
 
