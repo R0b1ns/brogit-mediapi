@@ -13,7 +13,8 @@ $(document).ready(function() {
   }
 
   // Änderungsevents (delegated) für alle Sektionen
-  $('#settings-container').on('change', 'input, select, textarea', function() {
+  // TODO: This is productive some how. Please enable or move it with right selector
+/*  $('#settings-container').on('change', 'input, select, textarea', function() {
     const sectionDiv = $(this).closest('[data-section]');
     const section = sectionDiv.data('section');
 
@@ -30,12 +31,14 @@ $(document).ready(function() {
             data[key] = $(this).val();
         }
 
-        update_setting(section, data);
+        // TODO: Its disabled cause generic handles it
+        //update_setting(section, data);
     }
     else {
-        saveSettings(section, sectionDiv);
+        // TODO: Its disabled to send whole inputs
+        //saveSettings(section, sectionDiv);
     }
-  });
+  });*/
 
   // Funktion: Settings laden
   function loadSettings(section, container) {
