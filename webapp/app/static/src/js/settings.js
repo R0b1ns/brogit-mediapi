@@ -30,9 +30,12 @@ $(document).ready(function(){
     $('#objectFitSelect').val(settings.objectFit);
 
     // General configuration
+    // TODO: Move that to a general.js file
     $.ajaxSetup({
-        headers: {
-            'X-CSRFToken': csrf_token
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
         }
     });
 
