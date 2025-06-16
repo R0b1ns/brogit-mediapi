@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from flask import Flask
 from flask_cors import CORS
 
+from app.extensions import migrate, bcrypt
 from app.module_init import register_modules
 from app.core.locale.models import get_locale, get_timezone
 from app.lib.common import setup_logging
@@ -34,7 +35,11 @@ def create_app():
     babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
+    login_manager.session_protection = "strong"
+    login_manager.login_message_category = "info"
     limiter.init_app(app)
+    migrate.init_app(app)
+    bcrypt.init_app(app)
     CORS(app, resources={r"/": {"origins": "*"}})
 
     # Load modules
