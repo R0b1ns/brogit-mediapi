@@ -76,3 +76,7 @@
     padding: 0;
     line-height: 1.2; /* Adjust line height */
 }
+
+form[data-method="generic"] button[type="submit"], form[data-method="generic"] input[type="submit"] {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
