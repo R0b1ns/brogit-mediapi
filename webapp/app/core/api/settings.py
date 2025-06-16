@@ -1,3 +1,5 @@
+import time
+
 from flask import jsonify, request, abort, current_app
 from flask_login import current_user
 
@@ -38,6 +40,8 @@ def call_action(section, action):
         return jsonify({"error": str(e)}), 500
 
 # TODO: Move that routes to a dedicated general route file
+
+
 @api_bp.route('/settings/general', methods=['GET'])
 def get_settings_general():
     if not request.is_json:
@@ -61,18 +65,28 @@ def update_settings_general():
         abort(400, description="Request must be JSON")
 
     data = request.get_json()
+    language = data.get('language')
 
-    if 'language' in data:
-        value = data['language']
+    if not language:
+        return jsonify(error="Missing fields"), 400
 
-        if not current_user.update_locale(value):
-            # TODO: Update bad response
-            return jsonify({"error": "Unknown language"}), 400
+    if not current_user.update_locale(language):
+        # TODO: Update bad response
+        return jsonify({"error": "Unknown language"}), 400
 
-        return jsonify(message=f"Updated language: {value}")
+    return jsonify(message=f"Updated language: {language}")
 
-    if 'hostname' in data:
-        value = data['name']
-        return jsonify(message=f"Received name: {value}")
+@api_bp.route('/settings/general/hostname', methods=['POST'])
+def update_settings_general_hostname():
+    data = request.get_json()
 
-    return jsonify({"error": "Not implemented"}), 404
+    hostname = data.get('hostname')
+
+    if not hostname:
+        return jsonify(error="Missing fields"), 400
+
+    print(hostname)
+    time.sleep(1)
+
+    # return jsonify(message=f"Changed Hostname to: {hostname}")
+    return jsonify(message="Not implemented"), 404
