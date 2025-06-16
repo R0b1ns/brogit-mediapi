@@ -7,8 +7,7 @@ $(() => {
 
       const selector = $form.attr('data-response-target');
       const $response = selector ? $(selector) : $form.find('[data-response-target]');
-      console.log($form.attr('data-response-target'));
-      console.log($response);
+
       const useFeedback = !$submit.is('[data-no-feedback]');
       const isAutoDisable = !$submit.is('[data-no-disable]');
       const useOutline = $submit.is('[class*="btn-outline-"]');

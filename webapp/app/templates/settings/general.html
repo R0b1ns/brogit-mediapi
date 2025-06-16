@@ -1,29 +1,33 @@
-<!-- TODO: Importiere eine neue JS Datei. Bzw. bewege die welche dafür gebnutzt wird. -->
 <script src="{{ url_for('static', filename='src/settings/general.js') }}"></script>
 <script src="{{ url_for('static', filename='src/settings/babel.js') }}"></script>
 
 
 <h5>General</h5>
 
+<div id="settings-general-response"></div>
+
 <ul class="list-group mb-2">
     <li class="list-group-item">
-        <div class="row">
-            <div class="col-sm-5 col-md-6">
-                <label for="settings-general-hostname" class="align-middle">{{ _('Device Name') }}</label>
-            </div>
-            <div class="col-sm-7 col-md-6">
-                <div class="input-group input-group-sm">
-                    <input id="settings-general-hostname" type="text" class="form-control" placeholder="{{ hostname }}" title="{{ hostname }}" value="{{ hostname }}" aria-label="{{ _('Device Name') }}" aria-describedby="button-addon-save-hostname">
-                    <button class="btn btn-outline-success" type="button" id="button-addon-save-hostname" title="Save"><i class="bi bi-check"></i></button>
+        <form method="post" data-method="generic" data-response-target="#settings-general-response" action="{{ url_for('api.update_settings_general_hostname') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="row">
+                <div class="col-sm-5 col-md-6">
+                    <label for="settings-general-hostname" class="align-middle">{{ _('Device Name') }}</label>
+                </div>
+                <div class="col-sm-7 col-md-6">
+                    <div class="input-group input-group-sm">
+                        <input id="settings-general-hostname" name="hostname" type="text" class="form-control" autocomplete="off" placeholder="{{ hostname }}" title="{{ hostname }}" value="{{ hostname }}" aria-label="{{ _('Device Name') }}" aria-describedby="button-addon-save-hostname">
+                        <button class="btn btn-outline-success" type="submit" id="button-addon-save-hostname" title="Save"><i class="bi bi-check"></i></button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </li>
 </ul>
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <label for="settings-general-language" class="align-middle">{{ _('Language') }}</label>
-        <select class="form-select form-select-listmod" data-role="form" id="settings-general-language" autocomplete="off">
+        <select id="settings-general-language" class="form-select form-select-listmod" name="language" data-role="form" data-method="post" data-on-success="reloadPage" data-action="{{ url_for('api.update_settings_general_language') }}" autocomplete="off">
             <option value="default" {% if current_user.is_authenticated %}{% if current_user.locale == "default" %}selected{% endif %}{% endif %}>{{ _("System-default") }} ({{ _("language_" + default_language) }})</option>
             {% for code in languages %}
                 <option value="{{ code }}" {% if current_user.is_authenticated %}{% if current_user.locale == code %}selected{% endif %}{% endif %}>{{ _("language_" + code) }} {% if default_language == code %}({{ _("System-default") }}){% endif %}</option>

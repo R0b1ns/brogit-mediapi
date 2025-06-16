@@ -1,5 +1,5 @@
-// TODO: Implement this. Its not in use right now
-$('#settings-general-language').on('change', function() {
+// TODO: Implement this. Its not in use right now. Maybe not required cause of general function.
+/*$('#settings-general-language').on('change', function() {
     var language = $(this).val();
 
     // Sende die neue Sprache an den Server
@@ -16,7 +16,7 @@ $('#settings-general-language').on('change', function() {
             alert("Fehler beim Wechseln der Sprache");
         }
     });
-});
+});*/
 
 function loadTranslations() {
     $.ajax({
@@ -39,6 +39,6 @@ function loadTranslations() {
 }
 
 $(document).ready(function() {
-    alert("Test");
-    loadTranslations();
+    // loadTranslations();
+    // TODO: Enable this functionality
 });
