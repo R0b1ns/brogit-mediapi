@@ -2,7 +2,6 @@ $(() => {
   $.fn.genericInputAsFormHandler = function () {
     return this.each(function () {
       const $el = $(this);
-      if (!$el.is('[name]')) return;
 
       const action = $el.data('action');
       const method = ($el.data('method') || 'POST').toUpperCase();
@@ -24,14 +23,18 @@ $(() => {
       const send = () => {
         clearTimeout(timeout);
 
-        let value;
-        if ($el.is(':checkbox')) {
-          value = $el.prop('checked');
+        let payload;
+        if (name) {
+          let value;
+          if ($el.is(':checkbox')) {
+            value = $el.prop('checked');
+          } else {
+            value = $el.val();
+          }
+          payload = { [name]: value };
         } else {
-          value = $el.val();
+          payload = {};
         }
-
-        const payload = { [name]: value };
 
         if (isAutoDisable) $el.prop('disabled', true);
         $.ajax({
@@ -79,6 +82,11 @@ $(() => {
         $el.on('keydown', e => {
           if (e.key === 'Enter') send();
         });
+      } else if ($el.is('button')) {
+        $el.on('click', () => {
+          resetStateClass();
+          send();
+        });
       } else {
         $el.on('change', () => {
           resetStateClass();
@@ -88,5 +96,5 @@ $(() => {
     });
   };
 
-  $('input[data-role="form"], select[data-role="form"], textarea[data-role="form"]').genericInputAsFormHandler();
+  $('input[data-role="form"], select[data-role="form"], textarea[data-role="form"], button[data-role="form"]').genericInputAsFormHandler();
 });

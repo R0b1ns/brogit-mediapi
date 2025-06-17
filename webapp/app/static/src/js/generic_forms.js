@@ -77,7 +77,7 @@ $(() => {
 
       $form.on('submit', e => {
         e.preventDefault();
-        if (isAutoDisable) $submit.prop('disabled', true);
+        $submit.prop('disabled', true);
 
         const originalHtml = $submit.is('input') ? $submit.val() : $submit.html();
         setSubmitContent('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
@@ -102,15 +102,29 @@ $(() => {
             console.log('Success:', res);
             initialData = $form.serialize();
             $response.text('');
-            if (useFeedback) setButtonState('success');
+            if (useFeedback) {
+              setButtonState('success');
+            } else {
+              setSubmitContent(originalHtml);
+            }
           },
           error: xhr => {
             const msg = xhr.responseJSON?.message || 'Unexpected error';
             console.error('Error:', msg);
             $response.text(msg);
-            if (useFeedback) setButtonState('error');
+            if (useFeedback) {
+              setButtonState('error');
+            } else {
+              setSubmitContent(originalHtml);
+            }
           },
-          complete: () => updateState(false),
+          complete: () => {
+           if (isAutoDisable) {
+             updateState(false)
+           } else {
+             $submit.prop('disabled', false);
+           }
+          }
         });
       });
     });
