@@ -3,7 +3,7 @@
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-system-update" autocomplete="off" checked>
+            <input id="settings-system-update" class="form-check-input" type="checkbox" role="switch" name="enabled" data-role="form" data-method="post" data-action="{{ url_for('module.system.update_settings_system_update') }}" autocomplete="off" checked>
             <label class="form-check-label w-100 text-start" for="settings-system-update">{{ _('Keep system up to date') }} <i class="bi bi-info-circle" data-bs-toggle2="tooltip" title="{{ _('Performs APT System Updates.') }}"></i></label>
         </div>
     </li>
@@ -14,7 +14,7 @@
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-system-app-update" autocomplete="off" checked>
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-system-app-update" name="enabled" data-role="form" data-method="post" data-action="{{ url_for('module.system.update_settings_app_update') }}" autocomplete="off" checked>
             <label class="form-check-label w-100 text-start" for="settings-system-app-update">{{ _('Enable automatic updates') }}</label>
         </div>
     </li>
@@ -30,19 +30,21 @@
         </div>
         <div class="row mt-2">
             <div class="col-lg-10 offset-lg-2">
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text">{{ _('Branch') }}</span>
-                    <select class="form-select" id="settings-system-app-branch">
-                        <option value="english">Main</option>
-                        <option value="deutsch">Dev</option>
-                    </select>
-                    <span class="input-group-text">{{ _('Commit') }}</span>
-                    <select class="form-select" id="settings-system-app-commit">
-                        <option value="english">ee1c099a7fe30 (Latest)</option>
-                        <option value="deutsch">hci0</option>
-                    </select>
-                    <button class="btn btn-outline-primary" type="button" id="button-addon-save-hostname" title="Save">{{ _('Update') }}</button>
-                </div>
+                <form method="post" action="{{ url_for('module.system.update_app') }}" data-method="generic">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">{{ _('Branch') }}</span>
+                        <select class="form-select" id="settings-system-app-branch" name="branch">
+                            <option value="english">Main</option>
+                            <option value="deutsch">Dev</option>
+                        </select>
+                        <span class="input-group-text">{{ _('Commit') }}</span>
+                        <select class="form-select" id="settings-system-app-commit" name="commit">
+                            <option value="english">ee1c099a7fe30 (Latest)</option>
+                            <option value="deutsch">hci0</option>
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit" id="button-addon-save-hostname" title="Save" data-no-feedback="" data-no-disable="">{{ _('Update') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </li>
@@ -57,7 +59,7 @@
                 <label for="settings-network-netmask" class="list-group-item-mod">{{ _('Username') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
-                <input class="form-control form-control-sm" type="text" id="settings-network-netmask" autocomplete="off" placeholder="mediapi" disabled>
+                <input class="form-control form-control-sm" type="text" id="settings-network-netmask" autocomplete="off" placeholder="{{ current_user.username }}" disabled>
             </div>
         </div>
     </li>
@@ -67,7 +69,7 @@
                 <label for="settings-network-gateway" class="list-group-item-mod">{{ _('Password') }}</label>
             </div>
             <div class="col-sm-6 col-md-3">
-                <input class="form-control form-control-sm" type="text" id="settings-network-gateway" autocomplete="off" placeholder="share-password" disabled>
+                <input class="form-control form-control-sm" type="password" id="settings-network-gateway" autocomplete="off" placeholder="Change Password">
             </div>
         </div>
     </li>
@@ -75,5 +77,6 @@
 
 <h6>{{ _('Reset') }}</h6>
 
-<button type="button" class="btn btn-outline-warning">{{ _('Reboot') }}</button>
-<button type="button" class="btn btn-outline-danger">{{ _('Restore factory defaults') }}</button>
+<button type="button" class="btn btn-outline-dark" data-role="form" data-method="post" data-action="{{ url_for('module.system.system_shutdown') }}">{{ _('Shutdown') }}</button>
+<button type="button" class="btn btn-outline-warning" data-role="form" data-method="post" data-action="{{ url_for('module.system.system_reboot') }}">{{ _('Reboot') }}</button>
+<button type="button" class="btn btn-outline-danger" data-role="form" data-method="post" data-action="{{ url_for('module.system.system_reset_factory_defaults') }}">{{ _('Restore factory defaults') }}</button>
