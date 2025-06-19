@@ -34,7 +34,7 @@ def usb_settings():
     return jsonify(message=f"Success")
 
 @module_bp.route('/api/settings/protect', methods=['POST'])
-def usb_settings():
+def usb_settings_protect():
     data = request.get_json()
     enabled = data.get('enabled')
     username = data.get('username')
