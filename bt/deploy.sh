@@ -13,10 +13,7 @@ source "$SCRIPT_DIR/config.env"
 LOCALE="${LOCALE:-en-US}"
 DEVICE_CLASS="${DEVICE_CLASS:-0x200414}"
 DISCOVERABLE="${DISCOVERABLE:-on}"
-
-LANGUAGE="${LOCALE%%-*}"
-echo "Load locale for LANGUAGE=$LANGUAGE"
-source "$SCRIPT_DIR/locale/${LANGUAGE}.env"
+AUDIO_DEVICE="${AUDIO_DEVICE:-hci0}"
 
 # Bluetooth adapter configuration
 if [[ ! -f /etc/bluetooth/main.conf.bak ]]; then
