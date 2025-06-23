@@ -57,22 +57,19 @@ def get_settings_general():
         value = data['name']
         return jsonify(message=f"Received name: {value}")
 
-    return jsonify({"error": "Not implemented"}), 404
+    return jsonify(message="Not implemented"), 404
 
 @api_bp.route('/settings/general/language', methods=['POST'])
 def update_settings_general_language():
-    if not request.is_json:
-        abort(400, description="Request must be JSON")
-
     data = request.get_json()
     language = data.get('language')
 
     if not language:
-        return jsonify(error="Missing fields"), 400
+        return jsonify(message="Missing fields"), 400
 
     if not current_user.update_locale(language):
         # TODO: Update bad response
-        return jsonify({"error": "Unknown language"}), 400
+        return jsonify(message="Unknown language"), 400
 
     return jsonify(message=f"Updated language: {language}")
 
@@ -83,7 +80,7 @@ def update_settings_general_hostname():
     hostname = data.get('hostname')
 
     if not hostname:
-        return jsonify(error="Missing fields"), 400
+        return jsonify(message="Missing fields"), 400
 
     print(hostname)
     time.sleep(1)
