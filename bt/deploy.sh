@@ -16,11 +16,17 @@ DISCOVERABLE="${DISCOVERABLE:-on}"
 AUDIO_DEVICE="${AUDIO_DEVICE:-hci0}"
 
 # Bluetooth adapter configuration
-if [[ ! -f /etc/bluetooth/main.conf.bak ]]; then
-  cp /etc/bluetooth/main.conf /etc/bluetooth/main.conf.bak
-  echo "Created Backup of /etc/bluetooth/main.conf"
+MAIN_CONF="/etc/bluetooth/main.conf"
+BACKUP_CONF="/etc/bluetooth/main.conf.bak"
+TEMP_CONF="$(mktemp)"
+
+if [[ ! -f "$BACKUP_CONF" ]]; then
+  sudo cp "$MAIN_CONF" "$BACKUP_CONF"
+  echo "Created Backup of $MAIN_CONF"
 fi
-cat << EOF | sudo tee /etc/bluetooth/main.conf > /dev/null
+
+# Neue Konfiguration in TEMP_CONF schreiben
+cat << EOF > "$TEMP_CONF"
 [General]
 Class = $DEVICE_CLASS
 DiscoverableTimeout = 0
@@ -29,6 +35,18 @@ PairableTimeout = 0
 [Policy]
 AutoEnable=true
 EOF
+
+# Compare and replace if different, then restart
+if ! cmp -s "$TEMP_CONF" "$MAIN_CONF"; then
+  echo "Bluetooth config changed: updating and restarting bluetooth"
+  sudo cp "$TEMP_CONF" "$MAIN_CONF"
+  sudo systemctl restart bluetooth
+else
+  echo "Bluetooth config unchanged: skipping restart"
+fi
+
+rm "$TEMP_CONF"
+
 
 # Bluetooth Agent Service
 cat << EOF | sudo tee /etc/systemd/system/bt-agent@.service > /dev/null
