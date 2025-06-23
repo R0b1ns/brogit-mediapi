@@ -8,6 +8,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/config.env"
 
 LOCALE="${LOCALE:-en-US}"
+LANGUAGE="${LOCALE%%-*}"
+echo "Load locale for LANGUAGE=$LANGUAGE"
+source "$SCRIPT_DIR/locale/${LANGUAGE}.env"
+
 CONNECT_TEXT="${CONNECT_TEXT:-Connected with: %s}"
 ERROR_DEVICES_EMPTY="${ERROR_DEVICES_EMPTY:-Error: No devices connected}"
 
