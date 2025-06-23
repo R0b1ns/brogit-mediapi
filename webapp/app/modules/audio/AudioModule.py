@@ -13,15 +13,15 @@ class AudioModule(ModuleInterface):
             "display_name": "Audio",
             "icon": "bi-cog",
             "type": "module",  # oder "submodule"
-            'has_settings': True
+            'has_settings': False
         }
 
     @staticmethod
-    def get_audio_device1():
+    def get_audio_devices():
         return sounddevice.query_devices()
 
     @staticmethod
-    def get_audio_devices():
+    def get_audio_devices_system():
         # Use 'arecord' or 'aplay' to list audio devices on Linux
         try:
             result = subprocess.run(["aplay", "-l"], capture_output=True, text=True)

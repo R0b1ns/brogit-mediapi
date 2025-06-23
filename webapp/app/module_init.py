@@ -1,6 +1,7 @@
 from flask import Blueprint
 
 from app.lib.Backend import Backend
+from app.modules.audio.AudioModule import AudioModule
 from app.modules.bluetooth.BluetoothModule import BluetoothModule
 from app.modules.ethernet.EthernetModule import EthernetModule
 from app.modules.gmrender_resurrect.GmrenderResurrectModule import GmrenderResurrectModule
@@ -33,7 +34,7 @@ def register_modules(app, config):
     b.add_module('network', NetworkModule)
     b.add_module('usb', USBModule)
     b.add_module('system', SystemModule)
-    # Audio
+    b.add_module('audio', AudioModule)
 
     # Submodules
     b.add_module('shairport_sync', ShairportSyncModule)
