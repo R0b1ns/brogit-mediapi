@@ -1,0 +1,34 @@
+# config_loader.py
+
+from dotenv import dotenv_values, set_key
+from pathlib import Path
+from collections import defaultdict
+
+class EnvConfig(dict):
+    def __init__(self, path):
+        self.path = Path(path)
+        self._env = dotenv_values(self.path)
+        super().__init__(self._env)
+        self._callbacks = defaultdict(list)
+
+    def __setitem__(self, key, value):
+        old_value = self.get(key)
+        super().__setitem__(key, value)
+        self._update_env_file(key, value)
+        if old_value != value:
+            self._run_callbacks(key, value)
+
+    def update(self, *args, **kwargs):
+        for k, v in dict(*args, **kwargs).items():
+            self[k] = v  # __setitem__ handles everything
+
+    def _update_env_file(self, key, value):
+        set_key(str(self.path), key, str(value))
+
+    def register_callback(self, key, callback):
+        """Register a function to be called when a specific key is updated."""
+        self._callbacks[key].append(callback)
+
+    def _run_callbacks(self, key, value):
+        for callback in self._callbacks.get(key, []):
+            callback(key, value)
