@@ -26,8 +26,10 @@
     <li class="list-group-item">
         <label for="settings-general-language" class="align-middle">{{ _('Audio device') }}</label>
         <select class="form-select form-select-listmod" id="settings-general-language">
-            <option value="english">default</option>
-            <option value="deutsch">hci0</option>
+            <option value="" {% if backend.bluetooth.get_config['AUDIO_DEVICE'] == '' %}selected{% endif %}>default</option>
+            {% for device in backend.audio.get_audio_devices() %}
+                <option value="{{ device.name }}" {% if device.name == backend.bluetooth.get_config['AUDIO_DEVICE'] %}selected{% endif %}>{{ device.name }}</option>
+            {% endfor %}
         </select>
     </li>
 </ul>
