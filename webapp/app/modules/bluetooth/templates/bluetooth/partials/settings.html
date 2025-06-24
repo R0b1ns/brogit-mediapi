@@ -11,6 +11,32 @@
 
 <ul class="list-group mb-2">
     <li class="list-group-item">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-bluetooth-discoverable" name="DISCOVERABLE" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off" {% if backend.bluetooth.get_config()['DISCOVERABLE'] == 'on' %}checked{% endif %}>
+            <label class="form-check-label w-100 text-start" for="settings-bluetooth-discoverable">{{ _('Discoverable') }}</label>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <label for="settings-bluetooth-deviceclass" class="align-middle">{{ _('Device class') }}</label>
+        <select class="form-select form-select-listmod" id="settings-bluetooth-deviceclass" name="DEVICE_CLASS" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off">
+            {% for k, v in backend.bluetooth.get_device_class_mapping().items() %}
+                <option value="{{ k }}" {% if k == backend.bluetooth.get_config()['DEVICE_CLASS'] %}selected{% endif %}>{{ v }}</option>
+            {% endfor %}
+        </select>
+    </li>
+    <li class="list-group-item">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-bluetooth-sound" name="SOUND_ENABLED" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off" {% if backend.bluetooth.get_config()['SOUND_ENABLED'] == 'True' %}checked{% endif %}>
+            <label class="form-check-label w-100 text-start" for="settings-bluetooth-sound">{{ _('Sound') }}</label>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-bluetooth-voice" name="VOICE_ENABLED" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off" {% if backend.bluetooth.get_config()['VOICE_ENABLED'] == 'True' %}checked{% endif %}>
+            <label class="form-check-label w-100 text-start" for="settings-bluetooth-voice">{{ _('Voice') }}</label>
+        </div>
+    </li>
+    <li class="list-group-item">
         <div class="row">
             <div class="col-sm-5 col-md-6">
                 <label for="settings-hostname" class="align-middle">{{ _('Device Name') }}</label>
@@ -23,12 +49,15 @@
             </div>
         </div>
     </li>
+</ul>
+
+<ul class="list-group mb-2">
     <li class="list-group-item">
         <label for="settings-general-language" class="align-middle">{{ _('Audio device') }}</label>
-        <select class="form-select form-select-listmod" id="settings-general-language">
-            <option value="" {% if backend.bluetooth.get_config['AUDIO_DEVICE'] == '' %}selected{% endif %}>default</option>
+        <select class="form-select form-select-listmod" id="settings-general-language" name="AUDIO_DEVICE" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off">
+            <option value="" {% if backend.bluetooth.get_config()['AUDIO_DEVICE'] == '' %}selected{% endif %}>default</option>
             {% for device in backend.audio.get_audio_devices() %}
-                <option value="{{ device.name }}" {% if device.name == backend.bluetooth.get_config['AUDIO_DEVICE'] %}selected{% endif %}>{{ device.name }}</option>
+                <option value="{{ device.name }}" {% if device.name == backend.bluetooth.get_config()['AUDIO_DEVICE'] %}selected{% endif %}>{{ device.name }}</option>
             {% endfor %}
         </select>
     </li>
