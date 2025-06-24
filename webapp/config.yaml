@@ -37,3 +37,15 @@ bluetooth:
     "0x200418": 'Headphones',
     "0x20041C": 'Portable Audio'
   }
+
+shairport-sync:
+  config_path: "../modules/shairport-sync/config.env"
+  install_path: "../modules/shairport-sync/install.sh"
+  uninstall_path: "../modules/shairport-sync/uninstall.sh"
+  update_path: "../modules/shairport-sync/update.sh"
+
+gmrender-resurrect:
+  config_path: "../modules/gmrender-resurrect/config.env"
+  install_path: "../modules/gmrender-resurrect/install.sh"
+  uninstall_path: "../modules/gmrender-resurrect/uninstall.sh"
+  update_path: "../modules/gmrender-resurrect/update.sh"
