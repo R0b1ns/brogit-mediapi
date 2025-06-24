@@ -18,6 +18,8 @@ sudo apt install --no-install-recommends build-essential git autoconf automake l
 # Create and enter repositories directory
 mkdir -p repositories && cd repositories
 
+echo "$PWD"
+
 # NQPTP and ALAC is required for Airplay2
 git clone https://github.com/mikebrady/nqptp
 git clone https://github.com/mikebrady/alac.git
