@@ -1,4 +1,6 @@
 import logging
+import re
+import subprocess
 
 from app.lib.Backend import Backend
 from app.lib.ModuleInterface import ModuleInterface
@@ -18,28 +20,23 @@ class BluetoothModule(ModuleInterface):
         self.device_class_mapping = module_config.get('device_class_mapping')
 
     def set(self, key, value):
+
         # Keys and validator lambda
         valid_options = {
             'DEVICE_CLASS': lambda v: v in self.__module_config.get('device_class_mapping'),
             'DISCOVERABLE': lambda v: v in (True, False),
-            # TODO: get_audio_devices not just has names. Improve that
-            'AUDIO_DEVICE': lambda v: v in Backend().audio.get_audio_devices(),
+            # TODO: Empty for default device
+            'AUDIO_DEVICE': lambda v: v in [e.get('name') for e in Backend().audio.get_audio_devices()],
             'SOUND_ENABLED': lambda v: v in (True, False),
             'VOICE_ENABLED': lambda v: v in (True, False),
+            # XXX: Here we have to be very careful. Because we write directly text into the config
+            'DEVICE_NAME': lambda v: v == "" or (isinstance(v, str) and 1 <= len(v.strip()) <= int(self.__module_config.get('max_device_name_len', 50)) and re.fullmatch(r'[a-zA-Z0-9 _\-]+', v.strip()) is not None),
         }
 
         option_mapping = {
             'DISCOVERABLE': {
                 True: 'on',
                 False: 'off'
-            },
-            'SOUND_ENABLED': {
-                True: 'True',
-                False: 'False'
-            },
-            'VOICE_ENABLED': {
-                True: 'True',
-                False: 'False'
             },
         }
 
@@ -58,6 +55,8 @@ class BluetoothModule(ModuleInterface):
                 self.env_config[key] = value
 
             return True
+        else:
+            logging.info(f'Failed to validate. key={key}')
 
         return False
 
@@ -67,15 +66,56 @@ class BluetoothModule(ModuleInterface):
     def get_device_class_mapping(self):
         return self.device_class_mapping
 
-    def install(self):
-        pass
+    def install(self, confirm: bool = False) -> bool:
+        if not confirm:
+            return False
 
-    def uninstall(self):
-        pass
+        install_path = self.__module_config.get('install_path')
 
-    def deploy(self, k, v):
-        # TODO: Execute deploy script
-        print("Deployyyy")
+        if not install_path:
+            raise ValueError("Install path not configured.")
+
+        try:
+            subprocess.run([install_path], check=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Install script failed with exit code {e.returncode}") from e
+
+        self.env_config['INSTALLED'] = True
+        return True
+
+    def uninstall(self, confirm: bool = False) -> bool:
+        if not confirm:
+            return False
+
+        uninstall_path = self.__module_config.get('uninstall_path')
+
+        if not uninstall_path:
+            raise ValueError("Install path not configured.")
+
+        try:
+            subprocess.run([uninstall_path], check=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Uninstall script failed with exit code {e.returncode}") from e
+
+        self.env_config['INSTALLED'] = False
+        return True
+
+    def deploy(self, k, v) -> bool:
+        if self.get_config().get('INSTALLED') is True:
+            deploy_path = self.__module_config.get('deploy_path')
+
+            if not deploy_path:
+                raise ValueError("Deploy path not configured.")
+
+            try:
+                subprocess.run([deploy_path], check=True)
+            except subprocess.CalledProcessError as e:
+                raise RuntimeError(f"Deploy script failed with exit code {e.returncode}") from e
+
+            return True
+
+        logging.info("Skip deploy cause module is not installed")
+        return False
 
     @staticmethod
     def get_info():

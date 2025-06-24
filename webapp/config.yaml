@@ -30,4 +30,10 @@ bluetooth:
   install_path: "../bt/install.sh"
   uninstall_path: "../bt/uninstall.sh"
   deploy_path: "../bt/deploy.sh"
-  deploy_on: ['DEVICE_CLASS', 'DISCOVERABLE']
+  max_device_name_len: 50
+  deploy_on: ['DEVICE_CLASS', 'DISCOVERABLE', 'AUDIO_DEVICE']
+  device_class_mapping: {
+    "0x200414": 'Loudspeaker',
+    "0x200418": 'Headphones',
+    "0x20041C": 'Portable Audio'
+  }

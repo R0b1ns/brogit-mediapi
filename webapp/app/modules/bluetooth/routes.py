@@ -4,64 +4,68 @@ from app.lib.Backend import Backend
 from app.modules.bluetooth import module_bp
 
 
-@module_bp.route('/api/test', methods=['GET'])
+@module_bp.route('/api/config', methods=['GET'])
 def bluetooth_test():
-    print(current_app.config)
-    r = Backend().bluetooth.get_config()
-    return jsonify(message=r)
+    return jsonify(Backend().bluetooth.get_config())
 
 
-@module_bp.route('/api/settings/enable', methods=['POST'])
-def bluetooth_enable():
+@module_bp.route('/api/enabled', methods=['POST'])
+def bluetooth_install():
     data = request.get_json()
+
     enabled = data.get('enabled')
 
-    # TODO: Implement backend
-    if not False:
-        return jsonify(message="Not implemented"), 400
+    if not isinstance(enabled, bool):
+        return jsonify(error="Missing or invalid confirmation."), 400
 
-    return jsonify(message=f"Success")
+    if enabled:
+        try:
+            Backend().bluetooth.install(confirm=True)
+        except Exception as e:
+            return jsonify(error=f"Installation failed: {str(e)}"), 500
+    else:
+        try:
+            Backend().bluetooth.uninstall(confirm=True)
+        except Exception as e:
+            return jsonify(error=f"Uninstallation failed: {str(e)}"), 500
 
-@module_bp.route('/api/settings/audio', methods=['POST'])
-def bluetooth_audio_device():
-    data = request.get_json()
-    audio_device = data.get('audio_device')
-
-    # TODO: Implement backend
-    if not False:
-        return jsonify(message="Not implemented"), 400
-
-    return jsonify(message=f"Success")
+    return '', 200
 
 @module_bp.route('/api/settings', methods=['POST'])
 def change_bluetooth_settings():
     data = request.get_json()
 
     if not data:
-        return jsonify(message="No data"), 400
+        return jsonify(error="Request body is empty."), 400  # Bad Request
 
-    result = {}
+    backend = Backend().bluetooth
+    invalid_keys = []
+    failed_keys = []
 
     for k, v in data.items():
-        result.update({
-            k: Backend().bluetooth.set(k, v)
-        })
+        result = backend.set(k, v)
+        if result is None:
+            invalid_keys.append(k)
+        elif result is False:
+            failed_keys.append(k)
 
-    # for k, f in valid_options.items():
-    #     value = data.get(k)
-    #
-    #     if value is not None:
-    #         result.update({
-    #             k: False
-    #         })
-    #
-    #     if f(value):
-    #         Backend().bluetooth.set(k, value)
-    #         result[k] = True
-    #
-    # if not result:
-    #     return jsonify(message=f"Wrong keys. Valid keys: {valid_options.keys()}"), 400
+    if invalid_keys and failed_keys:
+        return jsonify(
+            error="Some keys are invalid and some failed to update.",
+            invalid_keys=invalid_keys,
+            failed_keys=failed_keys
+        ), 422  # Unprocessable Entity
 
+    if invalid_keys:
+        return jsonify(
+            error="One or more provided keys are invalid.",
+            invalid_keys=invalid_keys
+        ), 400  # Bad Request
 
+    if failed_keys:
+        return jsonify(
+            error="Some settings could not be applied.",
+            failed_keys=failed_keys
+        ), 409  # Conflict
 
-    return jsonify(response=result)
+    return '', 200
