@@ -15,6 +15,8 @@ sudo apt install --no-install-recommends build-essential git autoconf automake l
     libplist-dev libsodium-dev libavutil-dev libavcodec-dev libavformat-dev uuid-dev libgcrypt-dev xxd \
     libdaemon-dev libglib2.0-dev libmosquitto-dev -yy
 
+cd $SCRIPT_DIR
+
 # Create and enter repositories directory
 mkdir -p repositories && cd repositories
 
