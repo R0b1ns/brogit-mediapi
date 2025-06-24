@@ -18,7 +18,7 @@ DEVICE_NAME="${DEVICE_NAME:-}"
 
 # Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
 if [[ -n "$DEVICE_NAME" ]]; then
-  DEVICE_NAME_STR="Name = \"$DEVICE_NAME\""
+  DEVICE_NAME_STR="Name = $DEVICE_NAME"
 else
   DEVICE_NAME_STR=""
 fi
