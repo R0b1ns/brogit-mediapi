@@ -1,3 +1,5 @@
+// TODO: Wenn ich eine select liste habe soll es nach paar sekunden den grünen haken nicht mehr anzeigen und wenn es falsch lief nach ein paar sekunden auf das schalten, was vorher war
+
 $(() => {
   $.fn.genericInputAsFormHandler = function () {
     return this.each(function () {
