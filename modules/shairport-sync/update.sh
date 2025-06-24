@@ -36,6 +36,8 @@ autoreconf -fi
 make
 make install
 
+# Update linked library
+sudo ldconfig
+
 systemctl restart nqptp
-systemctl restart alac
 systemctl restart shairport-sync
