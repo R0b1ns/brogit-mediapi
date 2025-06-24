@@ -28,6 +28,9 @@ make install
 
 cd "$SCRIPT_DIR/repositories"
 
+# Update linked library
+sudo ldconfig
+
 # Shairport-sync
 cd shairport-sync
 git pull
@@ -35,9 +38,6 @@ autoreconf -fi
 ./configure --sysconfdir=/etc --with-libdaemon --with-piddir=/opt/shairport-sync/ --with-soxr --with-apple-alac --with-metadata --with-mqtt-client --with-dbus-interface --with-alsa --with-ssl=openssl --with-systemd --with-avahi --with-airplay-2
 make
 make install
-
-# Update linked library
-sudo ldconfig
 
 systemctl restart nqptp
 systemctl restart shairport-sync
