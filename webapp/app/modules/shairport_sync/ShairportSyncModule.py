@@ -24,7 +24,10 @@ class ShairportSyncModule(ModuleInterface):
 
     @staticmethod
     def get_license():
-        return open('../modules/shairport-sync/repositories/shairport-sync/LICENSES').read()
+        try:
+            return open('../modules/shairport-sync/repositories/shairport-sync/LICENSES').read()
+        except:
+            return "Unable to open LICENCE. Module is not installed yet"
 
     def get(self, key: str = None):
         if not key:

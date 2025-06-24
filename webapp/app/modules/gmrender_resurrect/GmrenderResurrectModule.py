@@ -23,7 +23,10 @@ class GmrenderResurrectModule(ModuleInterface):
 
     @staticmethod
     def get_license():
-        return open('../modules/gmrender-resurrect/repositories/gmrender-resurrect/COPYING').read()
+        try:
+            return open('../modules/gmrender-resurrect/repositories/gmrender-resurrect/COPYING').read()
+        except:
+            return "Unable to open LICENCE. Module is not installed yet"
 
     def get(self, key: str = None):
         if not key:
