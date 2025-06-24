@@ -34,10 +34,16 @@ chmod +x "$UPDATE_FILE_PATH"
 
 ## Adjust config
 SHAIRPORT_SYNC_CONFIG_FILE="/etc/shairport-sync.conf"
+ALLOW_LINE='    allow_session_interruption = "yes";'
 
-## Allow interrupt from another service
-ALLOW_SESSION_INTERRUPTION='    allow_session_interruption = "yes";'
-sed -i "/sessioncontrol =/,/};/ s/}/$ALLOW_SESSION_INTERRUPTION\n&/" "$SHAIRPORT_SYNC_CONFIG_FILE"
+# Prüfen, ob bereits eine nicht-kommentierte allow_session_interruption-Zeile existiert
+if ! grep -q '^[[:space:]]*allow_session_interruption[[:space:]]*=' "$SHAIRPORT_SYNC_CONFIG_FILE"; then
+  # Innerhalb des sessioncontrol-Blocks einfügen, vor der schließenden };
+  sed -i "/^[[:space:]]*sessioncontrol[[:space:]]*=/,/^[[:space:]]*};/ {
+    /^[[:space:]]*};/ i\\
+$ALLOW_LINE
+  }" "$SHAIRPORT_SYNC_CONFIG_FILE"
+fi
 
 ## Autorun on boot
 systemctl enable shairport-sync
