@@ -15,8 +15,8 @@ sudo apt install --no-install-recommends build-essential git autoconf automake l
     libplist-dev libsodium-dev libavutil-dev libavcodec-dev libavformat-dev uuid-dev libgcrypt-dev xxd \
     libdaemon-dev libglib2.0-dev libmosquitto-dev -yy
 
-# TODO: CD
-cd repositories
+# Create and enter repositories directory
+mkdir -p repositories && cd repositories
 
 # NQPTP and ALAC is required for Airplay2
 git clone https://github.com/mikebrady/nqptp
