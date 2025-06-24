@@ -5,7 +5,7 @@ from app.modules.bluetooth import module_bp
 
 
 @module_bp.route('/api/config', methods=['GET'])
-def bluetooth_test():
+def bluetooth_config():
     return jsonify(Backend().bluetooth.get_config())
 
 

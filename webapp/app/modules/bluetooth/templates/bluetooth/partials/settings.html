@@ -3,8 +3,8 @@
 <ul class="list-group mb-2">
     <li class="list-group-item">
         <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="settings-ethernet-ip-dhcp" name="enabled" value="install" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.bluetooth_install') }}" autocomplete="off" {% if backend.bluetooth.get_config()['INSTALLED'] == True %}checked{% endif %}>
-            <label class="form-check-label w-100 text-start" for="settings-ethernet-ip-dhcp">{{ _('Enabled') }}</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="settings-bluetooth-enabled" name="enabled" value="install" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.bluetooth_install') }}" autocomplete="off" {% if backend.bluetooth.get_config()['INSTALLED'] == True %}checked{% endif %}>
+            <label class="form-check-label w-100 text-start" for="settings-bluetooth-enabled">{{ _('Enabled') }}</label>
         </div>
     </li>
 </ul>
