@@ -6,7 +6,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd "$SCRIPT_DIR/respositories"
+cd "$SCRIPT_DIR/repositories"
 
 # NQPTP
 cd nqptp
@@ -16,7 +16,7 @@ autoreconf -fi
 make
 make install
 
-cd "$SCRIPT_DIR/respositories"
+cd "$SCRIPT_DIR/repositories"
 
 # ALAC
 cd alac
@@ -26,7 +26,7 @@ autoreconf -fi
 make
 make install
 
-cd "$SCRIPT_DIR/respositories"
+cd "$SCRIPT_DIR/repositories"
 
 # Shairport-sync
 cd shairport-sync
