@@ -81,7 +81,7 @@ EOF
 sudo systemctl daemon-reload
 
 # Disable all other bt-agent service instances except the current AUDIO_DEVICE
-active_services=$(systemctl list-units --type=service --no-legend 'bt-agent@*.service' | awk '{print $2}')
+active_services=$(systemctl list-units --type=service --all --output=json 'bt-agent@*.service' | jq -r '.[].unit')
 
 for svc in $active_services; do
   if [[ "$svc" != "bt-agent@${AUDIO_DEVICE}.service" ]]; then

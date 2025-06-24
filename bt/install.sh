@@ -5,7 +5,7 @@ set -e
 # Author: r0b1ns
 
 # Install required packages
-sudo apt install -y --no-install-recommends bluez-tools bluez-alsa-utils libttspico-utils
+sudo apt install -y --no-install-recommends bluez-tools bluez-alsa-utils libttspico-utils jq
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
