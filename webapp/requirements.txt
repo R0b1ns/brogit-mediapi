@@ -6,6 +6,7 @@ flask-WTF
 Flask-Limiter
 Flask-Babel
 flask_migrate
+flask_bcrypt
 gunicorn
 eventlet
 pam
