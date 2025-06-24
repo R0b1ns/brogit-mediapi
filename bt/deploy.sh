@@ -14,6 +14,14 @@ LOCALE="${LOCALE:-en-US}"
 DEVICE_CLASS="${DEVICE_CLASS:-0x200414}"
 DISCOVERABLE="${DISCOVERABLE:-on}"
 AUDIO_DEVICE="${AUDIO_DEVICE:-hci0}"
+DEVICE_NAME="${DEVICE_NAME:-}"
+
+# Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
+if [[ -n "$DEVICE_NAME" ]]; then
+  DEVICE_NAME_STR="Name = $DEVICE_NAME"
+else
+  DEVICE_NAME_STR=""
+fi
 
 # Bluetooth adapter configuration
 MAIN_CONF="/etc/bluetooth/main.conf"
@@ -31,6 +39,7 @@ cat << EOF > "$TEMP_CONF"
 Class = $DEVICE_CLASS
 DiscoverableTimeout = 0
 PairableTimeout = 0
+$DEVICE_NAME_STR
 
 [Policy]
 AutoEnable=true
