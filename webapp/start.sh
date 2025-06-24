@@ -20,6 +20,7 @@ PORT="${config[port]}"
 
 echo "Run ..."
 source "$WEBAPP_ROOT_PATH/.venv/bin/activate"
-python3 "$SCRIPT_DIR/app.py"
+# TODO: Here is a bug. why is webapp needed?
+python3 "$SCRIPT_DIR/webapp/app.py"
 # Instead of direct execution we can use gunicorn
 # gunicorn $APP_NAME:$APP_NAME -b $HOST:$PORT
