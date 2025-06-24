@@ -18,7 +18,7 @@ DEVICE_NAME="${DEVICE_NAME:-}"
 
 # Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
 if [[ -n "$DEVICE_NAME" ]]; then
-  DEVICE_NAME_STR="Name = $DEVICE_NAME"
+  DEVICE_NAME_STR="Name = \"$DEVICE_NAME\""
 else
   DEVICE_NAME_STR=""
 fi
@@ -49,6 +49,7 @@ EOF
 if ! cmp -s "$TEMP_CONF" "$MAIN_CONF"; then
   echo "Bluetooth config changed: updating and restarting bluetooth"
   sudo cp "$TEMP_CONF" "$MAIN_CONF"
+  sudo rm /var/lib/bluetooth/*/settings
   sudo systemctl restart bluetooth
 else
   echo "Bluetooth config unchanged: skipping restart"
