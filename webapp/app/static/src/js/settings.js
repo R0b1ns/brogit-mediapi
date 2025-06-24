@@ -39,4 +39,12 @@ $(document).ready(function(){
         }
     });
 
+    // TODO: Move that to a general.js file
+    // TODO: Recheck that
+    $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+      if (jqxhr.status === 419 || jqxhr.responseText.includes('CSRF token mismatch')) {
+        location.reload(); // Seite neu laden
+      }
+    });
+
 });
