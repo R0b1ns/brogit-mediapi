@@ -32,10 +32,6 @@ git clone https://github.com/mikebrady/shairport-sync.git
 chmod +x "$UPDATE_FILE_PATH"
 "$UPDATE_FILE_PATH"
 
-## Allow interrupt from another service
-ALLOW_SESSION_INTERRUPTION='    allow_session_interruption = "yes";'
-sed -i "/sessioncontrol =/,/};/ s/}/$ALLOW_SESSION_INTERRUPTION\n&/" "$SHAIRPORT_SYNC_CONFIG_FILE"
-
 ## Adjust config
 SHAIRPORT_SYNC_CONFIG_FILE="/etc/shairport-sync.conf"
 
