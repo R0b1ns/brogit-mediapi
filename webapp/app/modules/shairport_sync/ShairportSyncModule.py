@@ -8,9 +8,10 @@ class ShairportSyncModule(ModuleInterface):
             "name": "shairport-sync",  # interne id
             "display_name": "ShairPort-Sync",
             "icon": "bi-cog",
-            "type": "submodule"  # oder "submodule"
+            "type": "submodule",
+            'has_settings': True
         }
 
     @staticmethod
     def get_license():
-        return open('../modules/shairport-sync/LICENSES').read()
+        return open('../modules/shairport-sync/repositories/shairport-sync/LICENSES').read()

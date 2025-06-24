@@ -8,9 +8,10 @@ class GmrenderResurrectModule(ModuleInterface):
             "name": "gmrender-resurrect",  # interne id
             "display_name": "GmrenderResurrect",
             "icon": "bi-cog",
-            "type": "submodule"  # oder "submodule"
+            "type": "submodule",
+            'has_settings': True
         }
 
     @staticmethod
     def get_license():
-        return open('../modules/gmrender-resurrect/COPYING').read()
+        return open('../modules/gmrender-resurrect/repositories/gmrender-resurrect/COPYING').read()

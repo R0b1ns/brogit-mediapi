@@ -24,6 +24,10 @@ def register_modules(app, config):
     m.add_module('usb')
     m.add_module('system')
 
+    # Submodules
+    m.add_module('shairport_sync')
+    m.add_module('gmrender_resurrect')
+
     app.register_blueprint(m.get_blueprint())
 
     b = Backend(config)
