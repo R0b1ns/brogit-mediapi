@@ -5,6 +5,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-bash "$SCRIPT_DIR/ap/install.sh"
-bash "$SCRIPT_DIR/bt/install.sh"
-# bash "$SCRIPT_DIR/webapp.sh"
+# TODO: Enable for prod
+# bash "$SCRIPT_DIR/ap/install.sh"
+# bash "$SCRIPT_DIR/bt/install.sh"
+bash "$SCRIPT_DIR/webapp/install.sh"
