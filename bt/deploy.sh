@@ -97,4 +97,4 @@ done
 
 # Autostart Agent for audio device agent
 sudo systemctl enable bt-agent@${AUDIO_DEVICE}.service
-sudo systemctl start bt-agent@${AUDIO_DEVICE}.service
+sudo systemctl restart bt-agent@${AUDIO_DEVICE}.service
