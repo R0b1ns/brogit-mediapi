@@ -3,11 +3,10 @@
 # brogit (c) 2025
 # Author: r0b1ns
 
-sudo apt update
-sudo apt install gmediarender gstreamer1.0-alsa
+# Install dependencies
+sudo apt update -qq
+sudo apt install --no-install-recommends gmediarender gstreamer1.0-alsa -yy
 
-# TODO: Here is configuration required. Please check that
-# TODO: Take a look on old/install_pre.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-systemctl enable gmediarender
-systemctl start gmediarender
+"$SCRIPT_DIR/deploy.sh"

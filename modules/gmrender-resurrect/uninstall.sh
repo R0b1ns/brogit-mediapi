@@ -5,3 +5,7 @@
 
 systemctl disable gmediarender
 systemctl stop gmediarender
+
+sudo rm /etc/systemd/system/gmediarender.service
+
+sudo systemctl daemon-reload
