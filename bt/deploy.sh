@@ -19,6 +19,7 @@ DEVICE_NAME="${DEVICE_NAME:-}"
 # Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
 if [[ -n "$DEVICE_NAME" ]]; then
   DEVICE_NAME_STR="Name = $DEVICE_NAME"
+  DEVICE_NAME_SERVICE_STR="\nExecStartPre=/usr/bin/bluetoothctl system-alias $DEVICE_NAME"
 else
   DEVICE_NAME_STR=""
 fi
@@ -66,7 +67,7 @@ Requires=bluetooth.service
 After=bluetooth.service
 
 [Service]
-ExecStartPre=/usr/bin/bluetoothctl discoverable $DISCOVERABLE
+ExecStartPre=/usr/bin/bluetoothctl discoverable $DISCOVERABLE$DEVICE_NAME_SERVICE_STR
 ExecStartPre=/bin/hciconfig %I piscan
 ExecStartPre=/bin/hciconfig %I sspmode 1
 ExecStart=/usr/bin/bt-agent --capability=NoInputNoOutput
