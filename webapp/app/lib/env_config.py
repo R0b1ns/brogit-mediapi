@@ -14,7 +14,7 @@ class EnvConfig(dict):
 
         # Transform a str:bool into bool
         for k, v in self._env.items():
-            r = universal_bool(v)
+            r = universal_bool(v, detect=True)
             if r is None:
                 continue
             self._env[k] = r
