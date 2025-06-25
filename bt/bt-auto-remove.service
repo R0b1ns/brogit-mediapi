@@ -1,0 +1,21 @@
+# /etc/systemd/system/bt-auto-remove.service
+# Monitors Bluetooth events and removes devices on pairing failure
+# Logfile: /var/log/bt-auto-remove.log (rotated via logrotate)
+# Optionally supports SIGUSR1 for clean termination during logrotate
+
+[Unit]
+Description=Auto-remove failed Bluetooth pairings
+After=bluetooth.service
+Requires=bluetooth.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/bt-auto-remove.sh
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+KillSignal=SIGUSR1
+
+[Install]
+WantedBy=multi-user.target

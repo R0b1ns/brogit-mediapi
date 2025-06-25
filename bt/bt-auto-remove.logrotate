@@ -1,0 +1,11 @@
+/var/log/bt-auto-remove.log {
+    weekly
+    rotate 4
+    compress
+    missingok
+    notifempty
+    create 644 root root
+    postrotate
+        systemctl kill -s SIGUSR1 bt-auto-remove.service || true
+    endscript
+}

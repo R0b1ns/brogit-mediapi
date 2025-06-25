@@ -43,7 +43,6 @@ $DEVICE_NAME_STR
 
 [Policy]
 AutoEnable = true
-AutoTrust = true
 EOF
 
 # Compare and replace if different, then restart
