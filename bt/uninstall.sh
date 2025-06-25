@@ -21,6 +21,8 @@ sudo systemctl daemon-reload
 cp /etc/bluetooth/main.conf.bak /etc/bluetooth/main.conf
 sudo rm /etc/udev/rules.d/99-bluetooth-connect.rules
 
+"$SCRIPT_DIR/uninstall-bt-auto-remove.sh"
+
 sudo systemctl disable bluealsa
 sudo systemctl disable bluetooth
 
