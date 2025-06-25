@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/config.env"
 
 # Default values
-DEVICE_NAME="${DEVICE_NAME:-}"
+DEVICE_NAME="${DEVICE_NAME:-$(hostname)}"
 INITIAL_VOLUME_DB="${INITIAL_VOLUME_DB:--10}"
 UPNP_UUID="$(ip link show | awk '/ether/ {print "salt:)-" $2}' | head -1 | md5sum | awk '{print $1}')"
 
