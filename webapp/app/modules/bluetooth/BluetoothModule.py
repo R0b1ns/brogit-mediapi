@@ -26,7 +26,7 @@ class BluetoothModule(ModuleInterface):
             'DEVICE_CLASS': lambda v: v in self.__module_config.get('device_class_mapping'),
             'DISCOVERABLE': lambda v: v in (True, False),
             # TODO: Empty for default device
-            'AUDIO_DEVICE': lambda v: v in [e.get('name') for e in Backend().audio.get_audio_devices()],
+            'BLUETOOTH_DEVICE': lambda v: v in Backend().bluetooth.list_hci_devices(),
             'SOUND_ENABLED': lambda v: v in (True, False),
             'VOICE_ENABLED': lambda v: v in (True, False),
             # XXX: Here we have to be very careful. Because we write directly text into the config
