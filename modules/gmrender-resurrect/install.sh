@@ -5,7 +5,7 @@
 
 # Install dependencies
 sudo apt update -qq
-sudo apt install --no-install-recommends gmediarender gstreamer1.0-alsa -yy
+sudo apt install gmediarender gstreamer1.0-alsa -yy
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
