@@ -5,3 +5,9 @@
 
 systemctl disable shairport-sync
 systemctl stop shairport-sync
+
+# WiFi Power Management on (Instant but not after reboot)
+iwconfig wlan0 power on
+
+# NetworkManager (For future connection, also after reboot) (2=disabled, 3=enabled)
+sudo nmcli connection modify preconfigured wifi.powersave 3
