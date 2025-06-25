@@ -11,7 +11,7 @@ source "$SCRIPT_DIR/config.env"
 # Default values
 DEVICE_NAME="${DEVICE_NAME:-DLNA-Renderer}"
 INITIAL_VOLUME_DB="${INITIAL_VOLUME_DB:--10}"
-UPNP_UUID="$(ip link show | awk '/ether/ {print \\\"salt:)-\\\" \$2}' | head -1 | md5sum | awk '{print \$1}')"
+UPNP_UUID="$(ip link show | awk '/ether/ {print "salt:)-" $2}' | head -1 | md5sum | awk '{print $1}')"
 
 SERVICE_PATH="/etc/systemd/system/gmediarender.service"
 BACKUP_PATH="${SERVICE_PATH}.bak"
