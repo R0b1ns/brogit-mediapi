@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 BT_SOUND_FILE_PATH="$SCRIPT_DIR/event.sh"
 BT_DEPLOY_FILE_PATH="$SCRIPT_DIR/deploy.sh"
-BT_AUTO_REMOVE_FILE_PATH="$SCRIPT_DIR/install-bt-auto.remove.sh"
+BT_AUTO_REMOVE_FILE_PATH="$SCRIPT_DIR/install-bt-auto-remove.sh"
 
 
 # Make scripts executable
