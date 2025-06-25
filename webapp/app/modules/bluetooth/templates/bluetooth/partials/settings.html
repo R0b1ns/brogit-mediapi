@@ -11,6 +11,17 @@
 
 <ul class="list-group mb-2">
     <li class="list-group-item">
+        <label for="settings-bluetooth-device" class="align-middle">{{ _('Bluetooth device') }}</label>
+        <select class="form-select form-select-listmod" id="settings-bluetooth-device" name="BLUETOOTH_DEVICE" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off">
+            {% for device in backend.bluetooth.list_hci_devices() %}
+                <option value="{{ device }}" {% if device == backend.bluetooth.get_config()['BLUETOOTH_DEVICE'] %}selected{% endif %}>{{ device }}</option>
+            {% endfor %}
+        </select>
+    </li>
+</ul>
+
+<ul class="list-group mb-2">
+    <li class="list-group-item">
         <div class="form-check-reverse form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="settings-bluetooth-discoverable" name="DISCOVERABLE" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off" {% if backend.bluetooth.get_config()['DISCOVERABLE'] == 'on' %}checked{% endif %}>
             <label class="form-check-label w-100 text-start" for="settings-bluetooth-discoverable">{{ _('Discoverable') }}</label>
@@ -50,15 +61,5 @@
                 </form>
             </div>
         </div>
-    </li>
-</ul>
-<ul class="list-group mb-2">
-    <li class="list-group-item">
-        <label for="settings-bluetooth-device" class="align-middle">{{ _('Bluetooth device') }}</label>
-        <select class="form-select form-select-listmod" id="settings-bluetooth-device" name="BLUETOOTH_DEVICE" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off">
-            {% for device in backend.bluetooth.list_hci_devices() %}
-                <option value="{{ device }}" {% if device == backend.bluetooth.get_config()['BLUETOOTH_DEVICE'] %}selected{% endif %}>{{ device }}</option>
-            {% endfor %}
-        </select>
     </li>
 </ul>
