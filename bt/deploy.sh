@@ -43,7 +43,8 @@ PairableTimeout = 0
 $DEVICE_NAME_STR
 
 [Policy]
-AutoEnable=true
+AutoEnable = true
+AutoTrust = true
 EOF
 
 # Compare and replace if different, then restart
