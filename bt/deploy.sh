@@ -50,7 +50,7 @@ EOF
 if ! cmp -s "$TEMP_CONF" "$MAIN_CONF"; then
   echo "Bluetooth config changed: updating and restarting bluetooth"
   sudo cp "$TEMP_CONF" "$MAIN_CONF"
-  # TODO: Do not remove settings cause with it pairings will be lost
+  # Do not remove settings cause with it pairings will be lost
   # sudo rm /var/lib/bluetooth/*/settings
   sudo systemctl restart bluetooth
 else
