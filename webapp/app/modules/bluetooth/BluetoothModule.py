@@ -118,6 +118,11 @@ class BluetoothModule(ModuleInterface):
         return False
 
     @staticmethod
+    def list_hci_devices():
+        output = subprocess.check_output(["hciconfig"], text=True)
+        return [line.split(":")[0] for line in output.splitlines() if line.startswith("hci")]
+
+    @staticmethod
     def get_info():
         return {
             "name": "bluetooth",  # interne id

@@ -9,10 +9,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "$SCRIPT_DIR/config.env"
 
-AUDIO_DEVICE="${AUDIO_DEVICE:-hci0}"
+BLUETOOTH_DEVICE="${BLUETOOTH_DEVICE:-hci0}"
 
-sudo systemctl disable bt-agent@${AUDIO_DEVICE}.service
-sudo systemctl stop bt-agent@${AUDIO_DEVICE}.service
+sudo systemctl disable bt-agent@${BLUETOOTH_DEVICE}.service
+sudo systemctl stop bt-agent@${BLUETOOTH_DEVICE}.service
 
 sudo rm /etc/systemd/system/bt-agent@.service
 

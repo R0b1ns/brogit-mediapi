@@ -13,7 +13,7 @@ source "$SCRIPT_DIR/config.env"
 LOCALE="${LOCALE:-en-US}"
 DEVICE_CLASS="${DEVICE_CLASS:-0x200414}"
 DISCOVERABLE="${DISCOVERABLE:-on}"
-AUDIO_DEVICE="${AUDIO_DEVICE:-hci0}"
+BLUETOOTH_DEVICE="${BLUETOOTH_DEVICE:-hci0}"
 DEVICE_NAME="${DEVICE_NAME:-}"
 
 # Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
@@ -83,11 +83,11 @@ EOF
 # Enable and Start services
 sudo systemctl daemon-reload
 
-# Disable all other bt-agent service instances except the current AUDIO_DEVICE
+# Disable all other bt-agent service instances except the current BLUETOOTH_DEVICE
 active_services=$(systemctl list-units --type=service --all --output=json 'bt-agent@*.service' | jq -r '.[].unit')
 
 for svc in $active_services; do
-  if [[ "$svc" != "bt-agent@${AUDIO_DEVICE}.service" ]]; then
+  if [[ "$svc" != "bt-agent@${BLUETOOTH_DEVICE}.service" ]]; then
     echo "Disabling and stopping $svc"
     sudo systemctl disable "$svc"
     sudo systemctl stop "$svc"
@@ -95,5 +95,5 @@ for svc in $active_services; do
 done
 
 # Autostart Agent for audio device agent
-sudo systemctl enable bt-agent@${AUDIO_DEVICE}.service
-sudo systemctl restart bt-agent@${AUDIO_DEVICE}.service
+sudo systemctl enable bt-agent@${BLUETOOTH_DEVICE}.service
+sudo systemctl restart bt-agent@${BLUETOOTH_DEVICE}.service
