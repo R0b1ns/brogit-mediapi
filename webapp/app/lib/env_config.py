@@ -4,10 +4,21 @@ from dotenv import dotenv_values, set_key
 from pathlib import Path
 from collections import defaultdict
 
+from app.lib.common import universal_bool
+
+
 class EnvConfig(dict):
     def __init__(self, path):
         self.path = Path(path)
         self._env = dotenv_values(self.path)
+
+        # Transform a str:bool into bool
+        for k, v in self._env.items():
+            r = universal_bool(v)
+            if r is None:
+                continue
+            self._env[k] = r
+
         super().__init__(self._env)
         self._callbacks = defaultdict(list)
 

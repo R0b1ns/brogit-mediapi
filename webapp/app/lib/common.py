@@ -2,6 +2,24 @@ import ipaddress
 import logging
 import sys
 
+UNIVERSAL_TRUE_PRI = ('True', 'true', True)
+UNIVERSAL_TRUE_SEC = (1, '1')
+
+UNIVERSAL_FALSE_PRI = ('False', 'false', False)
+UNIVERSAL_FALSE_SEC = (0, '0')
+
+def universal_bool(v, detect: bool = False) -> bool or None:
+    # If we are on detect mode, we can not assume that 1 or '1' is really an bool.
+    if v in UNIVERSAL_TRUE_PRI:
+        return True
+
+    if v in UNIVERSAL_FALSE_PRI:
+        return False
+
+    if not detect:
+        return v in UNIVERSAL_TRUE_SEC
+
+    return None
 
 def setup_logging(level: int = logging.INFO):
     logging.basicConfig(
@@ -23,3 +41,4 @@ def is_valid_ip(value):
         return True
     except ValueError:
         return False
+
