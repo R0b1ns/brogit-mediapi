@@ -33,7 +33,7 @@ After=network.target sound.target
 Environment="UPNP_DEVICE_NAME=${DEVICE_NAME}"
 ExecStartPre=/bin/sh -c "/bin/systemctl set-environment UPNP_UUID=$UPNP_UUID"
 
-ExecStart=/usr/local/bin/gmediarender -f "$DEVICE_NAME" -u "$UPNP_UUID" \\
+ExecStart=/usr/bin/gmediarender -f "$DEVICE_NAME" -u "$UPNP_UUID" \\
   --gstout-audiosink=alsasink --gstout-audiodevice=sysdefault \\
   --logfile=/var/log/gmediarenderer.log --gstout-initial-volume-db=${INITIAL_VOLUME_DB}
 Restart=always
