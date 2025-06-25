@@ -13,6 +13,13 @@ DEVICE_NAME="${DEVICE_NAME:-DLNA-Renderer}"
 INITIAL_VOLUME_DB="${INITIAL_VOLUME_DB:--10}"
 UPNP_UUID="$(ip link show | awk '/ether/ {print "salt:)-" $2}' | head -1 | md5sum | awk '{print $1}')"
 
+# Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
+if [[ -n "$DEVICE_NAME" ]]; then
+  DEVICE_NAME_STR="-f \"$DEVICE_NAME\""
+else
+  DEVICE_NAME_STR=""
+fi
+
 SERVICE_PATH="/etc/systemd/system/gmediarender.service"
 BACKUP_PATH="${SERVICE_PATH}.bak"
 TEMP_PATH="$(mktemp)"
@@ -22,6 +29,8 @@ if [[ ! -f "$BACKUP_PATH" ]]; then
   sudo cp "$SERVICE_PATH" "$BACKUP_PATH" 2>/dev/null || true
   echo "Backup created: $BACKUP_PATH"
 fi
+
+# TODO: check if required: --dbus-enable --dbus-system
 
 # Generate service file
 cat << EOF > "$TEMP_PATH"
@@ -33,7 +42,7 @@ After=network.target sound.target
 Environment="UPNP_DEVICE_NAME=${DEVICE_NAME}"
 ExecStartPre=/bin/sh -c "/bin/systemctl set-environment UPNP_UUID=$UPNP_UUID"
 
-ExecStart=/usr/bin/gmediarender -f "$DEVICE_NAME" -u "$UPNP_UUID" \\
+ExecStart=/usr/bin/gmediarender $DEVICE_NAME_STR -u "$UPNP_UUID" \\
   --gstout-audiosink=alsasink --gstout-audiodevice=sysdefault \\
   --logfile=/var/log/gmediarenderer.log --gstout-initial-volume-db=${INITIAL_VOLUME_DB}
 Restart=always
