@@ -58,7 +58,7 @@
         <label for="settings-bluetooth-device" class="align-middle">{{ _('Bluetooth device') }}</label>
         <select class="form-select form-select-listmod" id="settings-bluetooth-device" name="BLUETOOTH_DEVICE" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off">
             <option value="" {% if backend.bluetooth.get_config()['BLUETOOTH_DEVICE'] == '' %}selected{% endif %}>default</option>
-            {% for device in backend.audio.list_hci_devices() %}
+            {% for device in backend.bluetooth.list_hci_devices() %}
                 <option value="{{ device.name }}" {% if device.name == backend.bluetooth.get_config()['BLUETOOTH_DEVICE'] %}selected{% endif %}>{{ device.name }}</option>
             {% endfor %}
         </select>
