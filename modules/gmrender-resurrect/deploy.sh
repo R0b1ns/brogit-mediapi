@@ -34,7 +34,7 @@ ExecStartPre=/bin/sh -c "/bin/systemctl set-environment UPNP_UUID=\$(ip link sho
 
 ExecStart=/usr/local/bin/gmediarender -f "\$UPNP_DEVICE_NAME" -u "\$UPNP_UUID" \\
   --gstout-audiosink=alsasink --gstout-audiodevice=sysdefault \\
-  --logfile=/tmp/gmediarenderer.log --gstout-initial-volume-db=${INITIAL_VOLUME_DB}
+  --logfile=/var/log/gmediarenderer.log --gstout-initial-volume-db=${INITIAL_VOLUME_DB}
 Restart=always
 
 [Install]
