@@ -34,7 +34,7 @@ User=www-data
 Group=www-data
 WorkingDirectory=$PROJECT_ROOT
 Environment="PYTHONUNBUFFERED=1"
-ExecStartPre=$PROJECT_ROOT/deploy.sh
+# ExecStartPre=$PROJECT_ROOT/deploy.sh
 
 ExecStart=$PROJECT_ROOT/.venv/bin/python $PROJECT_ROOT/app.py
 Restart=always
