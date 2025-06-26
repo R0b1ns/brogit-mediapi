@@ -3,7 +3,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Install system dependencies ..."
-"$SCRIPT_DIR/scripts/generic_apt_install.py" "$SCRIPT_DIR/apt-requirements.txt"
+"$SCRIPT_DIR/scripts/generic_apt_install.sh" "$SCRIPT_DIR/apt-requirements.txt"
 
 if [ ! -d ".venv" ]; then
     echo "Create virtual environment..."
