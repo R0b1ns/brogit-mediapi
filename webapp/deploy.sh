@@ -13,4 +13,4 @@ fi
 source "$SCRIPT_DIR/.venv/bin/activate"
 
 echo "Install pip dependencies ..."
-pip3 install -r "$SCRIPT_DIR/requirements.txt"
+"$SCRIPT_DIR/.venv/bin/pip" install -r "$SCRIPT_DIR/requirements.txt"
