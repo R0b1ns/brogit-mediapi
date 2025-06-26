@@ -12,6 +12,12 @@ system:
 
 app:
   # Flask App Config
+  HOST: "0.0.0.0"
+  PORT: 8443
+
+  SSL_CERT_PATH: 'cert.pem'
+  SSL_KEY_PATH: 'key.pem'
+
   DEBUG: True
   PROPAGATE_EXCEPTIONS: True
 

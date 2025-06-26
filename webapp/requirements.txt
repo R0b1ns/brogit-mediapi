@@ -8,11 +8,13 @@ Flask-Babel
 flask_migrate
 flask_bcrypt
 sounddevice
-gunicorn
-eventlet
+# gunicorn
+gevent
+gevent-websocket
 pam
 six
 gitpython
 python-crontab
 python-dotenv
 pyyaml
+cryptography

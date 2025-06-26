@@ -41,4 +41,3 @@ def is_valid_ip(value):
         return True
     except ValueError:
         return False
-
