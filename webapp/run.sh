@@ -7,8 +7,9 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Deploy and install dependencies
 "$SCRIPT_DIR/deploy.sh"
 
-# Install service
-"$SCRIPT_DIR/scripts/install_service.sh"
+echo "Activate environment ..."
+source "$SCRIPT_DIR/.venv/bin/activate"
+
+python3 "$SCRIPT_DIR/app.py"
