@@ -18,7 +18,10 @@ def create_app():
     app = Flask(__name__)
 
     # TODO: Config
-    config = load_config('./.env', 'CONFIG_FILE')
+
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    env_path = os.path.join(base_dir, '.env')
+    config = load_config(env_path, 'CONFIG_FILE')
     app.config.update(config['app'])
 
     app.secret_key = config['app'].get('SECRET_KEY', 'your_secret_key')
