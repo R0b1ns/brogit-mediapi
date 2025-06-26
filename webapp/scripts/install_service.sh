@@ -10,7 +10,9 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 SERVICE_NAME="brogitCast WebApp Service"
 SERVICE_PATH="/etc/systemd/system/brogit-cast-webapp.service"
-SERVICE_UNIT_NAME=$(basename "$SERVICE_FILE_NAME" .service)
+SERVICE_UNIT_NAME=$(basename "$SERVICE_PATH" .service)
+
+echo "$SERVICE_UNIT_NAME"
 BACKUP_PATH="${SERVICE_PATH}.bak"
 TEMP_PATH="$(mktemp)"
 trap 'rm -f "$TEMP_PATH"' EXIT
