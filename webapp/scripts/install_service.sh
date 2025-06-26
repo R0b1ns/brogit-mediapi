@@ -18,10 +18,10 @@ TEMP_PATH="$(mktemp)"
 trap 'rm -f "$TEMP_PATH"' EXIT
 
 # Backup existing service
-if [[ ! -f "$BACKUP_PATH" ]]; then
-  sudo cp "$SERVICE_PATH" "$BACKUP_PATH" 2>/dev/null || true
-  echo "Backup created: $BACKUP_PATH"
-fi
+#if [[ ! -f "$BACKUP_PATH" ]]; then
+#  sudo cp "$SERVICE_PATH" "$BACKUP_PATH" 2>/dev/null || true
+#  echo "Backup created: $BACKUP_PATH"
+#fi
 
 # Generate service file
 cat << EOF > "$TEMP_PATH"
