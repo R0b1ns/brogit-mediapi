@@ -18,9 +18,11 @@ def create_app():
     app = Flask(__name__)
 
     # TODO: Config
+    # TODO: Better solution for path resolve
+    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    os.chdir(PROJECT_ROOT)
 
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    env_path = os.path.join(base_dir, '.env')
+    env_path = os.path.join(PROJECT_ROOT, '.env')
     config = load_config(env_path, 'CONFIG_FILE')
     app.config.update(config['app'])
 
