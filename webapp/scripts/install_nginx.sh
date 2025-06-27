@@ -1,32 +1,37 @@
 #!/bin/bash
 
-# brogit nginx setup script
+# brogit nginx setup script (idempotent)
 # Author: r0b1ns
 
 set -e
 
 DEFAULT_CONF="/etc/nginx/sites-available/default"
 BACKUP_CONF="${DEFAULT_CONF}.bak"
+CERT="/etc/ssl/certs/ssl-cert-snakeoil.pem"
+KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
 
-echo "Installing nginx..."
-sudo apt update
-sudo apt install -y nginx
+install_package_if_missing() {
+  if ! dpkg -s "$1" >/dev/null 2>&1; then
+    echo "Installing $1..."
+    sudo apt-get install -y "$1"
+  fi
+}
 
-# Enable snakeoil certs if not present
-if [[ ! -f /etc/ssl/certs/ssl-cert-snakeoil.pem || ! -f /etc/ssl/private/ssl-cert-snakeoil.key ]]; then
-  echo "Generating self-signed snakeoil certificates..."
-  sudo apt install -y ssl-cert
-fi
+echo "Updating package index..."
+sudo apt-get update -y
 
-# Backup existing default config if needed
-if [[ ! -f "$BACKUP_CONF" ]]; then
-  echo "Backing up existing nginx default config..."
+# Install nginx and ssl-cert if missing
+install_package_if_missing nginx
+install_package_if_missing ssl-cert
+
+# Backup default config once
+if [[ -f "$DEFAULT_CONF" && ! -f "$BACKUP_CONF" ]]; then
+  echo "Creating backup of existing nginx default config..."
   sudo cp "$DEFAULT_CONF" "$BACKUP_CONF"
 fi
 
-# Write new default config
-echo "Writing nginx default site config..."
-sudo tee "$DEFAULT_CONF" > /dev/null << 'EOF'
+# Desired config content
+read -r -d '' NEW_CONF <<'EOF'
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -51,8 +56,16 @@ server {
 }
 EOF
 
-echo "Testing and reloading nginx..."
-sudo nginx -t
-sudo systemctl reload nginx
+# Only write config if changed
+CURRENT_HASH=$(sudo sha256sum "$DEFAULT_CONF" 2>/dev/null | awk '{print $1}' || true)
+NEW_HASH=$(echo "$NEW_CONF" | sha256sum | awk '{print $1}')
+
+if [[ "$CURRENT_HASH" != "$NEW_HASH" ]]; then
+  echo "Updating nginx default config..."
+  echo "$NEW_CONF" | sudo tee "$DEFAULT_CONF" > /dev/null
+  sudo nginx -t && sudo systemctl reload nginx
+else
+  echo "nginx default config is up to date. No changes made."
+fi
 
 echo "nginx setup complete. Service reachable at https://localhost/"
