@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-15 19:31+0200\n"
+"POT-Creation-Date: 2025-06-15 20:31+0200\n"
 "PO-Revision-Date: 2025-05-22 23:06+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -216,13 +216,6 @@ msgstr "Module"
 msgid "Language"
 msgstr "Sprache"
 
-#: templates/settings/general.html:26
-msgid "language_de"
-msgstr "Deutsch"
-
-msgid "language_en"
-msgstr "Englisch"
-
 #: templates/settings/modules.html:8 templates/settings/modules.html:25
 msgid "License"
 msgstr "Lizenz"
@@ -264,4 +257,10 @@ msgstr ""
 
 #~ msgid "Obtain IP address automatically"
 #~ msgstr ""
+
+#~ msgid "language_de"
+#~ msgstr "Deutsch"
+
+#~ msgid "language_en"
+#~ msgstr "Englisch"
 

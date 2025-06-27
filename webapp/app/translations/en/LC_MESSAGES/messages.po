@@ -213,12 +213,6 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-msgid "language_en"
-msgstr "English"
-
-msgid "language_de"
-msgstr "German"
-
 #: templates/settings/modules.html:8 templates/settings/modules.html:25
 msgid "License"
 msgstr ""
@@ -262,5 +256,8 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "language_de"
-#~ msgstr ""
+#~ msgstr "German"
+
+#~ msgid "language_en"
+#~ msgstr "English"
 
