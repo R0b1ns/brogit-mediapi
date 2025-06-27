@@ -5,7 +5,17 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# TODO: Enable for prod
-# bash "$SCRIPT_DIR/ap/install.sh"
+# bt
+chown -R :www-data "$SCRIPT_DIR/bt"
+chmod +x "$SCRIPT_DIR/bt/install.sh"
 # bash "$SCRIPT_DIR/bt/install.sh"
+
+# ap
+chown -R :www-data "$SCRIPT_DIR/ap"
+chmod +x "$SCRIPT_DIR/ap/install.sh"
+# bash "$SCRIPT_DIR/ap/install.sh"
+
+# webapp
+chown -R :www-data "$SCRIPT_DIR/webapp"
+chmod +x "$SCRIPT_DIR/webapp/install.sh"
 bash "$SCRIPT_DIR/webapp/install.sh"
