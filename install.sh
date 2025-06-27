@@ -5,8 +5,12 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# modules
 chown -R :www-data "$SCRIPT_DIR"
+
+# modules
+# TODO: Change permissions in module
+chmod g+r "$SCRIPT_DIR/modules/gmrender-resurrect/config.env"
+chmod g+r "$SCRIPT_DIR/modules/shairport-sync/config.env"
 
 # bt
 chown -R :www-data "$SCRIPT_DIR/bt"
