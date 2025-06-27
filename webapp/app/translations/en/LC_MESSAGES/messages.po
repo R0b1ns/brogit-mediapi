@@ -21,7 +21,7 @@ msgstr ""
 #: core/auth/models.py:24
 #: modules/system/templates/system/partials/settings.html:57
 msgid "Username"
-msgstr "UsernameX"
+msgstr "Username"
 
 #: core/auth/models.py:25
 #: modules/system/templates/system/partials/settings.html:67
