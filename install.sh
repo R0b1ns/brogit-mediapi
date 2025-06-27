@@ -5,6 +5,9 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# modules
+chown -R :www-data "$SCRIPT_DIR"
+
 # bt
 chown -R :www-data "$SCRIPT_DIR/bt"
 chmod +x "$SCRIPT_DIR/bt/install.sh"
