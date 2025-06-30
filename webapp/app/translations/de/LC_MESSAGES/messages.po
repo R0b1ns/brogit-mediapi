@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-15 20:31+0200\n"
+"POT-Creation-Date: 2025-06-30 23:11+0200\n"
 "PO-Revision-Date: 2025-05-22 23:06+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,33 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: core/auth/models.py:24
-#: modules/system/templates/system/partials/settings.html:57
+#: core/auth/models.py:47
+#: modules/system/templates/system/partials/settings.html:59
 msgid "Username"
 msgstr "Benutzername"
 
-#: core/auth/models.py:25
-#: modules/system/templates/system/partials/settings.html:67
+#: core/auth/models.py:48
+#: modules/system/templates/system/partials/settings.html:69
 msgid "Password"
 msgstr "Passwort"
 
-#: core/auth/models.py:26
+#: core/auth/models.py:49
 msgid "Log In"
 msgstr "Login"
 
-#: core/auth/routes.py:30
+#: core/auth/routes.py:34
 msgid "Invalid credentials."
 msgstr "Falsche zugangsdaten."
 
-#: core/main/routes.py:44
+#: core/main/routes.py:49
 msgid "SSID is required"
 msgstr "SSID ist benötigt"
 
-#: core/main/routes.py:48
+#: core/main/routes.py:53
 msgid "Connected to %(value)"
 msgstr "Verbunden mit %(value)"
 
-#: core/main/routes.py:50
+#: core/main/routes.py:55
 msgid "It was unable to connect to the new network. Please check your credentials"
 msgstr ""
 "Es war nicht möglich sich mit dem Netzwerk zu verbinden. Bitte überprüfe "
@@ -55,17 +55,37 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:7
+#: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:17
+#: modules/shairport_sync/templates/shairport-sync/partials/settings.html:17
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: modules/bluetooth/templates/bluetooth/partials/settings.html:16
-#: templates/settings/general.html:10 templates/settings/general.html:14
-msgid "Device Name"
-msgstr "Gerätename"
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:14
+#, fuzzy
+msgid "Bluetooth device"
+msgstr "Bluetooth Gerät"
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:27
-msgid "Audio device"
-msgstr "Audiogerät"
+msgid "Discoverable"
+msgstr "Entdeckbar"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:31
+#, fuzzy
+msgid "Device class"
+msgstr "Gerätename"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:41
+msgid "Sound"
+msgstr "Töne"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:47
+msgid "Voice"
+msgstr "Stimme"
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:53
+#: templates/settings/general.html:15 templates/settings/general.html:19
+msgid "Device Name"
+msgstr "Gerätename"
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:1
 msgid "Ethernet"
@@ -74,7 +94,7 @@ msgstr "Ethernet"
 #: modules/ethernet/templates/ethernet/partials/settings.html:13
 #: modules/ethernet/templates/ethernet/partials/settings.html:79
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:26
 msgid "Status"
@@ -83,7 +103,7 @@ msgstr "Status"
 #: modules/ethernet/templates/ethernet/partials/settings.html:39
 #: modules/ethernet/templates/ethernet/partials/settings.html:85
 msgid "Automatic configuration (DHCP)"
-msgstr ""
+msgstr "Automatische Konfiguration (DHCP)"
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:45
 msgid "IP Address"
@@ -98,8 +118,9 @@ msgid "Gateway"
 msgstr ""
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:76
+#: templates/settings/general.html:20
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:93
 #: modules/network/templates/network/partials/settings.html:5
@@ -108,7 +129,18 @@ msgstr "DNS Server"
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:94
 msgid "Enter one server address per line."
-msgstr ""
+msgstr "Gib eine Serveradresse pro Zeile ein."
+
+#: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:5
+#: modules/shairport_sync/templates/shairport-sync/partials/settings.html:5
+#: templates/index.html:45 templates/nested_settings_modal.html:6
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:8
+#: modules/shairport_sync/templates/shairport-sync/partials/settings.html:8
+msgid "License"
+msgstr "Lizenz"
 
 #: modules/network/templates/network/partials/settings.html:14
 msgid "Proxy"
@@ -158,32 +190,37 @@ msgstr "Aktiviere automatische updates"
 msgid "Version"
 msgstr "Version"
 
-#: modules/system/templates/system/partials/settings.html:34
+#: modules/system/templates/system/partials/settings.html:35
 msgid "Branch"
 msgstr "Branch"
 
-#: modules/system/templates/system/partials/settings.html:39
+#: modules/system/templates/system/partials/settings.html:40
 msgid "Commit"
 msgstr "Commit"
 
-#: modules/system/templates/system/partials/settings.html:44
+#: modules/system/templates/system/partials/settings.html:45
+#: templates/settings/general.html:79
 msgid "Update"
 msgstr "Update"
 
-#: modules/system/templates/system/partials/settings.html:51
+#: modules/system/templates/system/partials/settings.html:53
 #, fuzzy
 msgid "User"
 msgstr "Benutzer"
 
-#: modules/system/templates/system/partials/settings.html:76
+#: modules/system/templates/system/partials/settings.html:78
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: modules/system/templates/system/partials/settings.html:78
+#: modules/system/templates/system/partials/settings.html:80
+msgid "Shutdown"
+msgstr "Herunterfahren"
+
+#: modules/system/templates/system/partials/settings.html:81
 msgid "Reboot"
 msgstr "Neustarten"
 
-#: modules/system/templates/system/partials/settings.html:79
+#: modules/system/templates/system/partials/settings.html:82
 msgid "Restore factory defaults"
 msgstr "Werkseinstellungen wiederherstellen"
 
@@ -191,16 +228,11 @@ msgstr "Werkseinstellungen wiederherstellen"
 msgid "USB"
 msgstr "USB"
 
-#: templates/index.html:44 templates/nested_settings_modal.html:6
-#: templates/settings/modules.html:5 templates/settings/modules.html:22
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: templates/index.html:45
+#: templates/index.html:46
 msgid "Info"
 msgstr "Info"
 
-#: templates/index.html:47
+#: templates/index.html:48
 msgid "Sign out"
 msgstr "Abmelden"
 
@@ -212,13 +244,31 @@ msgstr "Allgemein"
 msgid "Modules"
 msgstr "Module"
 
-#: templates/settings/general.html:23
+#: templates/settings/general.html:29
 msgid "Language"
 msgstr "Sprache"
 
-#: templates/settings/modules.html:8 templates/settings/modules.html:25
-msgid "License"
-msgstr "Lizenz"
+#: templates/settings/general.html:31 templates/settings/general.html:33
+#, fuzzy
+msgid "System-default"
+msgstr "System"
+
+#: templates/settings/general.html:48
+msgid "Certificate"
+msgstr "Zertifikat"
+
+#: templates/settings/general.html:51
+#, fuzzy
+msgid "Restore defaults"
+msgstr "Werkseinstellungen wiederherstellen"
+
+#: templates/settings/general.html:56
+msgid "Certificate Chain"
+msgstr "Zertifikatskette"
+
+#: templates/settings/general.html:67
+msgid "Private Key"
+msgstr "Private-Key"
 
 #: templates/theme_switcher/nested_for_settings.html:1
 msgid "Appearance"
@@ -230,24 +280,24 @@ msgstr ""
 
 #: templates/theme_switcher/nested_for_settings.html:2
 msgid "Toggle theme (auto)"
-msgstr ""
+msgstr "Theme umschalten (automatisch)"
 
 #: templates/theme_switcher/nested_for_settings.html:4
 #: templates/theme_switcher/nested_for_settings.html:25
 msgid "Auto"
-msgstr ""
+msgstr "Automatisch"
 
 #: templates/theme_switcher/nested_for_settings.html:5
 msgid "Toggle theme"
-msgstr ""
+msgstr "Theme umschalten"
 
 #: templates/theme_switcher/nested_for_settings.html:11
 msgid "Light"
-msgstr ""
+msgstr "Hell"
 
 #: templates/theme_switcher/nested_for_settings.html:18
 msgid "Dark"
-msgstr ""
+msgstr "Dunkel"
 
 #~ msgid "Network"
 #~ msgstr "Netzwerk"
@@ -256,11 +306,14 @@ msgstr ""
 #~ msgstr "Verbunden mit %(value)"
 
 #~ msgid "Obtain IP address automatically"
-#~ msgstr ""
+#~ msgstr "IP-Adresse automatisch beziehen"
 
 #~ msgid "language_de"
 #~ msgstr "Deutsch"
 
 #~ msgid "language_en"
 #~ msgstr "Englisch"
+
+#~ msgid "Audio device"
+#~ msgstr "Audiogerät"
 

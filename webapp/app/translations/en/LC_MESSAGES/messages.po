@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-15 20:31+0200\n"
+"POT-Creation-Date: 2025-06-30 23:11+0200\n"
 "PO-Revision-Date: 2025-05-22 23:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,33 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: core/auth/models.py:24
-#: modules/system/templates/system/partials/settings.html:57
+#: core/auth/models.py:47
+#: modules/system/templates/system/partials/settings.html:59
 msgid "Username"
 msgstr "Username"
 
-#: core/auth/models.py:25
-#: modules/system/templates/system/partials/settings.html:67
+#: core/auth/models.py:48
+#: modules/system/templates/system/partials/settings.html:69
 msgid "Password"
 msgstr ""
 
-#: core/auth/models.py:26
+#: core/auth/models.py:49
 msgid "Log In"
 msgstr ""
 
-#: core/auth/routes.py:30
+#: core/auth/routes.py:34
 msgid "Invalid credentials."
 msgstr ""
 
-#: core/main/routes.py:44
+#: core/main/routes.py:49
 msgid "SSID is required"
 msgstr ""
 
-#: core/main/routes.py:48
+#: core/main/routes.py:53
 msgid "Connected to %(value)"
 msgstr ""
 
-#: core/main/routes.py:50
+#: core/main/routes.py:55
 msgid "It was unable to connect to the new network. Please check your credentials"
 msgstr ""
 
@@ -53,16 +53,34 @@ msgid "Bluetooth"
 msgstr ""
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:7
+#: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:17
+#: modules/shairport_sync/templates/shairport-sync/partials/settings.html:17
 msgid "Enabled"
 msgstr ""
 
-#: modules/bluetooth/templates/bluetooth/partials/settings.html:16
-#: templates/settings/general.html:10 templates/settings/general.html:14
-msgid "Device Name"
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:14
+msgid "Bluetooth device"
 msgstr ""
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:27
-msgid "Audio device"
+msgid "Discoverable"
+msgstr ""
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:31
+msgid "Device class"
+msgstr ""
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:41
+msgid "Sound"
+msgstr ""
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:47
+msgid "Voice"
+msgstr ""
+
+#: modules/bluetooth/templates/bluetooth/partials/settings.html:53
+#: templates/settings/general.html:15 templates/settings/general.html:19
+msgid "Device Name"
 msgstr ""
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:1
@@ -96,6 +114,7 @@ msgid "Gateway"
 msgstr ""
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:76
+#: templates/settings/general.html:20
 msgid "Save"
 msgstr ""
 
@@ -106,6 +125,17 @@ msgstr ""
 
 #: modules/ethernet/templates/ethernet/partials/settings.html:94
 msgid "Enter one server address per line."
+msgstr ""
+
+#: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:5
+#: modules/shairport_sync/templates/shairport-sync/partials/settings.html:5
+#: templates/index.html:45 templates/nested_settings_modal.html:6
+msgid "Settings"
+msgstr ""
+
+#: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:8
+#: modules/shairport_sync/templates/shairport-sync/partials/settings.html:8
+msgid "License"
 msgstr ""
 
 #: modules/network/templates/network/partials/settings.html:14
@@ -155,32 +185,37 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: modules/system/templates/system/partials/settings.html:34
+#: modules/system/templates/system/partials/settings.html:35
 msgid "Branch"
 msgstr ""
 
-#: modules/system/templates/system/partials/settings.html:39
+#: modules/system/templates/system/partials/settings.html:40
 msgid "Commit"
 msgstr ""
 
-#: modules/system/templates/system/partials/settings.html:44
+#: modules/system/templates/system/partials/settings.html:45
+#: templates/settings/general.html:79
 msgid "Update"
 msgstr ""
 
-#: modules/system/templates/system/partials/settings.html:51
+#: modules/system/templates/system/partials/settings.html:53
 #, fuzzy
 msgid "User"
 msgstr "UsernameX"
 
-#: modules/system/templates/system/partials/settings.html:76
+#: modules/system/templates/system/partials/settings.html:78
 msgid "Reset"
 msgstr ""
 
-#: modules/system/templates/system/partials/settings.html:78
+#: modules/system/templates/system/partials/settings.html:80
+msgid "Shutdown"
+msgstr ""
+
+#: modules/system/templates/system/partials/settings.html:81
 msgid "Reboot"
 msgstr ""
 
-#: modules/system/templates/system/partials/settings.html:79
+#: modules/system/templates/system/partials/settings.html:82
 msgid "Restore factory defaults"
 msgstr ""
 
@@ -188,16 +223,11 @@ msgstr ""
 msgid "USB"
 msgstr ""
 
-#: templates/index.html:44 templates/nested_settings_modal.html:6
-#: templates/settings/modules.html:5 templates/settings/modules.html:22
-msgid "Settings"
-msgstr ""
-
-#: templates/index.html:45
+#: templates/index.html:46
 msgid "Info"
 msgstr ""
 
-#: templates/index.html:47
+#: templates/index.html:48
 msgid "Sign out"
 msgstr ""
 
@@ -209,12 +239,28 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
-#: templates/settings/general.html:23
+#: templates/settings/general.html:29
 msgid "Language"
 msgstr ""
 
-#: templates/settings/modules.html:8 templates/settings/modules.html:25
-msgid "License"
+#: templates/settings/general.html:31 templates/settings/general.html:33
+msgid "System-default"
+msgstr ""
+
+#: templates/settings/general.html:48
+msgid "Certificate"
+msgstr ""
+
+#: templates/settings/general.html:51
+msgid "Restore defaults"
+msgstr ""
+
+#: templates/settings/general.html:56
+msgid "Certificate Chain"
+msgstr ""
+
+#: templates/settings/general.html:67
+msgid "Private Key"
 msgstr ""
 
 #: templates/theme_switcher/nested_for_settings.html:1
@@ -260,4 +306,7 @@ msgstr ""
 
 #~ msgid "language_en"
 #~ msgstr "English"
+
+#~ msgid "Audio device"
+#~ msgstr ""
 
