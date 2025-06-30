@@ -117,10 +117,23 @@ class BluetoothModule(ModuleInterface):
         logging.info("Skip deploy cause module is not installed")
         return False
 
+    import subprocess
+    import logging
+
     @staticmethod
     def list_hci_devices():
-        output = subprocess.check_output(["hciconfig"], text=True)
-        return [line.split(":")[0] for line in output.splitlines() if line.startswith("hci")]
+        try:
+            output = subprocess.check_output(["hciconfig"], text=True)
+            return [line.split(":")[0] for line in output.splitlines() if line.startswith("hci")]
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Failed to execute 'hciconfig': {e}")
+            return []
+        except FileNotFoundError:
+            logging.error("'hciconfig' command not found. Is BlueZ installed?")
+            return []
+        except Exception as e:
+            logging.error(f"An unexpected error occurred while listing HCI devices: {e}")
+            return []
 
     @staticmethod
     def get_info():
