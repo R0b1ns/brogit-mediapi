@@ -17,7 +17,7 @@
                 <div class="col-sm-7 col-md-6">
                     <div class="input-group input-group-sm">
                         <input id="settings-general-hostname" name="hostname" type="text" class="form-control" autocomplete="off" placeholder="{{ hostname }}" title="{{ hostname }}" value="{{ hostname }}" aria-label="{{ _('Device Name') }}" aria-describedby="button-addon-save-hostname">
-                        <button class="btn btn-outline-success" type="submit" id="button-addon-save-hostname" title="Save"><i class="bi bi-check"></i></button>
+                        <button class="btn btn-outline-success" type="submit" title="{{ _('Save') }}"><i class="bi bi-check"></i></button>
                     </div>
                 </div>
             </div>
@@ -38,5 +38,47 @@
 <ul class="list-group mb-2">
     <li class="list-group-item">
         {% include 'theme_switcher/nested_for_settings.html' %}
+    </li>
+</ul>
+
+<ul class="list-group mb-2">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="settings-general-certificate-submit">{{ _('Certificate') }}</label>
+            </div>
+            <div class="col-sm-9 text-end">
+                <button class="btn btn-outline-secondary" type="submit" id="settings-general-restore-certificate" title="{{ _('Restore defaults') }}" data-no-feedback="" data-no-disable=""><i class="bi bi-arrow-clockwise"></i></button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-2">
+                <small>{{ _('Certificate Chain') }} (*.pem)</small>
+            </div>
+            <div class="col-lg-10">
+                <div class="form-floating">
+                    <textarea class="form-control"  data-bs-toggle2="tooltip" data-bs-html="true" title="--- BEGIN CERTIFICATE ---<br> ... <br>--- END CERTIFICATE ---" placeholder="--- BEGIN CERTIFICATE --- ... --- END CERTIFICATE ---" id="settings-general-certificate-publickey" style="height: 100px"></textarea>
+                    <label for="settings-general-certificate-publickey">--- BEGIN CERTIFICATE ---</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-2">
+                <small>{{ _('Private Key') }}<br />(*.pem / *.key)</small>
+            </div>
+            <div class="col-lg-10">
+                <div class="form-floating">
+                    <textarea class="form-control" data-bs-toggle2="tooltip" data-bs-html="true" title="--- BEGIN PRIVATE KEY ---<br> ... <br>--- END PRIVATE KEY ---" placeholder="--- BEGIN PRIVATE KEY --- ... --- END PRIVATE KEY ---" id="settings-general-certificate-privatekey" style="height: 100px"></textarea>
+                    <label for="settings-general-certificate-privatekey">--- BEGIN PRIVATE KEY ---</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-12">
+                <form method="post" action="{{ url_for('module.system.update_app') }}" data-method="generic">
+                    <button class="btn btn-outline-primary" type="submit" id="settings-general-certificate-submit" title="Save" data-no-feedback="" data-no-disable="">{{ _('Update') }}</button>
+                </form>
+            </div>
+        </div>
     </li>
 </ul>
