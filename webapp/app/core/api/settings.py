@@ -5,6 +5,7 @@ from flask_login import current_user
 
 from app.core.api import api_bp
 from app.lib.Backend import Backend
+from app.lib.ssl_gen import validate_and_update_ssl_certificate
 
 
 @api_bp.route('/settings/<section>', methods=['GET'])
@@ -86,4 +87,31 @@ def update_settings_general_hostname():
     time.sleep(1)
 
     # return jsonify(message=f"Changed Hostname to: {hostname}")
+    return jsonify(message="Not implemented"), 404
+
+@api_bp.route('/settings/general/certificate', methods=['POST'])
+def update_settings_general_certificate():
+    data = request.get_json()
+    publickey = data.get('publickey')
+    privatekey = data.get('privatekey')
+
+    if not publickey or not privatekey:
+        return jsonify({'error': 'Both publickey and privatekey are required'}), 400
+
+    cert_path = current_app.config['SSL_CERT_PATH']
+    key_path = current_app.config['SSL_KEY_PATH']
+
+    try:
+        success = validate_and_update_ssl_certificate(publickey, privatekey, cert_path, key_path)
+    except Exception as e:
+        return jsonify({'error': e}), 400
+
+    if not success:
+        return jsonify({'error': 'Updating SSL configuration was not successful out of unknown reason'}), 400
+
+    return jsonify({'success': True}), 200
+
+@api_bp.route('/settings/general/certificate/restore', methods=['POST'])
+def update_settings_general_certificate_restore():
+    # TODO
     return jsonify(message="Not implemented"), 404
