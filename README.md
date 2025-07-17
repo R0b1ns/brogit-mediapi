@@ -69,3 +69,5 @@ logging.debug(f"get_locale: User context = {current_user.locale}")
 Long loading times. Deactivated for now
 
 ## 3. Install nginx, does not use config port
+
+## 4. Verify_user is not secure. Develop auth_server via socket

@@ -30,7 +30,7 @@ Description=$SERVICE_NAME
 After=network.target sound.target
 
 [Service]
-User=www-data
+User=root
 Group=www-data
 WorkingDirectory=$PROJECT_ROOT
 Environment="PYTHONUNBUFFERED=1"
