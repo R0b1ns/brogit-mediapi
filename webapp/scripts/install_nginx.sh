@@ -30,7 +30,7 @@ if [[ -f "$DEFAULT_CONF" && ! -f "$BACKUP_CONF" ]]; then
   sudo cp "$DEFAULT_CONF" "$BACKUP_CONF"
 fi
 
-# TODO: Add Port 8443 to config
+# TODO: https://127.0.0.1:8443 has to be: <scheme>://127.0.0.1:<port>
 # Desired config content
 read -r -d '' NEW_CONF <<'EOF'
 server {
