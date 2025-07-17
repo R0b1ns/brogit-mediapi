@@ -23,7 +23,7 @@ def get_locale():
     if has_request_context():
         request_context_locale = request.accept_languages.best_match(current_app.config['LANGUAGES'])
 
-    if current_user:
+    if current_user and hasattr(current_user, 'locale'):
         logging.debug(f"get_locale: User context = {current_user.locale}")
         if current_user.locale == 'default':
             return request_context_locale or default_locale
