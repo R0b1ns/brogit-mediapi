@@ -70,4 +70,24 @@ Long loading times. Deactivated for now
 
 ## 3. Install nginx, does not use config port
 
-## 4. Verify_user is not secure. Develop auth_server via socket
+## 4. Verify_user is not secure.
+
+Develop auth_server via socket
+
+## 5. Shareport Sync needs dependency:
+
+sudo apt-get install libtool
+
+## 6. We need generic script for a task queue.
+
+So tasks can not be triggert twice at the same time
+
+## 7. Shareport Sync install fails. And has to be triggert 3 times
+
+This error was caused by missing nmcli
+
+# Debug and Logging
+
+```
+journalctl -u brogit-cast-webapp.service  -f
+```

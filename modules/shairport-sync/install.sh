@@ -54,4 +54,5 @@ systemctl restart shairport-sync
 iwconfig wlan0 power off
 
 # NetworkManager (For future connection, also after reboot) (2=disabled, 3=enabled)
-sudo nmcli connection modify preconfigured wifi.powersave 2
+# TODO: This command creates an error, cause nmcli is maybe not installed
+# sudo nmcli connection modify preconfigured wifi.powersave 2
