@@ -38,11 +38,14 @@ if __name__ == '__main__':
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.load_cert_chain(certfile=ssl_ctx[0], keyfile=ssl_ctx[1])
 
+    app.ssl_context = context  # Store reference for reloads
+
     socketio.run(
         app,
         host=app.config['HOST'] if 'HOST' in app.config else '127.0.0.1',
         port=int(app.config['PORT']) if 'PORT' in app.config else 5000,
-        ssl_context=context,
+        # TODO: SSL Causes delays in the browser
+        # ssl_context=app.ssl_context,
         # debug = True,
         # allow_unsafe_werkzeug = True
     )

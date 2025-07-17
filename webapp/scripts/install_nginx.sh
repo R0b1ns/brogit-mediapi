@@ -30,6 +30,7 @@ if [[ -f "$DEFAULT_CONF" && ! -f "$BACKUP_CONF" ]]; then
   sudo cp "$DEFAULT_CONF" "$BACKUP_CONF"
 fi
 
+# TODO: Add Port 8443 to config
 # Desired config content
 read -r -d '' NEW_CONF <<'EOF'
 server {
