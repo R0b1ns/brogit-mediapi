@@ -86,6 +86,20 @@ So tasks can not be triggert twice at the same time
 
 This error was caused by missing nmcli
 
+## 8. Module Gmrender package not available on orange-pi
+
+apt install libupnp-dev libgstreamer1.0-dev \
+             gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+             gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+             gstreamer1.0-libav
+
+sudo apt-get install build-essential autoconf automake libtool pkg-config
+
+-- Anweisungen in der INSTALL.md folgen
+
+sudo ln -s /usr/local/bin/gmediarender /usr/bin/gmediarender
+
+
 # Debug and Logging
 
 ```

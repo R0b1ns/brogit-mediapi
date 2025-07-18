@@ -44,9 +44,11 @@ $ALLOW_LINE
 fi
 
 ## Autorun on boot
+systemctl enable nqptp
 systemctl enable shairport-sync
 
 # Restart
+systemctl restart nqptp
 systemctl restart shairport-sync
 
 # TODO: Move that to ap (wifi) ctl
