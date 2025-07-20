@@ -16,6 +16,10 @@ autoreconf -fi
 make
 make install
 
+## Autorun on boot
+systemctl enable nqptp
+systemctl restart nqptp
+
 cd "$SCRIPT_DIR/repositories"
 
 # ALAC
@@ -39,5 +43,6 @@ autoreconf -fi
 make
 make install
 
-systemctl restart nqptp
+## Autorun on boot
+systemctl enable shairport-sync
 systemctl restart shairport-sync

@@ -43,17 +43,13 @@ $ALLOW_LINE
   }" "$SHAIRPORT_SYNC_CONFIG_FILE"
 fi
 
-## Autorun on boot
-systemctl enable nqptp
-systemctl enable shairport-sync
-
 # Restart
 systemctl restart nqptp
 systemctl restart shairport-sync
 
 # TODO: Move that to ap (wifi) ctl
 # WiFi Power Management off (Instant but not after reboot)
-iwconfig wlan0 power off
+# iwconfig wlan0 power off
 
 # NetworkManager (For future connection, also after reboot) (2=disabled, 3=enabled)
 # TODO: This command creates an error, cause nmcli is maybe not installed
