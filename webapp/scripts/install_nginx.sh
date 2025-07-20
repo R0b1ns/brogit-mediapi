@@ -49,7 +49,7 @@ else
 fi
 
 # Build new config with dynamic proxy_pass
-read -r -d '' NEW_CONF <<EOF
+NEW_CONF=$(cat <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -73,6 +73,7 @@ server {
     }
 }
 EOF
+)
 
 echo "$NEW_CONF"
 
