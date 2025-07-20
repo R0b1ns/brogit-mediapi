@@ -48,57 +48,23 @@ git checkout <branch>
 ./install.sh
 ```
 
-## Nginx
-
-./webapp/scripts/install_nginx.sh
-
 # Errors
-
-## 1. AnonymousUserMixin :: AttributeError
-
-AttributeError: 'AnonymousUserMixin' object has no attribute 'locale'
-
-Fresh installation, after login
-
-File "/opt/brogit-mediapi/webapp/app/core/locale/models.py", line 27, in get_locale
-
-logging.debug(f"get_locale: User context = {current_user.locale}")
 
 ## 2. Self Signed Certificate does not work like expected
 
 Long loading times. Deactivated for now
 
-## 3. Install nginx, does not use config port
-
 ## 4. Verify_user is not secure.
 
 Develop auth_server via socket
 
-## 5. Shareport Sync needs dependency:
-
-sudo apt-get install libtool
-
-## 6. We need generic script for a task queue.
+## Feature: Generic script for a task queue.
 
 So tasks can not be triggert twice at the same time
 
-## 7. Shareport Sync install fails. And has to be triggert 3 times
+## Bug: Efficiency: Enable WiFi Power Management
 
-This error was caused by missing nmcli
-
-## 8. Module Gmrender package not available on orange-pi
-
-apt install libupnp-dev libgstreamer1.0-dev \
-             gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
-             gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
-             gstreamer1.0-libav
-
-sudo apt-get install build-essential autoconf automake libtool pkg-config
-
--- Anweisungen in der INSTALL.md folgen
-
-sudo ln -s /usr/local/bin/gmediarender /usr/bin/gmediarender
-
+Move commented script in shairport-sync/install.sh to AP install
 
 # Debug and Logging
 
