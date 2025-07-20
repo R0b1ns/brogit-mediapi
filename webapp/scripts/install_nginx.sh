@@ -28,6 +28,8 @@ install_package_if_missing() {
   if ! dpkg -s "$1" >/dev/null 2>&1; then
     echo "Installing $1..."
     sudo apt-get install -y "$1"
+  else
+    echo "Skip installing. $1 already exists"
   fi
 }
 
@@ -42,6 +44,8 @@ install_package_if_missing ssl-cert
 if [[ -f "$DEFAULT_CONF" && ! -f "$BACKUP_CONF" ]]; then
   echo "Creating backup of existing nginx default config..."
   sudo cp "$DEFAULT_CONF" "$BACKUP_CONF"
+else
+  echo "Backup of original 'default' config file already exists!"
 fi
 
 # Build new config with dynamic proxy_pass
@@ -69,6 +73,8 @@ server {
     }
 }
 EOF
+
+echo "$NEW_CONF"
 
 # Only write config if changed
 CURRENT_HASH=$(sudo sha256sum "$DEFAULT_CONF" 2>/dev/null | awk '{print $1}' || true)
