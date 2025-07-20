@@ -13,7 +13,7 @@ sudo apt update
 sudo apt install --no-install-recommends build-essential git autoconf automake libtool \
     libpopt-dev libconfig-dev libasound2-dev avahi-daemon libavahi-client-dev libssl-dev libsoxr-dev \
     libplist-dev libsodium-dev libavutil-dev libavcodec-dev libavformat-dev uuid-dev libgcrypt-dev xxd \
-    libdaemon-dev libglib2.0-dev libmosquitto-dev -yy
+    libdaemon-dev libglib2.0-dev libmosquitto-dev libtool -yy
 
 cd $SCRIPT_DIR
 
