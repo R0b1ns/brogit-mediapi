@@ -8,6 +8,17 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/config.env"
 
+# Optional: Build from source
+#cd "repositories/gmrender-resurrect"
+#./autogen.sh
+#./configure
+#make
+#sudo make install
+#
+## Create Symlink
+#sudo ln -s /usr/local/bin/gmediarender /usr/bin/gmediarender
+
+
 # Default values
 DEVICE_NAME="${DEVICE_NAME:-$(hostname)}"
 INITIAL_VOLUME_DB="${INITIAL_VOLUME_DB:--10}"
