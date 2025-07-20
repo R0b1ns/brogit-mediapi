@@ -5,10 +5,24 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+source "$SCRIPT_DIR/../.env"
+
+# Determine scheme based on NGINX_PROXY_PASS_SSL
+if [[ "$NGINX_PROXY_PASS_SSL" == "true" || "$NGINX_PROXY_PASS_SSL" == "True" ]]; then
+  SCHEME="https"
+else
+  SCHEME="http"
+fi
+
+NGINX_PROXY_PASS_PORT="${NGINX_PROXY_PASS_PORT:-8443}"
+PROXY_PASS_URL="${PROXY_PASS_URL:-$SCHEME://127.0.0.1:$NGINX_PROXY_PASS_PORT}"
+
 DEFAULT_CONF="/etc/nginx/sites-available/default"
 BACKUP_CONF="${DEFAULT_CONF}.bak"
-CERT="/etc/ssl/certs/ssl-cert-snakeoil.pem"
-KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
+NGINX_CERT="/etc/ssl/certs/ssl-cert-snakeoil.pem"
+NGINX_KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
 
 install_package_if_missing() {
   if ! dpkg -s "$1" >/dev/null 2>&1; then
@@ -30,29 +44,28 @@ if [[ -f "$DEFAULT_CONF" && ! -f "$BACKUP_CONF" ]]; then
   sudo cp "$DEFAULT_CONF" "$BACKUP_CONF"
 fi
 
-# TODO: https://127.0.0.1:8443 has to be: <scheme>://127.0.0.1:<port>
-# Desired config content
-read -r -d '' NEW_CONF <<'EOF'
+# Build new config with dynamic proxy_pass
+read -r -d '' NEW_CONF <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    return 301 https://$host$request_uri;
+    return 301 https://\$host\$request_uri;
 }
 
 server {
     listen 443 ssl default_server;
     listen [::]:443 ssl default_server;
 
-    ssl_certificate     /etc/ssl/certs/ssl-cert-snakeoil.pem;
-    ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+    ssl_certificate     $NGINX_CERT;
+    ssl_certificate_key $NGINX_KEY;
 
     location / {
-        proxy_pass https://127.0.0.1:8443;
+        proxy_pass $PROXY_PASS_URL;
         proxy_ssl_verify off;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $SCHEME;
     }
 }
 EOF
@@ -69,4 +82,4 @@ else
   echo "nginx default config is up to date. No changes made."
 fi
 
-echo "nginx setup complete. Service reachable at https://localhost/"
+echo "nginx setup complete. Service reachable at $SCHEME://localhost:$NGINX_PROXY_PASS_PORT/"
