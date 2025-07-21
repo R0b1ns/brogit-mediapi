@@ -6,6 +6,7 @@ from app.modules.bluetooth.BluetoothModule import BluetoothModule
 from app.modules.ethernet.EthernetModule import EthernetModule
 from app.modules.gmrender_resurrect.GmrenderResurrectModule import GmrenderResurrectModule
 from app.modules.network.NetworkModule import NetworkModule
+from app.modules.nginx.NginxModule import NginxModule
 from app.modules.shairport_sync.ShairportSyncModule import ShairportSyncModule
 from app.modules.system.SystemModule import SystemModule
 from app.modules.usb.USBModule import USBModule
@@ -27,6 +28,7 @@ def register_modules(app, config):
     # Submodules
     m.add_module('shairport_sync')
     m.add_module('gmrender_resurrect')
+    m.add_module('nginx')
 
     app.register_blueprint(m.get_blueprint())
 
@@ -43,6 +45,7 @@ def register_modules(app, config):
     # Submodules
     b.add_module('shairport_sync', ShairportSyncModule)
     b.add_module('gmrender_resurrect', GmrenderResurrectModule)
+    b.add_module('nginx', NginxModule)
 
 import importlib
 
