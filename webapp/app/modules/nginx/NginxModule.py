@@ -9,7 +9,7 @@ class NginxModule(ModuleInterface):
         super().__init__(config)
         self.__module_config = config.get('nginx')
 
-        # self.env_config = EnvConfig(self.__module_config.get('config_path'))
+        self.env_config = EnvConfig(self.__module_config.get('config_path'))
 
     @staticmethod
     def get_info():
@@ -20,3 +20,8 @@ class NginxModule(ModuleInterface):
             "type": "submodule",
             'has_settings': True
         }
+
+    def get(self, key: str = None):
+        if not key:
+            return self.env_config
+        return self.env_config.get(key)

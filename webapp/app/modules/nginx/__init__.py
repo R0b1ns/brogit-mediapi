@@ -8,4 +8,4 @@ module_bp = Blueprint(
     url_prefix='/nginx'
 )
 
-# from . import routes
+from . import routes
