@@ -38,15 +38,20 @@ def change_bluetooth_settings():
     if not data:
         return jsonify(error="Request body is empty."), 400  # Bad Request
 
+    current_app.logger.debug("Change bluetooth settings ...")
+
     backend = Backend().bluetooth
     invalid_keys = []
     failed_keys = []
 
     for k, v in data.items():
         result = backend.set(k, v)
+        current_app.logger.debug(f"Change bluetooth settings: Set k={k}; v={v}")
         if result is None:
+            current_app.logger.debug(f"Change bluetooth settings: Invalid k={k}")
             invalid_keys.append(k)
         elif result is False:
+            current_app.logger.debug(f"Change bluetooth settings: Failed k={k}")
             failed_keys.append(k)
 
     if invalid_keys and failed_keys:
@@ -67,5 +72,7 @@ def change_bluetooth_settings():
             error="Some settings could not be applied.",
             failed_keys=failed_keys
         ), 409  # Conflict
+
+    current_app.logger.debug("Change bluetooth settings: Successful!")
 
     return '', 200
