@@ -19,18 +19,22 @@ chmod +x "$BT_SOUND_FILE_PATH"
 chmod +x "$BT_DEPLOY_FILE_PATH"
 
 # Create UDEV rule
+echo "Create UDEV rule ..."
 cat << EOF | sudo tee /etc/udev/rules.d/99-bluetooth-connect.rules > /dev/null
 ACTION=="add", SUBSYSTEM=="bluetooth", RUN+="$BT_SOUND_FILE_PATH add"
 ACTION=="remove", SUBSYSTEM=="bluetooth", RUN+="$BT_SOUND_FILE_PATH remove"
 EOF
 
+echo "Reload rules ..."
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 
 # Execute deploy
+echo "Deploy ..."
 "$BT_DEPLOY_FILE_PATH"
 
 # Enable and start services
+echo "Enable auto-boot and start service ..."
 sudo systemctl enable bluetooth
 sudo systemctl start bluetooth
 

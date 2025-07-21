@@ -29,6 +29,7 @@ BACKUP_CONF="/etc/bluetooth/main.conf.bak"
 TEMP_CONF="$(mktemp)"
 
 if [[ ! -f "$BACKUP_CONF" ]]; then
+  echo "Create Backup ..."
   sudo cp "$MAIN_CONF" "$BACKUP_CONF"
   echo "Created Backup of $MAIN_CONF"
 fi
