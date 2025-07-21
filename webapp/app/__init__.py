@@ -30,7 +30,7 @@ def create_app():
     cors_allowed_origins = [
         f"{ 'https' if config['app']['SSL_ENABLED'] else 'http' }://localhost:{config['app']['PORT']}",
         # Add config from nginx or hostname
-        f"https://{ socket.gethostname() }/" if config['environment']['NGINX_HOST'] == "default" else config['environment']['NGINX_HOST']
+        f"https://{ socket.gethostname() }" if config['environment']['NGINX_HOST'] == "default" else config['environment']['NGINX_HOST']
     ]
 
     config['app']['ALLOWED_ORIGINS'] = cors_allowed_origins
