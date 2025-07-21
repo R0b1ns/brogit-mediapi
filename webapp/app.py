@@ -40,11 +40,14 @@ if __name__ == '__main__':
 
     app.ssl_context = context  # Store reference for reloads
 
-    socketio.run(
-        app,
-        host=app.config['HOST'] if 'HOST' in app.config else '127.0.0.1',
-        port=int(app.config['PORT']) if 'PORT' in app.config else 5000,
-        ssl_context=app.ssl_context if app.config['SSL_ENABLED'] else None,
+    run_args = {
+        'host': app.config['HOST'] if 'HOST' in app.config else '127.0.0.1',
+        'port': int(app.config['PORT']) if 'PORT' in app.config else 5000,
         # debug = True,
         # allow_unsafe_werkzeug = True
-    )
+    }
+
+    if app.config.get('SSL_ENABLED'):
+        run_args['ssl_context'] = app.ssl_context
+
+    socketio.run(app, **run_args)
