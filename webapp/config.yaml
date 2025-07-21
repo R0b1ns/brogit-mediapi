@@ -12,7 +12,7 @@ system:
 
 app:
   # Flask App Config
-  HOST: "0.0.0.0"
+  HOST: "127.0.0.1"
   PORT: 8443
 
   SSL_CERT_PATH: 'cert.pem'
