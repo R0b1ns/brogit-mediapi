@@ -21,6 +21,7 @@ PROXY_PASS_URL="${PROXY_PASS_URL:-$SCHEME://127.0.0.1:$NGINX_PROXY_PASS_PORT}"
 
 DEFAULT_CONF="/etc/nginx/sites-available/default"
 BACKUP_CONF="${DEFAULT_CONF}.bak"
+# TODO: Use configurable ssl certs. Not just self signed.
 NGINX_CERT="/etc/ssl/certs/ssl-cert-snakeoil.pem"
 NGINX_KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
 
