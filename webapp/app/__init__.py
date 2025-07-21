@@ -1,4 +1,6 @@
+import logging
 import os
+import socket
 import time
 import unicodedata
 from http import HTTPStatus
@@ -28,17 +30,18 @@ def create_app():
     cors_allowed_origins = [
         f"{ 'https' if config['app']['SSL_ENABLED'] else 'http' }://localhost:{config['app']['PORT']}",
         # Add config from nginx or hostname
+        f"https://{ socket.gethostname() }/" if config['environment']['NGINX_HOST'] == "default" else config['environment']['NGINX_HOST']
     ]
 
     config['app']['ALLOWED_ORIGINS'] = cors_allowed_origins
-
     app.config.update(config['app'])
-
     app.secret_key = config['app'].get('SECRET_KEY', 'your_secret_key')
 
     # TODO: Make config for Logging
     # # Basic Logging configuration
     # setup_logging()
+
+    logging.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 
     from app.extensions import csrf, babel, socketio, login_manager, limiter
 
