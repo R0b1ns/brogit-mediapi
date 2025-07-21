@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# brogit nginx setup script (idempotent)
+# brogit (c) 2025
 # Author: r0b1ns
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-source "$SCRIPT_DIR/../.env"
+source "$SCRIPT_DIR/config.env"
 
 # Determine scheme based on NGINX_PROXY_PASS_SSL
 if [[ "$NGINX_PROXY_PASS_SSL" == "true" || "$NGINX_PROXY_PASS_SSL" == "True" ]]; then
@@ -26,7 +25,7 @@ CUSTOM_KEY="$NGINX_KEY"
 [[ "$NGINX_CERT" = /* ]] || CUSTOM_CERT="$SCRIPT_DIR/$NGINX_CERT"
 [[ "$NGINX_KEY"  = /* ]] || CUSTOM_KEY="$SCRIPT_DIR/$NGINX_KEY"
 
-if [[ -f "$CUSTOM_CERT" && -f "$CUSTOM_KEY" ]]; then
+if [[ ( "$NGINX_CUSTOM_SSL" == "true" || "$NGINX_CUSTOM_SSL" == "True" ) && -f "$CUSTOM_CERT" && -f "$CUSTOM_KEY" ]]; then
   NGINX_CERT="$CUSTOM_CERT"
   NGINX_KEY="$CUSTOM_KEY"
 else
@@ -34,25 +33,8 @@ else
   NGINX_KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
 fi
 
-
 DEFAULT_CONF="/etc/nginx/sites-available/default"
 BACKUP_CONF="${DEFAULT_CONF}.bak"
-
-install_package_if_missing() {
-  if ! dpkg -s "$1" >/dev/null 2>&1; then
-    echo "Installing $1..."
-    sudo apt-get install -y "$1"
-  else
-    echo "Skip installing. $1 already exists"
-  fi
-}
-
-echo "Updating package index..."
-sudo apt-get update -y
-
-# Install nginx and ssl-cert if missing
-install_package_if_missing nginx
-install_package_if_missing ssl-cert
 
 # Backup default config once
 if [[ -f "$DEFAULT_CONF" && ! -f "$BACKUP_CONF" ]]; then

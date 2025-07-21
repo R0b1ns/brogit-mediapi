@@ -29,13 +29,3 @@ chown -R www-data:www-data "$SCRIPT_DIR"
 
 # Install service
 "$SCRIPT_DIR/scripts/install_service.sh"
-
-# Prompt for nginx setup
-read -r -p "Install nginx and overwrite default vHost? [Y/n] " REPLY
-REPLY=${REPLY,,} # to lowercase
-
-if [[ -z "$REPLY" || "$REPLY" == "y" || "$REPLY" == "yes" ]]; then
-    "$SCRIPT_DIR/scripts/install_nginx.sh"
-else
-    echo "Skipping nginx setup."
-fi

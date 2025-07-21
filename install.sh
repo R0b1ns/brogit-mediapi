@@ -26,3 +26,15 @@ chmod +x "$SCRIPT_DIR/ap/install.sh"
 chown -R :www-data "$SCRIPT_DIR/webapp"
 chmod +x "$SCRIPT_DIR/webapp/install.sh"
 bash "$SCRIPT_DIR/webapp/install.sh"
+
+# Prompt for nginx setup
+chmod +x "$SCRIPT_DIR/modules/nginx/install.sh"
+
+read -r -p "Install nginx and overwrite default vHost? [Y/n] " REPLY
+REPLY=${REPLY,,} # to lowercase
+
+if [[ -z "$REPLY" || "$REPLY" == "y" || "$REPLY" == "yes" ]]; then
+    "$SCRIPT_DIR/modules/nginx/install.sh"
+else
+    echo "Skipping nginx setup."
+fi
