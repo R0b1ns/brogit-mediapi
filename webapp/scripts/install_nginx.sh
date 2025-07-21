@@ -48,6 +48,12 @@ else
   echo "Backup of original 'default' config file already exists!"
 fi
 
+if [[ "$SCHEME" == "https" ]]; then
+  PROXY_SSL_VERIFY="proxy_ssl_verify off;"
+else
+  PROXY_SSL_VERIFY=""
+fi
+
 # Build new config with dynamic proxy_pass
 NEW_CONF=$(cat <<EOF
 server {
@@ -65,7 +71,7 @@ server {
 
     location / {
         proxy_pass $PROXY_PASS_URL;
-        proxy_ssl_verify off;
+        $PROXY_SSL_VERIFY
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
@@ -73,6 +79,14 @@ server {
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
+
+        proxy_connect_timeout 60s;
+        proxy_send_timeout    60s;
+        proxy_read_timeout    60s;
+        send_timeout          60s;
+
+        # Only when big json data is consumed  e.g. yield
+        # proxy_buffering off;
     }
 }
 EOF
