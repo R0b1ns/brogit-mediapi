@@ -49,7 +49,7 @@ def create_app():
     # Basic Logging configuration
     setup_logging(log_level.get(config['app'].get('LOGGING', 'info'), logging.INFO))
 
-    logging.info(f"Cors Allowed Origins: { cors_allowed_origins }")
+    app.logger.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 
     from app.extensions import csrf, babel, socketio, login_manager, limiter
 
