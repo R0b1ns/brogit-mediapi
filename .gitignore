@@ -5,3 +5,7 @@
 *.pot
 
 **/repositories/
+
+**/__pycache__/
+
+.venv/
