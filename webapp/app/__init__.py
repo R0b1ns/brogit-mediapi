@@ -35,7 +35,13 @@ def create_app():
     from app.extensions import csrf, babel, socketio, login_manager, limiter
 
     # Init Extensions
-    socketio.init_app(app)
+    # TODO: Init CORS for socket io
+    # socketio.init_app(app, cors_allowed_origins=[
+    #     # TODO: Load by config
+    #     "https://localhost:8443",
+    #     "http://localhost:3000"
+    # ])
+    socketio.init_app(app, cors_allowed_origins="*")
     csrf.init_app(app)
     babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
     login_manager.init_app(app)
