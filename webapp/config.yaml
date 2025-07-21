@@ -12,7 +12,8 @@ system:
 
 app:
   # Flask App Config
-  HOST: "127.0.0.1"
+  # TODO: Default 127.0.0.1
+  HOST: "0.0.0.0"
   PORT: 8443
 
   SSL_ENABLED: !!bool "false"
