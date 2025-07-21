@@ -19,11 +19,24 @@ fi
 NGINX_PROXY_PASS_PORT="${NGINX_PROXY_PASS_PORT:-8443}"
 PROXY_PASS_URL="${PROXY_PASS_URL:-$SCHEME://127.0.0.1:$NGINX_PROXY_PASS_PORT}"
 
+# Relative and Absolute path to certs is allowed. If they do not exist. Use fallback
+CUSTOM_CERT="$NGINX_CERT"
+CUSTOM_KEY="$NGINX_KEY"
+
+[[ "$NGINX_CERT" = /* ]] || CUSTOM_CERT="$SCRIPT_DIR/$NGINX_CERT"
+[[ "$NGINX_KEY"  = /* ]] || CUSTOM_KEY="$SCRIPT_DIR/$NGINX_KEY"
+
+if [[ -f "$CUSTOM_CERT" && -f "$CUSTOM_KEY" ]]; then
+  NGINX_CERT="$CUSTOM_CERT"
+  NGINX_KEY="$CUSTOM_KEY"
+else
+  NGINX_CERT="/etc/ssl/certs/ssl-cert-snakeoil.pem"
+  NGINX_KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
+fi
+
+
 DEFAULT_CONF="/etc/nginx/sites-available/default"
 BACKUP_CONF="${DEFAULT_CONF}.bak"
-# TODO: Use configurable ssl certs. Not just self signed.
-NGINX_CERT="/etc/ssl/certs/ssl-cert-snakeoil.pem"
-NGINX_KEY="/etc/ssl/private/ssl-cert-snakeoil.key"
 
 install_package_if_missing() {
   if ! dpkg -s "$1" >/dev/null 2>&1; then
@@ -50,9 +63,10 @@ else
 fi
 
 if [[ "$SCHEME" == "https" ]]; then
-  PROXY_SSL_VERIFY="proxy_ssl_verify off;"
+  PROXY_SSL="proxy_ssl_verify off;
+proxy_ssl_session_reuse off;"
 else
-  PROXY_SSL_VERIFY=""
+  PROXY_SSL=""
 fi
 
 # Build new config with dynamic proxy_pass
@@ -72,7 +86,7 @@ server {
 
     location / {
         proxy_pass $PROXY_PASS_URL;
-        $PROXY_SSL_VERIFY
+        $PROXY_SSL
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection \$http_connection;

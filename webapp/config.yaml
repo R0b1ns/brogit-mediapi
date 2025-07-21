@@ -14,9 +14,10 @@ app:
   # Flask App Config
   # Default 127.0.0.1
   HOST: "127.0.0.1"
-  PORT: 8443
+  PORT: 8080
 
-  SSL_ENABLED: !!bool "true"
+  # This is not required when nginx SSL is used
+  SSL_ENABLED: !!bool "false"
   # Tries to use them. If they do not exist it will fall back to self-signed
   SSL_CERT_PATH: 'cert.pem'
   SSL_KEY_PATH: 'key.pem'

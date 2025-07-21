@@ -98,6 +98,7 @@ def update_settings_general_certificate():
     if not publickey or not privatekey:
         return jsonify({'error': 'Both publickey and privatekey are required'}), 400
 
+    # Update to config['environment']['NGINX_CERT']
     cert_path = current_app.config['SSL_CERT_PATH']
     key_path = current_app.config['SSL_KEY_PATH']
 
