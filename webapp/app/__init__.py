@@ -24,6 +24,14 @@ def create_app():
 
     env_path = os.path.join(PROJECT_ROOT, '.env')
     config = load_config(env_path, 'CONFIG_FILE')
+
+    cors_allowed_origins = [
+        f"{ 'https' if config['app']['SSL_ENABLED'] else 'http' }://localhost:{config['app']['PORT']}",
+        # Add config from nginx or hostname
+    ]
+
+    config['app']['ALLOWED_ORIGINS'] = cors_allowed_origins
+
     app.config.update(config['app'])
 
     app.secret_key = config['app'].get('SECRET_KEY', 'your_secret_key')
@@ -35,13 +43,7 @@ def create_app():
     from app.extensions import csrf, babel, socketio, login_manager, limiter
 
     # Init Extensions
-    # TODO: Init CORS for socket io
-    # socketio.init_app(app, cors_allowed_origins=[
-    #     # TODO: Load by config
-    #     "https://localhost:8443",
-    #     "http://localhost:3000"
-    # ])
-    socketio.init_app(app, cors_allowed_origins="*")
+    socketio.init_app(app, cors_allowed_origins=cors_allowed_origins)
     csrf.init_app(app)
     babel.init_app(app, locale_selector=get_locale, timezone_selector=get_timezone)
     login_manager.init_app(app)
@@ -51,7 +53,7 @@ def create_app():
     limiter.init_app(app)
     migrate.init_app(app)
     bcrypt.init_app(app)
-    CORS(app, resources={r"/": {"origins": "*"}})
+    CORS(app, resources={r"/": {"origins": cors_allowed_origins}})
 
     # Load modules
     register_modules(app, config)

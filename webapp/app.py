@@ -44,8 +44,7 @@ if __name__ == '__main__':
         app,
         host=app.config['HOST'] if 'HOST' in app.config else '127.0.0.1',
         port=int(app.config['PORT']) if 'PORT' in app.config else 5000,
-        # TODO: SSL Causes delays in the browser
-        # ssl_context=app.ssl_context,
+        ssl_context=app.ssl_context if app.config['SSL_ENABLED'] else None,
         # debug = True,
         # allow_unsafe_werkzeug = True
     )
