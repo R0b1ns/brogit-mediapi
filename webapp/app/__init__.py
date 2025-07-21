@@ -47,7 +47,8 @@ def create_app():
     }
 
     # Basic Logging configuration
-    setup_logging(log_level.get(config['app'].get('LOGGING', 'info'), logging.INFO))
+    # TODO: Not necessary with app.logger
+    # setup_logging(log_level.get(config['app'].get('LOGGING', 'info'), logging.INFO))
 
     app.logger.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 
