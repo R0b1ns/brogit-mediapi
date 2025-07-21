@@ -28,10 +28,16 @@ MAIN_CONF="/etc/bluetooth/main.conf"
 BACKUP_CONF="/etc/bluetooth/main.conf.bak"
 TEMP_CONF="$(mktemp)"
 
-if [[ ! -f "$BACKUP_CONF" ]]; then
-  echo "Create Backup ..."
-  sudo cp "$MAIN_CONF" "$BACKUP_CONF"
-  echo "Created Backup of $MAIN_CONF"
+if [[ -f "$MAIN_CONF" ]]; then
+  if [[ ! -f "$BACKUP_CONF" ]]; then
+    echo "Create Backup ..."
+    sudo cp "$MAIN_CONF" "$BACKUP_CONF"
+    echo "Created Backup of $MAIN_CONF"
+  else
+    echo "Backup already exists: $BACKUP_CONF"
+  fi
+else
+  echo "$MAIN_CONF does not exist!"
 fi
 
 # Neue Konfiguration in TEMP_CONF schreiben
