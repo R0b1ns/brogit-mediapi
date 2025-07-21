@@ -33,6 +33,8 @@ def create_app():
         f"https://{ socket.gethostname() }" if config['environment']['NGINX_HOST'] == "default" else config['environment']['NGINX_HOST']
     ]
 
+    cors_allowed_origins = "*"
+
     config['app']['ALLOWED_ORIGINS'] = cors_allowed_origins
     app.config.update(config['app'])
     app.secret_key = config['app'].get('SECRET_KEY', 'your_secret_key')
