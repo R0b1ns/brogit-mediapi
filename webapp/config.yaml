@@ -63,4 +63,7 @@ gmrender-resurrect:
   update_path: "../modules/gmrender-resurrect/update.sh"
 
 nginx:
-  module_path: "../modules/nginx"
+  config_path: "../modules/nginx/config.env"
+  install_path: "../modules/nginx/install.sh"
+  uninstall_path: "../modules/nginx/uninstall.sh"
+  # update_path: "../modules/nginx/update.sh"

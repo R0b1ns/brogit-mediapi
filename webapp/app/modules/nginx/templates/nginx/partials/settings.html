@@ -2,23 +2,24 @@
 
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="settings-modules-nginx-settings-tab" data-bs-toggle="tab" data-bs-target="#settings-modules-nginx-settings-tab-pane" type="button" role="tab" aria-controls="settings-modules-nginx-settings-tab-pane" aria-selected="true">{{ _('Settings') }}</button>
+        <button class="nav-link active" id="settings-modules-nginx-service-tab" data-bs-toggle="tab" data-bs-target="#settings-modules-nginx-service-tab-pane" type="button" role="tab" aria-controls="settings-modules-nginx-service-tab-pane" aria-selected="false">{{ _('Service') }}</button>
     </li>
     <li class="nav-item" role="presentation">
-    <button class="nav-link" id="settings-modules-nginx-license-tab" data-bs-toggle="tab" data-bs-target="#settings-modules-nginx-license-tab-pane" type="button" role="tab" aria-controls="settings-modules-nginx-license-tab-pane" aria-selected="false">{{ _('License') }}</button>
+        <button class="nav-link" id="settings-modules-nginx-settings-tab" data-bs-toggle="tab" data-bs-target="#settings-modules-nginx-settings-tab-pane" type="button" role="tab" aria-controls="settings-modules-nginx-settings-tab-pane" aria-selected="true">{{ _('Settings') }}</button>
     </li>
 </ul>
 <div class="tab-content card rounded-top-0 border-top-0 p-2 mb-3">
-    <div class="tab-pane fade show active" id="settings-modules-nginx-settings-tab-pane" role="tabpanel" aria-labelledby="settings-modules-nginx-settings-tab" tabindex="0">
+    <div class="tab-pane fade show active" id="settings-modules-nginx-service-tab-pane" role="tabpanel" aria-labelledby="settings-modules-nginx-service-tab" tabindex="0">
         <ul class="list-group mb-2">
             <li class="list-group-item">
                 <div class="form-check-reverse form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="settings-modules-nginx-enabled" name="enabled" value="install" data-role="form" data-method="post" data-action="{{ url_for('module.gmrender-resurrect.install') }}" autocomplete="off" {% if backend.gmrender_resurrect.get('INSTALLED') == True %}checked{% endif %}>
+                    <input class="form-check-input" type="checkbox" role="switch" id="settings-modules-nginx-enabled" name="enabled" value="install" data-role="form" data-method="post" data-action="{{ url_for('module.nginx.install') }}" autocomplete="off" {% if backend.nginx.get('INSTALLED') == True %}checked{% endif %}>
                     <label class="form-check-label w-100 text-start" for="settings-modules-nginx-enabled">{{ _('Enabled') }}</label>
                 </div>
             </li>
         </ul>
-
+    </div>
+    <div class="tab-pane fade" id="settings-modules-nginx-settings-tab-pane" role="tabpanel" aria-labelledby="settings-modules-nginx-settings-tab" tabindex="1">
         <ul class="list-group mb-2">
             <li class="list-group-item">
                 <div class="row">
@@ -62,5 +63,4 @@
         </ul>
 
     </div>
-    <div class="tab-pane fade" id="settings-modules-nginx-license-tab-pane" role="tabpanel" aria-labelledby="settings-modules-nginx-license-tab" tabindex="0"><pre>{{ backend.gmrender_resurrect.get_license() }}</pre></div>
 </div>

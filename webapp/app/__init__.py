@@ -6,6 +6,7 @@ import unicodedata
 from http import HTTPStatus
 from urllib.parse import urlparse
 
+from dotenv import dotenv_values
 from flask import Flask
 from flask_cors import CORS
 
@@ -27,10 +28,13 @@ def create_app():
     env_path = os.path.join(PROJECT_ROOT, '.env')
     config = load_config(env_path, 'CONFIG_FILE')
 
+    # Dirty Nginx config load
+    nginx_config = dotenv_values(config['nginx']['config_path'])
+
     cors_allowed_origins = [
         f"{ 'https' if config['app']['SSL_ENABLED'] else 'http' }://localhost:{config['app']['PORT']}",
         # Add config from nginx or hostname
-        f"https://{ socket.gethostname() }" if config['environment']['NGINX_HOST'] == "default" else config['environment']['NGINX_HOST']
+        f"https://{ socket.gethostname() }" if nginx_config.get('NGINX_HOST') == "default" else nginx_config.get('NGINX_HOST')
     ]
 
     config['app']['ALLOWED_ORIGINS'] = cors_allowed_origins
