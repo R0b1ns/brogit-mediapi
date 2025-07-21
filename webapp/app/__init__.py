@@ -37,9 +37,15 @@ def create_app():
     app.config.update(config['app'])
     app.secret_key = config['app'].get('SECRET_KEY', 'your_secret_key')
 
-    # TODO: Make config for Logging
-    # # Basic Logging configuration
-    # setup_logging()
+    log_level = {
+        'info': logging.INFO,
+        'warning': logging.WARNING,
+        'error': logging.ERROR,
+        'debug': logging.DEBUG
+    }
+
+    # Basic Logging configuration
+    setup_logging(log_level.get(config['app'].get('LOGGING', 'info'), logging.INFO))
 
     logging.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 

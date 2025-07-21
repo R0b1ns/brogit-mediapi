@@ -22,6 +22,8 @@ app:
   DEBUG: True
   PROPAGATE_EXCEPTIONS: True
 
+  LOGGING: "info"
+
 
   # Supported languages
   LANGUAGES: ['en', 'de']
