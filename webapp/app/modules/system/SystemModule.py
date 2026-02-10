@@ -35,6 +35,12 @@ class SystemModule(ModuleInterface):
             logging.error("hostnamectl:", e)
             return False
 
+        # TODO: Redeploy BT to update Hostname
+        # In future this should be done with triggers.
+        # Backend().trigger('update', 'hostname')
+
+        # But right now. On top level where set_hostname is executed. we will also execute the deploy of bt
+
         return True
 
     @staticmethod

@@ -88,6 +88,10 @@ def update_settings_general_hostname():
     except Exception as e:
         return jsonify(error=f"Failed to set hostname: {str(e)}"), 500
 
+    # TODO: This should not be there look at: SystemModule::set_hostname
+    Backend().bluetooth.set('DEVICE_NAME', hostname)
+    Backend().bluetooth.deploy()
+
     return jsonify({'success': True}), 200
 
 @api_bp.route('/settings/general/certificate', methods=['POST'])
