@@ -89,13 +89,10 @@ Type=simple
 # Unblock Bluetooth if soft-blocked
 ExecStartPre=/usr/sbin/rfkill unblock bluetooth
 
-# Unblock Bluetooth if soft-blocked
-ExecStartPre=/usr/sbin/rfkill unblock bluetooth
-
 # Bring interface up and enable scanning & SSP
-ExecStartPre=/usr/sbin/hciconfig %I up
-ExecStartPre=/usr/sbin/hciconfig %I piscan
-ExecStartPre=/usr/sbin/hciconfig %I sspmode 1
+ExecStartPre=/bin/hciconfig %I up
+ExecStartPre=/bin/hciconfig %I piscan
+ExecStartPre=/bin/hciconfig %I sspmode 1
 
 # Optional: set discoverable and device name via bluetoothctl
 ExecStartPre=/usr/bin/bluetoothctl discoverable ${DISCOVERABLE:-on}
