@@ -83,8 +83,6 @@ def update_settings_general_hostname():
     if not hostname:
         return jsonify(message="Missing fields"), 400
 
-    print(Backend().system.get_hostname())
-
     try:
         Backend().system.set_hostname(new_host_name=hostname)
     except Exception as e:
