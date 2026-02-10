@@ -25,3 +25,15 @@ class NginxModule(ModuleInterface):
         if not key:
             return self.env_config
         return self.env_config.get(key)
+
+    def update_certificate(self, public_key: str, private_key: str):
+        # TODO: Add update_certificate functionality
+        raise NotImplementedError()
+
+    def install(self, confirm: bool = False) -> bool:
+        # TODO: Run installation script
+        raise NotImplementedError()
+
+    def uninstall(self, confirm: bool = False) -> bool:
+        # TODO: Run uninstallation script
+        raise NotImplementedError()
