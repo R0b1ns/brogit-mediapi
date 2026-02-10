@@ -7,14 +7,21 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/config.env"
+CONFIG_FILE="${1:-"$SCRIPT_DIR/config.env"}"
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Config file not found: $CONFIG_FILE" >&2
+  exit 1
+fi
+
+source "$CONFIG_FILE"
 
 # Define default variables
 LOCALE="${LOCALE:-en-US}"
 DEVICE_CLASS="${DEVICE_CLASS:-0x200414}"
 DISCOVERABLE="${DISCOVERABLE:-on}"
 BLUETOOTH_DEVICE="${BLUETOOTH_DEVICE:-hci0}"
-DEVICE_NAME="${DEVICE_NAME:-}"
+DEVICE_NAME="${DEVICE_NAME:-$(hostname)}"
 
 # Set DEVICE_NAME_STR only if DEVICE_NAME is not empty
 if [[ -n "$DEVICE_NAME" ]]; then
@@ -76,8 +83,8 @@ After=bluetooth.service
 [Service]
 Type=simple
 # Optional: Set environment variables here
-# Environment=DISCOVERABLE=yes
-# Environment=DEVICE_NAME=MyPi
+# Environment=DISCOVERABLE=on
+# Environment=DEVICE_NAME=raspberrypi
 
 # Unblock Bluetooth if soft-blocked
 ExecStartPre=/usr/sbin/rfkill unblock bluetooth
