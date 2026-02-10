@@ -90,7 +90,8 @@ def update_settings_general_hostname():
 
     # TODO: This should not be there look at: SystemModule::set_hostname
     Backend().bluetooth.set('DEVICE_NAME', hostname)
-    # Backend().bluetooth.deploy()
+
+    Backend().bluetooth.deploy()
 
     return jsonify({'success': True}), 200
 
