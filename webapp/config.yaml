@@ -66,4 +66,6 @@ nginx:
   config_path: "../modules/nginx/config.env"
   install_path: "../modules/nginx/install.sh"
   uninstall_path: "../modules/nginx/uninstall.sh"
-  # update_path: "../modules/nginx/update.sh"
+  detect_path: "../modules/nginx/detect_installation.sh"
+  update_apt_available_path: "../modules/nginx/update_apt_available.sh"
+  update_apt_path: "../modules/nginx/update_apt.sh"

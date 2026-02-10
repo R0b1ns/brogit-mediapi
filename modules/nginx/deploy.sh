@@ -6,7 +6,15 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/config.env"
+
+CONFIG_FILE="${1:-"$SCRIPT_DIR/config.env"}"
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Config file not found: $CONFIG_FILE" >&2
+  exit 1
+fi
+
+source "$CONFIG_FILE"
 
 # Determine scheme based on NGINX_PROXY_PASS_SSL
 if [[ "$NGINX_PROXY_PASS_SSL" == "true" || "$NGINX_PROXY_PASS_SSL" == "True" ]]; then
