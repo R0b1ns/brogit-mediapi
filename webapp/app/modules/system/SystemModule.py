@@ -31,7 +31,6 @@ class SystemModule(ModuleInterface):
     def set_hostname(new_host_name) -> bool:
         try:
             subprocess.run(['sudo', 'hostnamectl', 'set-hostname', new_host_name], check=True)
-
         except subprocess.CalledProcessError as e:
             logging.error("hostnamectl:", e)
             return False
