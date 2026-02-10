@@ -109,7 +109,7 @@ $(() => {
             }
           },
           error: xhr => {
-            const msg = xhr.responseJSON?.message || 'Unexpected error';
+            const msg = xhr.responseJSON?.message || xhr.responseJSON?.error ||'Unexpected error';
             console.error('Error:', msg);
             $response.text(msg);
             if (useFeedback) {
