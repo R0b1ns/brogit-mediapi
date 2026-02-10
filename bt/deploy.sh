@@ -74,11 +74,29 @@ Requires=bluetooth.service
 After=bluetooth.service
 
 [Service]
-ExecStartPre=/usr/bin/bluetoothctl discoverable $DISCOVERABLE
-ExecStartPre=/usr/bin/bluetoothctl system-alias "$DEVICE_NAME"
-ExecStartPre=/bin/hciconfig %I piscan
-ExecStartPre=/bin/hciconfig %I sspmode 1
+Type=simple
+# Optional: Set environment variables here
+# Environment=DISCOVERABLE=yes
+# Environment=DEVICE_NAME=MyPi
+
+# Unblock Bluetooth if soft-blocked
+ExecStartPre=/usr/sbin/rfkill unblock bluetooth
+
+# Unblock Bluetooth if soft-blocked
+ExecStartPre=/usr/sbin/rfkill unblock bluetooth
+
+# Bring interface up and enable scanning & SSP
+ExecStartPre=/usr/sbin/hciconfig %I up
+ExecStartPre=/usr/sbin/hciconfig %I piscan
+ExecStartPre=/usr/sbin/hciconfig %I sspmode 1
+
+# Optional: set discoverable and device name via bluetoothctl
+ExecStartPre=/usr/bin/bluetoothctl discoverable ${DISCOVERABLE:-on}
+ExecStartPre=/usr/bin/bluetoothctl system-alias "${DEVICE_NAME:-RaspberryPi}"
+
+# Start the agent
 ExecStart=/usr/bin/bt-agent --capability=NoInputNoOutput
+
 RestartSec=5
 Restart=always
 KillSignal=SIGUSR1
