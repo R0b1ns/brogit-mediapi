@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# brogit (c) 2025
+# brogit (c) 2026
 # Author: r0b1ns
 
 set -e
@@ -57,3 +57,11 @@ else
 fi
 
 rm "$TEMP_PATH"
+
+# Check if service is active, start if not
+if ! systemctl is-active --quiet "$SERVICE_UNIT_NAME"; then
+  echo "$SERVICE_UNIT_NAME is not running, starting..."
+  sudo systemctl start "$SERVICE_UNIT_NAME"
+else
+  echo "$SERVICE_UNIT_NAME is already running"
+fi
