@@ -100,7 +100,8 @@ class BluetoothModule(ModuleInterface):
         self.env_config['INSTALLED'] = False
         return True
 
-    def deploy(self) -> bool:
+    # TODO: Check why this k=None, v=None is required. Who executes this with 3 arguments?
+    def deploy(self, k=None, v=None) -> bool:
         if self.get_config().get('INSTALLED') is True:
             deploy_path = self.__module_config.get('deploy_path')
 
