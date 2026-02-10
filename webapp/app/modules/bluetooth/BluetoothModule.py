@@ -100,7 +100,7 @@ class BluetoothModule(ModuleInterface):
         self.env_config['INSTALLED'] = False
         return True
 
-    def deploy(self, k, v) -> bool:
+    def deploy(self) -> bool:
         if self.get_config().get('INSTALLED') is True:
             deploy_path = self.__module_config.get('deploy_path')
 
