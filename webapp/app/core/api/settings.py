@@ -83,11 +83,12 @@ def update_settings_general_hostname():
     if not hostname:
         return jsonify(message="Missing fields"), 400
 
-    print(hostname)
-    time.sleep(1)
+    try:
+        Backend().system.set_host_name(new_host_name=hostname)
+    except Exception as e:
+        return jsonify(error=f"Failed to set hostname: {str(e)}"), 500
 
-    # return jsonify(message=f"Changed Hostname to: {hostname}")
-    return jsonify(message="Not implemented"), 404
+    return jsonify({'success': True}), 200
 
 @api_bp.route('/settings/general/certificate', methods=['POST'])
 def update_settings_general_certificate():

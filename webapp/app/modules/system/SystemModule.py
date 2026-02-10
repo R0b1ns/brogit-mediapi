@@ -28,6 +28,17 @@ class SystemModule(ModuleInterface):
         return socket.gethostname()
 
     @staticmethod
+    def set_hostname(new_host_name) -> bool:
+        try:
+            subprocess.run(['sudo', 'hostnamectl', 'set-hostname', new_host_name], check=True)
+
+        except subprocess.CalledProcessError as e:
+            logging.error("hostnamectl:", e)
+            return False
+
+        return True
+
+    @staticmethod
     def list_installed_languages():
         b = locale.getlocale()
         a = locale.getdefaultlocale()
