@@ -1,4 +1,4 @@
-
+# Version: 2026.02.10
 
 class ModuleInterface:
     def __init__(self, config = None):
@@ -12,3 +12,9 @@ class ModuleInterface:
             "icon": "bi-cog",
             "type": "module"  # oder "submodule"
         }
+
+    def install(self, confirm: bool = False) -> bool:
+        raise NotImplementedError()
+
+    def uninstall(self, confirm: bool = False) -> bool:
+        raise NotImplementedError()
