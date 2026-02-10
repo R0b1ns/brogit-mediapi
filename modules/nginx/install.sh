@@ -8,6 +8,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 DEPLOY_FILE_PATH="$SCRIPT_DIR/deploy.sh"
+UNINSTALL_FILE_PATH="$SCRIPT_DIR/uninstall.sh"
 
 install_package_if_missing() {
   if ! dpkg -s "$1" >/dev/null 2>&1; then
@@ -26,6 +27,7 @@ install_package_if_missing nginx
 install_package_if_missing ssl-cert
 
 chmod +x "$DEPLOY_FILE_PATH"
+chmod +x "$UNINSTALL_FILE_PATH"
 chmod g+r "$SCRIPT_DIR/config.env"
 "$DEPLOY_FILE_PATH"
 
