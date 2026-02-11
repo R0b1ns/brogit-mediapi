@@ -39,7 +39,7 @@ def create_app():
 
     # Add config from nginx or hostname
     if nginx_config.get('NGINX_HOST') == "default":
-        cors_allowed_origins.append(f"https://{ socket.gethostname()}".lower())
+        cors_allowed_origins.append(f"https://{socket.gethostname()}".lower())
         cors_allowed_origins.append(f"https://{socket.gethostname()}.local".lower())
     else:
         cors_allowed_origins.append(f"https://{nginx_config.get('NGINX_HOST')}".lower())
