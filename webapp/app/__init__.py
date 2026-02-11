@@ -28,6 +28,8 @@ def create_app():
     env_path = os.path.join(PROJECT_ROOT, '.env')
     config = load_config(env_path, 'CONFIG_FILE')
 
+    # TODO: Move configuration of nginx to another place
+
     # Dirty Nginx config load
     nginx_config = dotenv_values(config['nginx']['config_path'])
 
