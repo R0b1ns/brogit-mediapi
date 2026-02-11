@@ -35,6 +35,8 @@ class SystemModule(ModuleInterface):
             logging.error("hostnamectl:", e)
             return False
 
+        # TODO: look at change_hostname.sh you also have to change the entry in /etc/hosts
+
         # TODO: Redeploy BT to update Hostname
         # In future this should be done with triggers.
         # Backend().trigger('update', 'hostname')
