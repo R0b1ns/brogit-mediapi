@@ -40,6 +40,19 @@ app:
 policies:
   max_device_name_len: 50
 
+modules:
+  modules_path: "../modules"
+  config_file_name: "config.env"
+  script_install: "install.sh"
+  script_uninstall: "uninstall.sh"
+  script_deploy: "deploy.sh"
+  script_update: "update.sh"
+  script_detect: "detect.sh"
+  script_apply_config: "apply_config.py"
+  # TODO: Maybe some are handled in one file
+  script_ctl: "ctl.sh"
+
+
 bluetooth:
   config_path: "../bt/config.env"
   install_path: "../bt/install.sh"

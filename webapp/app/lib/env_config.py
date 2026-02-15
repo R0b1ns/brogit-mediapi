@@ -66,7 +66,8 @@ class EnvConfig(dict):
         transformation = option_mapping.get(k)
 
         if transformation:
-            self[k] = transformation.get(v)
+            # If transformation result is none, fallback to v
+            self[k] = transformation.get(v, v)
         else:
             self[k] = v
 
