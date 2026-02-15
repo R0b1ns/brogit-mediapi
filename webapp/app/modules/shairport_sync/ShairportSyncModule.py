@@ -1,3 +1,5 @@
+import logging
+
 from app.lib.Policies import policy_validate_device_name
 from app.lib.SystemEnvModule import SystemEnvModule
 
@@ -45,9 +47,6 @@ class ShairportSyncModule(SystemEnvModule):
         #     },
         # }
 
-    def accept_device_name(self):
-        return self.get_config().get('DEVICE_NAME') == ""
-
     @staticmethod
     def get_info():
         return {
@@ -58,9 +57,13 @@ class ShairportSyncModule(SystemEnvModule):
             'has_settings': True
         }
 
-    @staticmethod
-    def get_license():
+    def get_license(self):
         try:
             return open('../modules/shairport-sync/repositories/shairport-sync/LICENSES').read()
         except:
+            if self.get_config().get('INSTALLED'):
+                logging.warning("Module is marked as installed, but licence is not available. So module will be removed...")
+                self.uninstall(True)
+                return "Unable to open LICENCE. Module was removed."
+
             return "Unable to open LICENCE. Module is not installed yet"
