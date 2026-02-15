@@ -89,9 +89,7 @@ def update_settings_general_hostname():
         return jsonify(error=f"Failed to set hostname: {str(e)}"), 500
 
     # TODO: This should not be there look at: SystemModule::set_hostname
-    Backend().bluetooth.set('DEVICE_NAME', hostname)
-
-    Backend().bluetooth.deploy()
+    # Backend().bluetooth.set('DEVICE_NAME', hostname)
 
     return jsonify({'success': True}), 200
 

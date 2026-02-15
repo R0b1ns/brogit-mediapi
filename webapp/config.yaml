@@ -37,12 +37,14 @@ app:
 
   auto-update: true
 
+policies:
+  max_device_name_len: 50
+
 bluetooth:
   config_path: "../bt/config.env"
   install_path: "../bt/install.sh"
   uninstall_path: "../bt/uninstall.sh"
   deploy_path: "../bt/deploy.sh"
-  max_device_name_len: 50
   deploy_on: ['DEVICE_CLASS', 'DISCOVERABLE', 'AUDIO_DEVICE', 'DEVICE_NAME']
   device_class_mapping: {
     "0x200414": 'Loudspeaker',

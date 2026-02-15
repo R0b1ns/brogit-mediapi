@@ -10,9 +10,16 @@ from crontab import CronTab
 from git import Repo, GitCommandError
 
 from app.lib.ModuleInterface import ModuleInterface
+from app.lib.Policies import policy_validate_device_name
 
 
 class SystemModule(ModuleInterface):
+    def __init__(self, config):
+        super().__init__(config)
+        module_config = config.get('system')
+        self.__module_config = module_config
+        self.__policy_config = config.get('policy')
+
     @staticmethod
     def get_info():
         return {
@@ -27,13 +34,25 @@ class SystemModule(ModuleInterface):
     def get_hostname():
         return socket.gethostname()
 
-    @staticmethod
-    def set_hostname(new_host_name) -> bool:
+    def set(self, key: str, value):
+        # TODO: This method should integrate set_hostname and more
+
+        # Keys and validator lambda
+        valid_options = {
+            'DEVICE_NAME': lambda v: policy_validate_device_name(self.__policy_config, v),
+        }
+
+        pass
+
+    def set_hostname(self, new_host_name) -> bool:
         try:
             subprocess.run(['sudo', 'hostnamectl', 'set-hostname', new_host_name], check=True)
         except subprocess.CalledProcessError as e:
             logging.error("hostnamectl:", e)
             return False
+
+        # TODO: Implement generic solution that this works
+        self.trigger('set_hostname', new_host_name)
 
         # TODO: look at change_hostname.sh you also have to change the entry in /etc/hosts
 
