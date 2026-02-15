@@ -50,7 +50,7 @@ class SystemEnvModule(ModuleInterface):
     def set(self, k: str, v):
         return self.__env_config.validated_update(k, v, self._valid_options, self._option_mapping)
 
-    def field(self, name: str, callback, validator_lambda, transformation_dict):
+    def field(self, name: str, callback, validator_lambda, transformation_dict = None, trigger_name: str = None, trigger_accept = None):
         # e.g.
         #         self.field(
         #             name='DEVICE_NAME',
@@ -72,9 +72,19 @@ class SystemEnvModule(ModuleInterface):
         })
 
         # Set / Overwrite Value Transformations
-        self._option_mapping.update({
-            name: transformation_dict,
-        })
+        if transformation_dict:
+            self._option_mapping.update({
+                name: transformation_dict,
+            })
+
+        if trigger_name:
+            def trigger_callback(event_data):
+                # When the trigger is accepted based on trigger_accept callback.
+                # Execute the set method, which will at the end maybe also call a trigger
+                if trigger_accept is None or (trigger_accept and trigger_accept(event_data)):
+                    self.set(name, event_data)
+
+            self.on(trigger_name, trigger_callback)
 
     def execute_script(self, name, requirements, args = None) -> bool:
         for r in requirements:

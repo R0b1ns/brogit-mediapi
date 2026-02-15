@@ -18,6 +18,8 @@ class ShairportSyncModule(SystemEnvModule):
                     "": '%H',
                 },
             },
+            trigger_name='set_hostname',
+            trigger_accept=lambda v: self.get_config().get('DEVICE_NAME') == ""
         )
 
         ### Manual configuration ###
@@ -42,6 +44,9 @@ class ShairportSyncModule(SystemEnvModule):
         #         "": '%H',
         #     },
         # }
+
+    def accept_device_name(self):
+        return self.get_config().get('DEVICE_NAME') == ""
 
     @staticmethod
     def get_info():
