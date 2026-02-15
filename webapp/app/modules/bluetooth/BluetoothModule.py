@@ -4,6 +4,7 @@ import subprocess
 
 from app.lib.Backend import Backend
 from app.lib.ModuleInterface import ModuleInterface
+from app.lib.Policies import policy_validate_device_name
 from app.lib.env_config import EnvConfig
 
 
@@ -12,14 +13,26 @@ class BluetoothModule(ModuleInterface):
         super().__init__(config)
         module_config = config.get('bluetooth')
         self.__module_config = module_config
+        self.__policy_config = config.get('policy')
 
+        # Environment callback observe configuration and when a specific variable is changed
+        # This defined callback will be executed
         self.env_config = EnvConfig(module_config.get('config_path'))
         for k in module_config.get('deploy_on'):
             self.env_config.register_callback(k, self.deploy)
 
         self.device_class_mapping = module_config.get('device_class_mapping')
 
-    def set(self, key, value):
+        # TODO: Merge concurrent Event handling
+        def on_set_hostname(event_data):
+            print(f"on_set_hostname({event_data})")
+            self.set('DEVICE_NAME', event_data.get('hostname'))
+            # Deploy not required after. Because it is automatically executed. Look above
+            # self.deploy()
+
+        self.on('set_hostname', on_set_hostname)
+
+    def set(self, key: str, value):
 
         # Keys and validator lambda
         valid_options = {
@@ -30,7 +43,7 @@ class BluetoothModule(ModuleInterface):
             'SOUND_ENABLED': lambda v: v in (True, False),
             'VOICE_ENABLED': lambda v: v in (True, False),
             # XXX: Here we have to be very careful. Because we write directly text into the config
-            'DEVICE_NAME': lambda v: v == "" or (isinstance(v, str) and 1 <= len(v.strip()) <= int(self.__module_config.get('max_device_name_len', 50)) and re.fullmatch(r'[a-zA-Z0-9 _\-]+', v.strip()) is not None),
+            'DEVICE_NAME': lambda v: policy_validate_device_name(self.__policy_config, v),
         }
 
         option_mapping = {
@@ -40,25 +53,7 @@ class BluetoothModule(ModuleInterface):
             },
         }
 
-        validator = valid_options.get(key)
-
-        if not validator:
-            logging.debug(f'No validator for key={key}')
-            return None
-
-        if validator(value):
-            transformation = option_mapping.get(key)
-
-            if transformation:
-                self.env_config[key] = transformation.get(value)
-            else:
-                self.env_config[key] = value
-
-            return True
-        else:
-            logging.info(f'Failed to validate. key={key}')
-
-        return False
+        return self.env_config.validated_update(key, value, valid_options, option_mapping)
 
     def get_config(self):
         return self.env_config
