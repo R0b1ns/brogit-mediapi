@@ -1,4 +1,9 @@
+# Author: Robin Biegel
+# Version: 2026.2.15
+
 # config_loader.py
+import logging
+from typing import Union
 
 from dotenv import dotenv_values, set_key
 from pathlib import Path
@@ -43,3 +48,27 @@ class EnvConfig(dict):
     def _run_callbacks(self, key, value):
         for callback in self._callbacks.get(key, []):
             callback(key, value)
+
+    def validated_update(self, k, v, valid_options, option_mapping = None) -> Union[bool, None]:
+        if option_mapping is None:
+            option_mapping = {}
+
+        validator = valid_options.get(k)
+
+        if not validator:
+            logging.warning(f'No validator for key={k}')
+            return None
+
+        if not validator(v):
+            logging.warning(f'Failed to validate. key={k}')
+            return False
+
+        transformation = option_mapping.get(k)
+
+        if transformation:
+            self[k] = transformation.get(v)
+        else:
+            self[k] = v
+
+        return True
+
