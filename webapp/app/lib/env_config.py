@@ -50,6 +50,8 @@ class EnvConfig(dict):
             callback(key, value)
 
     def validated_update(self, k, v, valid_options, option_mapping = None) -> Union[bool, None]:
+        logging.debug(f"Validating {k}={v}")
+
         if option_mapping is None:
             option_mapping = {}
 
@@ -73,3 +75,13 @@ class EnvConfig(dict):
 
         return True
 
+
+if __name__ == '__main__':
+    # TODO: Test me!
+    cnf = EnvConfig('../../../modules/shairport-sync/config.env')
+
+    print(cnf.get('DEVICE_NAME'))
+    cnf.validated_update('DEVICE_NAME', 'Test', {
+        'DEVICE_NAME': lambda v: True,
+    })
+    print(cnf.get('DEVICE_NAME'))
