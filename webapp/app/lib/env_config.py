@@ -57,15 +57,23 @@ class EnvConfig(dict):
 
         validator = valid_options.get(k)
 
+        logging.debug(f"Validating {k}={v} - 1")
+
         if not validator:
             logging.warning(f'No validator for key={k}')
             return None
+
+        logging.debug(f"Validating {k}={v} - 2")
 
         if not validator(v):
             logging.warning(f'Failed to validate. key={k}')
             return False
 
+        logging.debug(f"Validating {k}={v} - 3")
+
         transformation = option_mapping.get(k)
+
+        logging.debug(f"Validating {k}={v} - 4")
 
         if transformation:
             # If transformation result is none, fallback to v
