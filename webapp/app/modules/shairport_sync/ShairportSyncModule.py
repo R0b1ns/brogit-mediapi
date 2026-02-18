@@ -12,6 +12,8 @@ class ShairportSyncModule(SystemEnvModule):
 
         this = self
 
+        print(this.get('DEVICE_NAME'))
+
         # Configure Fields (Preferred way)
         self.field(
             name='DEVICE_NAME',
