@@ -61,7 +61,7 @@ class ShairportSyncModule(SystemEnvModule):
         try:
             return open('../modules/shairport-sync/repositories/shairport-sync/LICENSES').read()
         except:
-            if self.get_config().get('INSTALLED'):
+            if self.get('INSTALLED'):
                 logging.warning("Module is marked as installed, but licence is not available. So module will be removed...")
                 self.uninstall(True)
                 return "Unable to open LICENCE. Module was removed."
