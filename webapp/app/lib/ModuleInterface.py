@@ -33,7 +33,7 @@ class ModuleInterface:
         else:
             self.__class__.global_callbacks[event_name].append(callback)
 
-        logging.debug(f"Registered {self.__class__.__name__}.on({event_name}, {callback})")
+        logging.debug(f"Registered callback {self.__class__.__name__}.on({event_name}, {callback})")
 
     def trigger(self, event_name: str, event_data = None):
         """
