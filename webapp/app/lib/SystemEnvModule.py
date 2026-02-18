@@ -29,8 +29,8 @@ class SystemEnvModule(ModuleInterface):
         #         for k in module_config.get('deploy_on'):
         #             self.__env_config.register_callback(k, self.deploy)
 
-        self._valid_options = None
-        self._option_mapping = None
+        self._valid_options = {}
+        self._option_mapping = {}
 
     def __path_builder(self, config_name):
         abs_path = Path(self.__system_module_config['modules_path']) / self.__module_name / self.__system_module_config[config_name]
