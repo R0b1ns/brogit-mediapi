@@ -1,5 +1,7 @@
 # Author: Robin Biegel
 # Version: 2026.02.10
+import logging
+
 
 class ModuleInterface:
     global_callbacks = {}
@@ -31,13 +33,20 @@ class ModuleInterface:
         else:
             self.__class__.global_callbacks[event_name].append(callback)
 
+        logging.debug(f"Registered {self.__class__.__name__}.on({event_name}, {callback})")
+
     def trigger(self, event_name: str, event_data = None):
         """
         Execute registered callbacks for events
         """
         result = []
 
-        for callback in self.__class__.global_callbacks[event_name]:
+        callbacks = self.__class__.global_callbacks[event_name]
+
+        logging.debug(f"{self.__class__.__name__}.trigger({event_name}, {event_data})")
+        logging.debug(f"{callbacks}")
+
+        for callback in callbacks:
             try:
                 result.append(callback(event_data))
             except Exception as e:

@@ -82,7 +82,10 @@ class SystemEnvModule(ModuleInterface):
                 # When the trigger is accepted based on trigger_accept callback.
                 # Execute the set method, which will at the end maybe also call a trigger
                 if trigger_accept is None or (trigger_accept and trigger_accept(event_data)):
+                    logging.debug(f"{self.__class__.__name__} Trigger '{trigger_name}' was accepted")
                     self.set(name, event_data)
+                else:
+                    logging.debug(f"{self.__class__.__name__} Trigger '{trigger_name}' was rejected")
 
             self.on(trigger_name, trigger_callback)
 
