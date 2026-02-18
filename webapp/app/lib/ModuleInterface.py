@@ -26,7 +26,10 @@ class ModuleInterface:
         """
         Register a callback to be executed when an event is triggered.
         """
-        self.__class__.global_callbacks[event_name].append(callback)
+        if event_name not in self.global_callbacks:
+            self.__class__.global_callbacks.update({event_name: [callback,]})
+        else:
+            self.__class__.global_callbacks[event_name].append(callback)
 
     def trigger(self, event_name: str, event_data = None):
         """
@@ -41,3 +44,16 @@ class ModuleInterface:
                 result.append(f"Failed to execute callback: {str(e)}")
 
         return result
+
+
+if __name__ == "__main__":
+    # TODO: Test on and trigger method
+    m = ModuleInterface()
+    n = ModuleInterface()
+
+    def cb(event_data):
+        print(event_data)
+    m.on('set_hostname', cb)
+    n.on('set_hostname', cb)
+
+    m.trigger('set_hostname', "Hallo Welt")
