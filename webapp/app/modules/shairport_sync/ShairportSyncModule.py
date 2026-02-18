@@ -8,13 +8,7 @@ class ShairportSyncModule(SystemEnvModule):
     def __init__(self, config):
         super().__init__(config, 'shairport-sync')
 
-        policy_config = config.get('policy')
-
-        this = self
-
-        def tigger_accept_callback():
-            return True
-            # return self.get('DEVICE_NAME') == ""
+        policy_config = config.get('policies')
 
         # Configure Fields (Preferred way)
         self.field(
@@ -27,7 +21,7 @@ class ShairportSyncModule(SystemEnvModule):
                 },
             },
             trigger_name='set_hostname',
-            trigger_accept=lambda v: True
+            trigger_accept=lambda v: self.get('DEVICE_NAME') == "" or self.get('DEVICE_NAME') != v,
         )
 
         ### Manual configuration ###

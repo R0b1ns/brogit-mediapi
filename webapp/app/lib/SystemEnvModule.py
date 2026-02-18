@@ -81,12 +81,15 @@ class SystemEnvModule(ModuleInterface):
             def trigger_callback(event_data):
                 # When the trigger is accepted based on trigger_accept callback.
                 # Execute the set method, which will at the end maybe also call a trigger
-                if trigger_accept is None or (trigger_accept and trigger_accept(event_data)):
-                    logging.debug(f"{self.__class__.__name__}.on('{trigger_name}', event_data) - Trigger was accepted")
-                    return self.set(name, event_data)
-                else:
-                    logging.debug(f"{self.__class__.__name__}.on('{trigger_name}', event_data) - Trigger was rejected")
-                    return None
+                try:
+                    if trigger_accept is None or (trigger_accept and trigger_accept(event_data)):
+                        logging.debug(f"{self.__class__.__name__}.on('{trigger_name}', event_data) - Trigger was accepted")
+                        return self.set(name, event_data)
+                    else:
+                        logging.debug(f"{self.__class__.__name__}.on('{trigger_name}', event_data) - Trigger was rejected")
+                        return None
+                except Exception as e:
+                    logging.error(f"{self.__class__.__name__}.on('{trigger_name}', event_data) - Failed to execute trigger callback")
 
             self.on(trigger_name, trigger_callback)
 

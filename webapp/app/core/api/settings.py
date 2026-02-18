@@ -84,14 +84,17 @@ def update_settings_general_hostname():
         return jsonify(message="Missing fields"), 400
 
     try:
-        Backend().system.set_hostname(new_host_name=hostname)
+        result = Backend().system.set_hostname(new_host_name=hostname)
     except Exception as e:
         return jsonify(error=f"Failed to set hostname: {str(e)}"), 500
 
     # TODO: This should not be there look at: SystemModule::set_hostname
     # Backend().bluetooth.set('DEVICE_NAME', hostname)
 
-    return jsonify({'success': True}), 200
+    if result:
+        return jsonify({'success': True}), 200
+    else:
+        return jsonify({"error": f"Failed to set hostname: {hostname}"}), 500
 
 @api_bp.route('/settings/general/certificate', methods=['POST'])
 def update_settings_general_certificate():
