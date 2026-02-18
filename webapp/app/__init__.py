@@ -60,6 +60,7 @@ def create_app():
     # setup_logging(log_level.get(config['app'].get('LOGGING', 'info'), logging.INFO))
     app.logger.setLevel(logging.DEBUG)
     logging.debug("Das ist ein Test hier")
+    app.logger.debug("Weiterer test")
 
     app.logger.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 
