@@ -35,6 +35,7 @@ def setup_logging(level: int = logging.INFO):
         datefmt="%Y-%m-%d %H:%M:%S",
         stream=sys.stdout
     )
+    logging.debug("Das ist mein letzter Test hier")
 
 def netmask_to_cidr(netmask):
     try:

@@ -63,6 +63,7 @@ def create_app():
     logging.warning("Test")
     logging.error("Test")
     logging.debug("Test")
+    # Get logging level
 
     app.logger.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 
