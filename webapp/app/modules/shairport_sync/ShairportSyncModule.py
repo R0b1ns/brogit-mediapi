@@ -12,8 +12,9 @@ class ShairportSyncModule(SystemEnvModule):
 
         this = self
 
-        def tigger_callback():
-            return self.get('DEVICE_NAME') == ""
+        def tigger_accept_callback():
+            return True
+            # return self.get('DEVICE_NAME') == ""
 
         # Configure Fields (Preferred way)
         self.field(
@@ -26,7 +27,7 @@ class ShairportSyncModule(SystemEnvModule):
                 },
             },
             trigger_name='set_hostname',
-            trigger_accept=tigger_callback
+            trigger_accept=tigger_accept_callback
         )
 
         ### Manual configuration ###
