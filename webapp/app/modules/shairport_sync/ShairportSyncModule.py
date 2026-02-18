@@ -27,7 +27,7 @@ class ShairportSyncModule(SystemEnvModule):
                 },
             },
             trigger_name='set_hostname',
-            trigger_accept=tigger_accept_callback
+            trigger_accept=lambda v: True
         )
 
         ### Manual configuration ###
