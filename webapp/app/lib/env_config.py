@@ -66,7 +66,14 @@ class EnvConfig(dict):
         logging.debug(f"Validating {k}={v} - 2")
         print(validator)
 
-        if not validator(v):
+        try:
+            result = validator(v)
+        except Exception as e:
+            logging.error(f"Failed to execute validate method {k}={v} - {e}")
+            return None
+
+
+        if not result:
             print("WARRRRRRRNING!!!")
             logging.warning(f'Failed to validate. key={k}')
             return False
