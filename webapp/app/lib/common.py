@@ -21,12 +21,13 @@ def universal_bool(v, detect: bool = False) -> bool or None:
 
     return None
 
-def setup_logging(level: int = logging.INFO):
+def setup_logging(level: int = logging.INFO, force: bool = False) -> None:
     logging.basicConfig(
         level=level,
         format="%(levelname)s [%(processName)s]::%(threadName)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
-        stream=sys.stdout
+        stream=sys.stdout,
+        force=force,
     )
 
 def netmask_to_cidr(netmask):

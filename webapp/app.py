@@ -43,9 +43,7 @@ if __name__ == '__main__':
     run_args = {
         'host': app.config['HOST'] if 'HOST' in app.config else '127.0.0.1',
         'port': int(app.config['PORT']) if 'PORT' in app.config else 5000,
-        # TODO: Remove debug
-        'debug': True,
-        # debug = True,
+        # 'debug': True,
         # allow_unsafe_werkzeug = True
     }
 

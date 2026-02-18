@@ -58,9 +58,10 @@ def create_app():
     # Basic Logging configuration
     # Not possible basic_config an only be executed once. And here flask already did it
     # setup_logging(log_level.get(config['app'].get('LOGGING', 'info'), logging.INFO))
+    logging.getLogger().setLevel(logging.DEBUG)
     app.logger.setLevel(logging.DEBUG)
-    logging.debug("Das ist ein Test hier")
-    app.logger.debug("Weiterer test")
+    logging.debug("Das wird nicht ausgegeben.")
+    app.logger.debug("Das wird ausgegeben")
 
     app.logger.info(f"Cors Allowed Origins: { cors_allowed_origins }")
 
