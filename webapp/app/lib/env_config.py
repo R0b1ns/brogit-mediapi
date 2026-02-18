@@ -73,6 +73,8 @@ class EnvConfig(dict):
         else:
             self[k] = v
 
+        logging.debug(f"Validating {k}={self[k]} - Success?")
+
         return True
 
 
