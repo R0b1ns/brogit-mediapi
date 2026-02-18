@@ -28,6 +28,7 @@ def setup_logging(level: int = logging.INFO):
     print(f"Levels: {logging.INFO}")
     print(f"Levels: {logging.WARNING}")
     print(f"Levels: {logging.ERROR}")
+    print("Wo sind die levels?")
     logging.basicConfig(
         level=level,
         format="%(levelname)s [%(processName)s]::%(threadName)s %(message)s",
