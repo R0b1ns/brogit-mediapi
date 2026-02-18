@@ -25,7 +25,7 @@ class BluetoothModule(ModuleInterface):
 
         # TODO: Merge concurrent Event handling
         def on_set_hostname(event_data):
-            print(f"on_set_hostname({event_data})")
+            print(f"Bluetooth.on_set_hostname({event_data})")
             self.set('DEVICE_NAME', event_data.get('hostname'))
             # Deploy not required after. Because it is automatically executed. Look above
             # self.deploy()
