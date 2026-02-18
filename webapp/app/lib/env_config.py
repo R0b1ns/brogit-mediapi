@@ -57,14 +57,9 @@ class EnvConfig(dict):
 
         validator = valid_options.get(k)
 
-        logging.debug(f"Validating {k}={v} - 1")
-
         if not validator:
             logging.warning(f'No validator for key={k}')
             return None
-
-        logging.debug(f"Validating {k}={v} - 2")
-        print(validator)
 
         try:
             result = validator(v)
@@ -72,27 +67,17 @@ class EnvConfig(dict):
             logging.error(f"Failed to execute validate method {k}={v} - {e}")
             return None
 
-
         if not result:
-            print("WARRRRRRRNING!!!")
-            logging.warning(f'Failed to validate. key={k}')
+            logging.warning(f'Validation result was negativ. key={k}')
             return False
-        else:
-            print("Jaaaaa?")
-
-        logging.debug(f"Validating {k}={v} - 3")
 
         transformation = option_mapping.get(k)
-
-        logging.debug(f"Validating {k}={v} - 4")
 
         if transformation:
             # If transformation result is none, fallback to v
             self[k] = transformation.get(v, v)
         else:
             self[k] = v
-
-        logging.debug(f"Validating {k}={self[k]} - Success?")
 
         return True
 

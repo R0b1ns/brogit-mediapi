@@ -10,6 +10,8 @@ class ShairportSyncModule(SystemEnvModule):
 
         policy_config = config.get('policy')
 
+        this = self
+
         # Configure Fields (Preferred way)
         self.field(
             name='DEVICE_NAME',
@@ -21,7 +23,7 @@ class ShairportSyncModule(SystemEnvModule):
                 },
             },
             trigger_name='set_hostname',
-            trigger_accept=lambda v: self.get_config().get('DEVICE_NAME') == ""
+            trigger_accept=lambda v: this.get('DEVICE_NAME') == ""
         )
 
         ### Manual configuration ###
