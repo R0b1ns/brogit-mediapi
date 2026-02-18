@@ -24,6 +24,10 @@ def universal_bool(v, detect: bool = False) -> bool or None:
 def setup_logging(level: int = logging.INFO):
     print("mein Level")
     print(level)
+    print(f"Levels: {logging.DEBUG}")
+    print(f"Levels: {logging.INFO}")
+    print(f"Levels: {logging.WARNING}")
+    print(f"Levels: {logging.ERROR}")
     logging.basicConfig(
         level=level,
         format="%(levelname)s [%(processName)s]::%(threadName)s %(message)s",
