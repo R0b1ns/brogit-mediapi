@@ -50,7 +50,7 @@ class EnvConfig(dict):
             callback(key, value)
 
     def validated_update(self, k, v, valid_options, option_mapping = None) -> Union[bool, None]:
-        logging.debug(f"Validating {k}={v}")
+        logging.debug(f"Validating {k}={v} - {self.path}")
 
         if option_mapping is None:
             option_mapping = {}
