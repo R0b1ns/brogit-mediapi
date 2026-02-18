@@ -64,11 +64,14 @@ class EnvConfig(dict):
             return None
 
         logging.debug(f"Validating {k}={v} - 2")
+        print(validator)
 
         if not validator(v):
             print("WARRRRRRRNING!!!")
             logging.warning(f'Failed to validate. key={k}')
             return False
+        else:
+            print("Jaaaaa?")
 
         logging.debug(f"Validating {k}={v} - 3")
 
