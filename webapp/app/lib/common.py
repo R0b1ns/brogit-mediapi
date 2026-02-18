@@ -22,20 +22,12 @@ def universal_bool(v, detect: bool = False) -> bool or None:
     return None
 
 def setup_logging(level: int = logging.INFO):
-    print("mein Level")
-    print(level)
-    print(f"Levels: {logging.DEBUG}")
-    print(f"Levels: {logging.INFO}")
-    print(f"Levels: {logging.WARNING}")
-    print(f"Levels: {logging.ERROR}")
-    print("Wo sind die levels?")
     logging.basicConfig(
         level=level,
         format="%(levelname)s [%(processName)s]::%(threadName)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         stream=sys.stdout
     )
-    logging.debug("Das ist mein letzter Test hier")
 
 def netmask_to_cidr(netmask):
     try:
