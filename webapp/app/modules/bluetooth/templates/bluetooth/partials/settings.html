@@ -31,7 +31,7 @@
         <label for="settings-bluetooth-deviceclass" class="align-middle">{{ _('Device class') }}</label>
         <select class="form-select form-select-listmod" id="settings-bluetooth-deviceclass" name="DEVICE_CLASS" data-role="form" data-method="post" data-action="{{ url_for('module.bluetooth.change_bluetooth_settings') }}" autocomplete="off">
             {% for k, v in backend.bluetooth.get_device_class_mapping().items() %}
-                <option value="{{ k }}" {% if k == backend.bluetooth.get_config()['DEVICE_CLASS'] %}selected{% endif %}>{{ v }}</option>
+                <option value="{{ k }}" {% if k == backend.bluetooth.get_config()['DEVICE_CLASS'] %}selected{% endif %}>{{ _(v) }}</option>
             {% endfor %}
         </select>
     </li>

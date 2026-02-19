@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-30 23:11+0200\n"
+"POT-Creation-Date: 2026-02-20 00:43+0100\n"
 "PO-Revision-Date: 2025-05-22 23:06+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -56,12 +56,12 @@ msgstr "Bluetooth"
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:7
 #: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:17
+#: modules/nginx/templates/nginx/partials/settings.html:17
 #: modules/shairport_sync/templates/shairport-sync/partials/settings.html:17
 msgid "Enabled"
 msgstr "Aktiviert"
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:14
-#, fuzzy
 msgid "Bluetooth device"
 msgstr "Bluetooth Gerät"
 
@@ -70,9 +70,8 @@ msgid "Discoverable"
 msgstr "Entdeckbar"
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:31
-#, fuzzy
 msgid "Device class"
-msgstr "Gerätename"
+msgstr "Geräteklasse"
 
 #: modules/bluetooth/templates/bluetooth/partials/settings.html:41
 msgid "Sound"
@@ -132,6 +131,7 @@ msgid "Enter one server address per line."
 msgstr "Gib eine Serveradresse pro Zeile ein."
 
 #: modules/gmrender_resurrect/templates/gmrender-resurrect/partials/settings.html:5
+#: modules/nginx/templates/nginx/partials/settings.html:8
 #: modules/shairport_sync/templates/shairport-sync/partials/settings.html:5
 #: templates/index.html:45 templates/nested_settings_modal.html:6
 msgid "Settings"
@@ -169,6 +169,35 @@ msgstr "HTTP Proxy Port"
 msgid "HTTPS Proxy Host"
 msgstr "HTTPS Proxy Host"
 
+#: modules/network/templates/network/partials/settings.html:47
+msgid "CORS"
+msgstr ""
+
+#: modules/nginx/templates/nginx/partials/settings.html:5
+msgid "Service"
+msgstr "Service"
+
+#: modules/nginx/templates/nginx/partials/settings.html:27
+msgid "Certificate"
+msgstr "Zertifikat"
+
+#: modules/nginx/templates/nginx/partials/settings.html:30
+msgid "Restore defaults"
+msgstr "Werkseinstellungen wiederherstellen"
+
+#: modules/nginx/templates/nginx/partials/settings.html:36
+msgid "Certificate Chain"
+msgstr "Zertifikatskette"
+
+#: modules/nginx/templates/nginx/partials/settings.html:47
+msgid "Private Key"
+msgstr "Private-Key"
+
+#: modules/nginx/templates/nginx/partials/settings.html:58
+#: modules/system/templates/system/partials/settings.html:45
+msgid "Update"
+msgstr "Update"
+
 #: modules/system/templates/system/partials/settings.html:1
 msgid "System"
 msgstr "System"
@@ -198,13 +227,7 @@ msgstr "Branch"
 msgid "Commit"
 msgstr "Commit"
 
-#: modules/system/templates/system/partials/settings.html:45
-#: templates/settings/general.html:79
-msgid "Update"
-msgstr "Update"
-
 #: modules/system/templates/system/partials/settings.html:53
-#, fuzzy
 msgid "User"
 msgstr "Benutzer"
 
@@ -253,23 +276,6 @@ msgstr "Sprache"
 msgid "System-default"
 msgstr "System"
 
-#: templates/settings/general.html:48
-msgid "Certificate"
-msgstr "Zertifikat"
-
-#: templates/settings/general.html:51
-#, fuzzy
-msgid "Restore defaults"
-msgstr "Werkseinstellungen wiederherstellen"
-
-#: templates/settings/general.html:56
-msgid "Certificate Chain"
-msgstr "Zertifikatskette"
-
-#: templates/settings/general.html:67
-msgid "Private Key"
-msgstr "Private-Key"
-
 #: templates/theme_switcher/nested_for_settings.html:1
 msgid "Appearance"
 msgstr "Darstellung"
@@ -317,3 +323,11 @@ msgstr "Dunkel"
 #~ msgid "Audio device"
 #~ msgstr "Audiogerät"
 
+msgid "Loudspeaker"
+msgstr "Lautsprecher"
+
+msgid "Headphones"
+msgstr "Kopfhörer"
+
+msgid "Portable Audio"
+msgstr "Tragbares Audiogerät"
