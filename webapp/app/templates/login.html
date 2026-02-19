@@ -33,25 +33,29 @@
                     <h5 class="modal-title">Login</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ url_for('auth.login') }}">
+                    <form method="POST" class="px-5 py-2" action="{{ url_for('auth.login') }}">
                         {{ form.csrf_token }}
                         <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
 
+                        <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
                         {{ form.username(class="form-control") }}
+                        </div>
 
                         {{ form.password.label(class="form-label") }}
                         <div class="input-group mb-3">
                             {{ form.password(class="form-control") }}
-                            {{ form.submit(class="btn btn-outline-primary") }}
+                            <button type="submit" class="btn btn-outline-primary" name="submit" id="submit">{{ form.submit.label.text }} <i class="bi bi-box-arrow-in-right"></i></button>
                         </div>
 
                         {% with messages = get_flashed_messages() %}
                             {% if messages %}
                             <div class=flashes>
                                 {% for message in messages %}
+
+
                                 <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                                    <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" role="img" aria-label="Warning: {{ message }}"></i>
                                     <div>{{ message }}</div>
                                 </div>
                                 {% endfor %}
