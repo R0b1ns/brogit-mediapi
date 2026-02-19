@@ -6,8 +6,7 @@ from app.lib.SystemEnvModule import SystemEnvModule
 
 class GmrenderResurrectModule(SystemEnvModule):
     def __init__(self, config):
-        super().__init__(config)
-        self.__module_config = config.get('gmrender-resurrect')
+        super().__init__(config, 'gmrender-resurrect')
 
         policy_config = config.get('policies')
 
