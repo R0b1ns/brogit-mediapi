@@ -305,23 +305,23 @@ msgstr "Hell"
 msgid "Dark"
 msgstr "Dunkel"
 
-#~ msgid "Network"
-#~ msgstr "Netzwerk"
+msgid "Network"
+msgstr "Netzwerk"
 
-#~ msgid "Connected"
-#~ msgstr "Verbunden mit %(value)"
+msgid "Connected"
+msgstr "Verbunden mit %(value)"
 
-#~ msgid "Obtain IP address automatically"
-#~ msgstr "IP-Adresse automatisch beziehen"
+msgid "Obtain IP address automatically"
+msgstr "IP-Adresse automatisch beziehen"
 
-#~ msgid "language_de"
-#~ msgstr "Deutsch"
+msgid "language_de"
+msgstr "Deutsch"
 
-#~ msgid "language_en"
-#~ msgstr "Englisch"
+msgid "language_en"
+msgstr "Englisch"
 
-#~ msgid "Audio device"
-#~ msgstr "Audiogerät"
+msgid "Audio device"
+msgstr "Audiogerät"
 
 msgid "Loudspeaker"
 msgstr "Lautsprecher"
